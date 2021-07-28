@@ -9,26 +9,29 @@ mutable struct Chemostat
     molecules::Array{String,1} # list storing all the molecules, non unique, duplicated molecules appear twice
     reaction_probs::Array{Float64,1}  # [constructive, destructive, outflow]
     mass::Int64 # Total mass
-    mass_fixed::Bool # Whether the total mass should be fixed 
+    mass_fixed::Int64 # Target Mass for fixed flow, if 0, mass can vary 
 end
 
-function constructive_rxn(molecules)
+function constructive_rxn(Chemostat)
     ## Pick two random molecules from an array, 
     ## join them and add the new molecule to the 
     ## vector (removing the original ones)
+    molecules = Chemostat.molecules
     shuffle!(molecules) # Shuffle the molecules
     a = pop!(molecules) # take the first one 
     b = pop!(molecules) # and the second one 
     c = a*b # combine them (* in julia concatentates strings)
     push!(molecules, c) # add the new one to the bottom of the list 
-    
-    return molecules
+    Chemostat.molecules = molecules
+    return Chemostat
 end
 
-function destructive_rxn(molecules)
+function destructive_rxn(Chemostat)
     ## Pick a random molecule (of length >1)
     ## split at a random point, add both fragments back to 
+    molecules = Chemostat.molecules
     shuffle!(molecules) # Shuffle the molecules
+    
     big_moles = filter(x -> length(x) > 1, molecules) # Ignore monomers
     if length(big_moles) > 0 # If there are any molecules left
         a = pop!(big_moles) # Grab one 
@@ -40,6 +43,33 @@ function destructive_rxn(molecules)
         push!(molecules, b) # push both 
         push!(molecules, c)
     end
-    
-    return molecules
+    Chemostat.molecules = molecules
+    return Chemostat
+end
+
+function outflow_rxn(Chemostat)
+    ## Pick two random molecules from an array, 
+    ## join them and add the new molecule to the 
+    ## vector (removing the original ones)
+    molecules = Chemostat.molecules
+    neighbors = Chemostat.neighbors
+    neighbor_weights = Chemostat.neighbor_flows
+    shuffle!(molecules) # Shuffle the molecules
+    a = pop!(molecules) # take the first one 
+    if neighbors != []
+        neighbor = sample(neighbors, Weights(neighbor_weights))
+        outflow_direction = Dict(neighbor => a)
+    else
+        outflow_direction = Dict{Int64,String}()
+    end 
+    Chemostat.molecules = molecules
+    return Chemostat, outflow_direction
+end
+
+function calc_mass(chemostat)
+    ## Calculate total mass of molecules
+    ## mass is just length 
+    molecules = chemostat.molecules
+    mass = sum([length(a) for a in molecules])
+    return mass
 end
