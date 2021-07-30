@@ -12,24 +12,24 @@ mutable struct Chemostat
     mass_fixed::Int64 # Target Mass for fixed flow, if 0, mass can vary 
 end
 
-function constructive_rxn(Chemostat)
+function constructive_rxn(chemostat::Chemostat)
     ## Pick two random molecules from an array, 
     ## join them and add the new molecule to the 
     ## vector (removing the original ones)
-    molecules = Chemostat.molecules
+    molecules = chemostat.molecules
     shuffle!(molecules) # Shuffle the molecules
     a = pop!(molecules) # take the first one 
     b = pop!(molecules) # and the second one 
     c = a*b # combine them (* in julia concatentates strings)
     push!(molecules, c) # add the new one to the bottom of the list 
-    Chemostat.molecules = molecules
-    return Chemostat
+    chemostat.molecules = molecules
+    return chemostat
 end
 
-function destructive_rxn(Chemostat)
+function destructive_rxn(chemostat::Chemostat)
     ## Pick a random molecule (of length >1)
     ## split at a random point, add both fragments back to 
-    molecules = Chemostat.molecules
+    molecules = chemostat.molecules
     shuffle!(molecules) # Shuffle the molecules
     
     big_moles = filter(x -> length(x) > 1, molecules) # Ignore monomers
@@ -43,17 +43,17 @@ function destructive_rxn(Chemostat)
         push!(molecules, b) # push both 
         push!(molecules, c)
     end
-    Chemostat.molecules = molecules
-    return Chemostat
+    chemostat.molecules = molecules
+    return chemostat
 end
 
-function outflow_rxn(Chemostat)
+function outflow_rxn(chemostat)
     ## Pick two random molecules from an array, 
     ## join them and add the new molecule to the 
     ## vector (removing the original ones)
-    molecules = Chemostat.molecules
-    neighbors = Chemostat.neighbors
-    neighbor_weights = Chemostat.neighbor_flows
+    molecules = chemostat.molecules
+    neighbors = chemostat.neighbors
+    neighbor_weights = chemostat.neighbor_flows
     shuffle!(molecules) # Shuffle the molecules
     a = pop!(molecules) # take the first one 
     if neighbors != []
@@ -62,8 +62,8 @@ function outflow_rxn(Chemostat)
     else
         outflow_direction = Dict{Int64,String}()
     end 
-    Chemostat.molecules = molecules
-    return Chemostat, outflow_direction
+    chemostat.molecules = molecules
+    return chemostat, outflow_direction
 end
 
 function calc_mass(chemostat)
