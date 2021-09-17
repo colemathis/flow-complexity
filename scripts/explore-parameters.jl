@@ -8,22 +8,38 @@ using Random
 using JLD2
 using FileIO
 
-function complete_well_mixed_parameters(iteration_choices, outflow_rates, epsilions, repetitions)
+
+function test_chemostat()
+    iterations = 100000
+
+    mass = 1000
+    
+    outflow = 0.00
+    ϵ = 0.005
+    reaction_rates = [((1.0 - outflow)/2.0) + ϵ, ((1.0 - outflow)/2.0) - ϵ , outflow] # Constructive, destructive, outflow
+
+    molecules = repeat([1], mass)
+
+    well_mixed_chemostat = Chemostat(0, [], [], molecules, reaction_rates, mass, mass)
+    record = [:molecule_count, :average_length]
+    evolution_out = evolve_well_mixed(well_mixed_chemostat, iterations, record)
+
+    params = [iterations, mass, outflow]
+    save_data(evolution_out, "data/raw/", params)
+
+end
+
+
+function complete_well_mixed_parameters(mass, iteration_choices, outflow_rates, epsilions, repetitions)
     # Complete exploration of input parameters 
     for i in 1:repetitions
         for max_iterations in iteration_choices
             for outflow in outflow_rates
                 for ϵ in epsilions
-                    Initial_Mass = 10000
-                    A_fraction = 0.5
                     well_mixed_rates = [((1.0 - outflow)/2.0) + ϵ, ((1.0 - outflow)/2.0) - ϵ , outflow] # Constructive, destructive, outflow
 
-                    nA = Int64(Initial_Mass*A_fraction)
-                    nB = Initial_Mass - nA
-                    As = repeat(["A"], nA) 
-                    Bs = repeat(["B"], nB)
-                    molecules = shuffle(vcat(As, Bs));
-                    well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, Initial_Mass, Initial_Mass)
+                    molecules = repeat([1], mass)
+                    well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
 
                     record = [:molecule_count, :average_length]
                     evolution_out = evolve_well_mixed(well_mixed_chemostat, max_iterations, record)

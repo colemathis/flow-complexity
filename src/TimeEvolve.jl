@@ -8,7 +8,7 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
     # Figure out what we need to record
     evolution_outputs = Dict{Symbol,Any}()
     if :complete_timeseries in outputs
-        complete_ts = Dict{Int64, Array{String,1}}()
+        complete_ts = Dict{Int64, Array{Int64,1}}()
     end
 
     if :molecule_count in outputs
@@ -37,7 +37,7 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
         chemostat.mass = calc_mass(chemostat)
         if  chemostat.mass != chemostat.mass_fixed && chemostat.mass_fixed != 0
             delta_mass = chemostat.mass_fixed - chemostat.mass
-            new_moles = sample(["A", "B"], delta_mass)
+            new_moles = repeat([1], delta_mass)
             chemostat.molecules = vcat(chemostat.molecules, new_moles)
         end
         
@@ -53,7 +53,7 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
         end
     
         if :average_length in outputs
-            these_lengths = length.(chemostat.molecules)
+            these_lengths = chemostat.molecules
             this_ave = Dict(i => mean(these_lengths))
             ave_lengths = merge(ave_lengths, this_ave)
 

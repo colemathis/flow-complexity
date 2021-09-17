@@ -6,7 +6,7 @@ mutable struct Chemostat
     ID::Int64 # Unique identifer
     neighbors::Array{Int64,1} # What other chemostats are you connected to? (Outflowing edges)
     neighbor_flows::Array{Float64,1} # Relative flows to neighbors, should sum to unity 
-    molecules::Array{String,1} # list storing all the molecules, non unique, duplicated molecules appear twice
+    molecules::Array{Int64,1} # list storing all the molecules, non unique, duplicated molecules appear twice
     reaction_probs::Array{Float64,1}  # [constructive, destructive, outflow]
     mass::Int64 # Total mass
     mass_fixed::Int64 # Target Mass for fixed flow, if 0, mass can vary 
@@ -20,7 +20,7 @@ function constructive_rxn(chemostat::Chemostat)
     shuffle!(molecules) # Shuffle the molecules
     a = pop!(molecules) # take the first one 
     b = pop!(molecules) # and the second one 
-    c = a*b # combine them (* in julia concatentates strings)
+    c = a + b # combine them (add them)
     push!(molecules, c) # add the new one to the bottom of the list 
     chemostat.molecules = molecules
     return chemostat
@@ -32,14 +32,13 @@ function destructive_rxn(chemostat::Chemostat)
     molecules = chemostat.molecules
     shuffle!(molecules) # Shuffle the molecules
     
-    big_moles = filter(x -> length(x) > 1, molecules) # Ignore monomers
+    big_moles = filter(x -> x > 1, molecules) # Ignore 1s
     if length(big_moles) > 0 # If there are any molecules left
         a = pop!(big_moles) # Grab one 
         mole_index = findfirst(x -> x == a,molecules) # pop it out of the molecule list
         a = popat!(molecules, mole_index)
-        break_point = sample(1:(length(a)-1)) # find a bond to split it at 
-        b = a[1:break_point] # Left side
-        c = a[(break_point + 1):end] # right side 
+        b = sample(1:(a-1)) # find a bond to split it at 
+        c = a - b
         push!(molecules, b) # push both 
         push!(molecules, c)
     end
@@ -70,6 +69,6 @@ function calc_mass(chemostat)
     ## Calculate total mass of molecules
     ## mass is just length 
     molecules = chemostat.molecules
-    mass = sum([length(a) for a in molecules])
+    mass = sum(molecules)
     return mass
 end
