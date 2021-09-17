@@ -1,7 +1,7 @@
 using Distributions 
 using Random
 
-mutable struct Chemostat
+struct Chemostat
     ## This type contains all the information needed to run the time evolution at one spatial location
     ID::Int64 # Unique identifer
     neighbors::Array{Int64,1} # What other chemostats are you connected to? (Outflowing edges)
@@ -17,32 +17,31 @@ function constructive_rxn(chemostat::Chemostat)
     ## join them and add the new molecule to the 
     ## vector (removing the original ones)
     molecules = chemostat.molecules
-    shuffle!(molecules) # Shuffle the molecules
-    a = pop!(molecules) # take the first one 
-    b = pop!(molecules) # and the second one 
+    shuffle!(chemostat.molecules) # Shuffle the molecules
+    a = pop!(chemostat.molecules) # take the first one 
+    b = pop!(chemostat.molecules) # and the second one 
     c = a + b # combine them (add them)
-    push!(molecules, c) # add the new one to the bottom of the list 
-    chemostat.molecules = molecules
+    push!(chemostat.molecules, c) # add the new one to the bottom of the list 
+    #chemostat.molecules = molecules
     return chemostat
 end
 
 function destructive_rxn(chemostat::Chemostat)
     ## Pick a random molecule (of length >1)
     ## split at a random point, add both fragments back to 
-    molecules = chemostat.molecules
-    shuffle!(molecules) # Shuffle the molecules
+    #molecules = chemostat.molecules
+    shuffle!(chemostat.molecules) # Shuffle the molecules
     
-    big_moles = filter(x -> x > 1, molecules) # Ignore 1s
+    big_moles = filter(x -> x > 1, chemostat.molecules) # Ignore 1s
     if length(big_moles) > 0 # If there are any molecules left
         a = pop!(big_moles) # Grab one 
-        mole_index = findfirst(x -> x == a,molecules) # pop it out of the molecule list
-        a = popat!(molecules, mole_index)
+        mole_index = findfirst(x -> x == a,chemostat.molecules) # pop it out of the molecule list
+        a = popat!(chemostat.molecules, mole_index)
         b = sample(1:(a-1)) # find a bond to split it at 
         c = a - b
-        push!(molecules, b) # push both 
-        push!(molecules, c)
+        push!(chemostat.molecules, b) # push both 
+        push!(chemostat.molecules, c)
     end
-    chemostat.molecules = molecules
     return chemostat
 end
 
@@ -50,18 +49,18 @@ function outflow_rxn(chemostat)
     ## Pick two random molecules from an array, 
     ## join them and add the new molecule to the 
     ## vector (removing the original ones)
-    molecules = chemostat.molecules
+    #molecules = chemostat.molecules
     neighbors = chemostat.neighbors
     neighbor_weights = chemostat.neighbor_flows
-    shuffle!(molecules) # Shuffle the molecules
-    a = pop!(molecules) # take the first one 
+    shuffle!(chemostat.molecules) # Shuffle the molecules
+    a = pop!(chemostat.molecules) # take the first one 
     if neighbors != []
         neighbor = sample(neighbors, Weights(neighbor_weights))
         outflow_direction = Dict(neighbor => a)
     else
         outflow_direction = Dict{Int64,String}()
     end 
-    chemostat.molecules = molecules
+    #chemostat.molecules = molecules
     return chemostat, outflow_direction
 end
 

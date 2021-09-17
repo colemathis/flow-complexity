@@ -22,10 +22,14 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
 
     for i in 1:n_iterations
         # Pick reaction 
-        rxn = sample(["construction", "degradation", "outflow"],Weights(chemostat.reaction_probs))
-
+        if length(chemostat.molecules) == 1
+            rxn = "degradation"
+        else
+            rxn = sample(["construction", "degradation", "outflow"],Weights(chemostat.reaction_probs))
+        end
         # Execute Reaction 
         if rxn == "construction"
+            
             chemostat = constructive_rxn(chemostat)
         elseif rxn == "degradation"
             chemostat = destructive_rxn(chemostat)
@@ -34,11 +38,11 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
         end
         
         # Check Mass 
-        chemostat.mass = calc_mass(chemostat)
-        if  chemostat.mass != chemostat.mass_fixed && chemostat.mass_fixed != 0
+        current_mass = calc_mass(chemostat)
+        if  current_mass != chemostat.mass_fixed && chemostat.mass_fixed != 0
             delta_mass = chemostat.mass_fixed - chemostat.mass
             new_moles = repeat([1], delta_mass)
-            chemostat.molecules = vcat(chemostat.molecules, new_moles)
+            append!(chemostat.molecules, new_moles)
         end
         
         # Record outputs
