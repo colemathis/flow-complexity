@@ -2,7 +2,7 @@ using StatsBase
 using Statistics
 include("Chemostats.jl")
 
-function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::Array{Symbol,1})
+function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::Float64, outputs::Array{Symbol,1})
     ## Time evolution of a single well mixed chemostat
 
     # Figure out what we need to record
@@ -20,9 +20,15 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
         var_lengths = Dict{Int64, Float64}()
     end
 
-    for i in 1:n_iterations
+
+    propensities = calc_propensities(chemostat)
+    tau = 0.0
+    checkpoint = 0.0
+    while tau < tau_max
+        # Calculate Reaction Propensities
+        
         # Pick reaction 
-        rxn = sample(["construction", "degradation", "outflow"],Weights(chemostat.reaction_probs))
+        rxn = sample(["construction", "degradation", "outflow"],Weights(propensities))
 
         # Execute Reaction 
         if rxn == "construction"
@@ -41,40 +47,51 @@ function evolve_well_mixed(chemostat::Chemostat, n_iterations::Int64, outputs::A
             chemostat.molecules = vcat(chemostat.molecules, new_moles)
         end
         
+        # Update propensities
+        propensities = calc_propensities(chemostat)
+
+        # Update time 
+        total_p = sum(propensities)
+        tau_step = -log(rand())/total_p
+        tau += tau_step
+
         # Record outputs
-        if :complete_timeseries in outputs
-            this_ts = Dict(i => chemostat.molecules)
-            complete_ts = merge(complete_ts, this_ts)
-        end
-    
-        if :molecule_count in outputs
-            this_count = Dict(i => length(chemostat.molecules))
-            mole_count = merge(mole_count, this_count)
-        end
-    
-        if :average_length in outputs
-            these_lengths = chemostat.molecules
-            this_ave = Dict(i => mean(these_lengths))
-            ave_lengths = merge(ave_lengths, this_ave)
-
-            this_var = Dict(i => var(these_lengths))
-            var_lengths = merge(var_lengths, this_var)
-        end
+        if tau > checkpoint
+            i = round(tau, digits =3)
+            checkpoint += output_freq
+            if :complete_timeseries in outputs
+                this_ts = Dict(i => chemostat.molecules)
+                complete_ts = merge(complete_ts, this_ts)
+            end
         
-    end
+            if :molecule_count in outputs
+                this_count = Dict(i => length(chemostat.molecules))
+                mole_count = merge(mole_count, this_count)
+            end
+        
+            if :average_length in outputs
+                these_lengths = chemostat.molecules
+                this_ave = Dict(i => mean(these_lengths))
+                ave_lengths = merge(ave_lengths, this_ave)
 
-    if :complete_timeseries in outputs
-        evolution_outputs[:complete_timeseries] = complete_ts
-    end
+                this_var = Dict(i => var(these_lengths))
+                var_lengths = merge(var_lengths, this_var)
+            end
+            
+        end
 
-    if :molecule_count in outputs
-        evolution_outputs[:molecule_count] = mole_count 
-    end
+        if :complete_timeseries in outputs
+            evolution_outputs[:complete_timeseries] = complete_ts
+        end
 
-    if :average_length in outputs
-        evolution_outputs[:average_lengths] = ave_lengths 
-        evolution_outputs[:variance_lengths] = var_lengths
-    end
+        if :molecule_count in outputs
+            evolution_outputs[:molecule_count] = mole_count 
+        end
 
+        if :average_length in outputs
+            evolution_outputs[:average_lengths] = ave_lengths 
+            evolution_outputs[:variance_lengths] = var_lengths
+        end
+    end
     return evolution_outputs
 end

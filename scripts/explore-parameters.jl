@@ -4,31 +4,34 @@
 # Key parameters are Total Mass, Iterations, outflow rate, and epsilion (constructive process - destructive process = 2 epsilion)
 include("../src/Chemostats.jl")
 include("../src/TimeEvolve.jl")
+include("process_bson_to_csv.jl")
 using Random 
 using JLD2
 using FileIO
 
 
 function test_chemostat()
-    iterations = 100000
+    tau_max = 100.0
 
     mass = 1000
     
-    outflow = 0.00
-    ϵ = 0.005
-    reaction_rates = [((1.0 - outflow)/2.0) + ϵ, ((1.0 - outflow)/2.0) - ϵ , outflow] # Constructive, destructive, outflow
+    outflow = 1.0
+    reaction_rates = [0.002, 1.0, outflow] # Constructive, destructive, outflow
 
     molecules = repeat([1], mass)
 
     well_mixed_chemostat = Chemostat(0, [], [], molecules, reaction_rates, mass, mass)
     record = [:molecule_count, :average_length]
-    evolution_out = evolve_well_mixed(well_mixed_chemostat, iterations, record)
-
-    params = [iterations, mass, outflow]
-    save_data(evolution_out, "data/raw/", params)
+    evolution_out = evolve_well_mixed(well_mixed_chemostat, tau_max, 1.0, record)
+    save("data/raw/test_run.bson", evolution_out)
+    tidy_df = bson_to_tidy_df("data/raw/test_run.bson")
+    writedlm("data/raw/test_run.csv",Iterators.flatten(([names(tidy_df)], eachrow(tidy_df))), ',')
 
 end
 
+function output_test_run()
+
+end
 
 function complete_well_mixed_parameters(mass, iteration_choices, outflow_rates, epsilions, repetitions)
     # Complete exploration of input parameters 

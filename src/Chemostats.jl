@@ -7,7 +7,7 @@ mutable struct Chemostat
     neighbors::Array{Int64,1} # What other chemostats are you connected to? (Outflowing edges)
     neighbor_flows::Array{Float64,1} # Relative flows to neighbors, should sum to unity 
     molecules::Array{Int64,1} # list storing all the molecules, non unique, duplicated molecules appear twice
-    reaction_probs::Array{Float64,1}  # [constructive, destructive, outflow]
+    reaction_rate_consts::Array{Float64,1}  # [constructive, destructive, outflow]
     mass::Int64 # Total mass
     mass_fixed::Int64 # Target Mass for fixed flow, if 0, mass can vary 
 end
@@ -71,4 +71,25 @@ function calc_mass(chemostat)
     molecules = chemostat.molecules
     mass = sum(molecules)
     return mass
+end
+
+function calc_propensities(chemostat)
+    ## Calculate the propensities for each reaction time
+    
+    # Constructive
+    # depends on n*n-1 (number of both pairwise interactions)
+    n = length(chemostat.molecules)
+    Cp = chemostat.reaction_rate_consts[1] * n * (n -1)
+    
+    # Destructive 
+    # Depends on number of molecules 
+    Cd = chemostat.reaction_rate_consts[2] * n
+
+    # Outflow 
+    # Depends on number of molecules 
+    Co = chemostat.reaction_rate_consts[3] * n
+
+    propensities = [Cp, Cd, Co]
+
+    return propensities # Constructive, destructive, outflow
 end
