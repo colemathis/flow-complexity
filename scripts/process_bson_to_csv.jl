@@ -37,12 +37,25 @@ function bson_to_tidy_df(bfile)
     data_dict = load(bfile)
     recorded_vars = [k for k in keys(data_dict)]
     times = [t for t in keys(data_dict[recorded_vars[1]])]
-
-    tidy_df = DataFrame(time = times)
-    for var in recorded_vars
-        tidy_df[!, var] = map(x-> data_dict[var][x], tidy_df[!,:time])
+    data = []
+    for t in times
+        for var in recorded_vars
+            if var == :complete_timeseries
+                time_counts = countmap(data_dict[:complete_timeseries][t])
+                for (v,c) in time_counts
+                    push!(data, Dict("time"=> t, "variable"=>string(v), "value"=> c))
+                end
+            else
+                push!(data, Dict("time" => t, "variable" => String(var), "value"=> data_dict[var][t] ))
+            end
+        end
     end
 
+    tidy_df = DataFrame(time = map(x -> x["time"], data),
+                        variable = map(x -> x["variable"], data),
+                        value = map(x -> x["value"], data))
+
     return tidy_df
+    
 end
 

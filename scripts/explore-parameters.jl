@@ -16,12 +16,12 @@ function test_chemostat()
     mass = 1000
     
     outflow = 1.0
-    reaction_rates = [0.002, 1.0, outflow] # Constructive, destructive, outflow
+    reaction_rates = [1.1*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
 
     molecules = repeat([1], mass)
 
     well_mixed_chemostat = Chemostat(0, [], [], molecules, reaction_rates, mass, mass)
-    record = [:molecule_count, :average_length]
+    record = [:molecule_count, :average_length, :complete_timeseries]
     evolution_out = evolve_well_mixed(well_mixed_chemostat, tau_max, 1.0, record)
     save("data/raw/test_run.bson", evolution_out)
     tidy_df = bson_to_tidy_df("data/raw/test_run.bson")
