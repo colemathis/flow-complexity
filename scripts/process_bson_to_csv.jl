@@ -3,6 +3,7 @@ using FileIO
 using Glob
 using DelimitedFiles
 
+using Pathways
 ## July 29th processing initial bson files to csv for plotting
 
 function initial_bsons_to_csv(outputname::String, directory::String)
@@ -34,6 +35,8 @@ function parse_fname(bson_fname)
 end
 
 function bson_to_tidy_df(bfile)
+
+    csvfile = split(bfile, ".bson")[1] * ".csv"
     data_dict = load(bfile)
     recorded_vars = [k for k in keys(data_dict)]
     times = [t for t in keys(data_dict[recorded_vars[1]])]
@@ -55,7 +58,6 @@ function bson_to_tidy_df(bfile)
                         variable = map(x -> x["variable"], data),
                         value = map(x -> x["value"], data))
 
-    return tidy_df
-    
+    writedlm(csvfile, Iterators.flatten(([names(tidy_df)], eachrow(tidy_df))), ',')
 end
 

@@ -16,7 +16,7 @@ function test_chemostat()
     mass = 1000
     
     outflow = 1.0
-    reaction_rates = [1.1*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
+    reaction_rates = [10.0*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
 
     molecules = repeat([1], mass)
 
@@ -33,23 +33,24 @@ function output_test_run()
 
 end
 
-function complete_well_mixed_parameters(mass, iteration_choices, outflow_rates, epsilions, repetitions)
+function complete_well_mixed_parameters(mass, outflow_rates, forward_rates, repetitions)
     # Complete exploration of input parameters 
     for i in 1:repetitions
-        for max_iterations in iteration_choices
-            for outflow in outflow_rates
-                for ϵ in epsilions
-                    well_mixed_rates = [((1.0 - outflow)/2.0) + ϵ, ((1.0 - outflow)/2.0) - ϵ , outflow] # Constructive, destructive, outflow
+        for outflow in outflow_rates
+            for f in forward_rates
+                well_mixed_rates = [f*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
 
-                    molecules = repeat([1], mass)
-                    well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
+                molecules = repeat([1], mass)
+                well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
 
-                    record = [:molecule_count, :average_length]
-                    evolution_out = evolve_well_mixed(well_mixed_chemostat, max_iterations, record)
+                molecules = repeat([1], mass)
 
-                    params = [i, max_iterations, outflow, ϵ]
-                    save_data(evolution_out, "data/raw", params)
-                end
+                well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
+                record = [:molecule_count, :average_length, :complete_timeseries]
+                evolution_out = evolve_well_mixed(well_mixed_chemostat, 100., 1.0, record)
+
+                params = [i, mass, outflow, f]
+                save_data(evolution_out, "data/raw", params)
             end
         end
     end
