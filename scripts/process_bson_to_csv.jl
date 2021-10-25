@@ -38,23 +38,27 @@ function bson_to_tidy_df(bfile)
 
     csvfile = split(bfile, ".bson")[1] * ".csv"
     data_dict = load(bfile)
-    recorded_vars = [k for k in keys(data_dict)]
-    times = [t for t in keys(data_dict[recorded_vars[1]])]
+    recorded_vars = [k for k in keys(data_dict[1])]
+    times = [t for t in keys(data_dict[1][recorded_vars[1]])]
+    reactors = collect(keys(data_dict))
     data = []
-    for t in times
-        for var in recorded_vars
-            if var == :complete_timeseries
-                time_counts = countmap(data_dict[:complete_timeseries][t])
-                for (v,c) in time_counts
-                    push!(data, Dict("time"=> t, "variable"=>string(v), "value"=> c))
+    for r in reactors
+        for t in times
+            for var in recorded_vars
+                if var == :complete_timeseries
+                    time_counts = countmap(data_dict[r][:complete_timeseries][t])
+                    for (v,c) in time_counts
+                        push!(data, Dict("reactor"=> r,"time"=> t, "variable"=>string(v), "value"=> c))
+                    end
+                else
+                    push!(data, Dict("reactor"=> r,"time" => t, "variable" => String(var), "value"=> get(data_dict[r][var],t,0) ))
                 end
-            else
-                push!(data, Dict("time" => t, "variable" => String(var), "value"=> data_dict[var][t] ))
             end
         end
     end
 
     tidy_df = DataFrame(time = map(x -> x["time"], data),
+                        reactor = map(x -> x["reactor"], data),
                         variable = map(x -> x["variable"], data),
                         value = map(x -> x["value"], data))
 

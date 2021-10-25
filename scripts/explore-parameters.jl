@@ -71,3 +71,22 @@ function save_data(data, directory, parameters)
     fname = directory*"/"*fname*".bson"
     save(fname, data)
 end
+
+function complete_line_reactors_parameters(mass, outflow_rates, forward_rates, repetitions)
+    # Complete exploration of input parameters 
+    for i in 1:repetitions
+        for outflow in outflow_rates
+            for f in forward_rates
+                line_reactor_rates = [f*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
+                line_reactors = make_line_reactors(3, line_reactor_rates, mass, mass)
+
+                record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
+                evolution_out = evolve_distributed(line_reactors, 100., 1.0, record)
+
+                params = [i, mass, outflow, f]
+                save_data(evolution_out, "data/raw_line_reactor", params)
+            end
+        end
+    end
+
+end
