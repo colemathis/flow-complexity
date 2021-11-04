@@ -2,6 +2,7 @@ using DataFrames
 using FileIO
 using Glob
 using DelimitedFiles
+using StatsBase
 
 using Pathways
 ## July 29th processing initial bson files to csv for plotting

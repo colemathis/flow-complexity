@@ -90,3 +90,19 @@ function complete_line_reactors_parameters(mass, outflow_rates, forward_rates, r
     end
 
 end
+
+
+function complete_line_reactors_n_reactors(mass, outflow_rate, forward_rate, reactors)
+    # Complete exploration of input parameters 
+    for n in reactors
+        line_reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
+        line_reactors = make_line_reactors(n, line_reactor_rates, mass, mass)
+
+        record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
+        evolution_out = evolve_distributed(line_reactors, 100., 1.0, record)
+
+        params = [n, mass, outflow_rate, forward_rate]
+        save_data(evolution_out, "data/raw_line_reactor", params)
+    end
+
+end

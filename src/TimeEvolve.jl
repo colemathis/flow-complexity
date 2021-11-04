@@ -197,7 +197,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
                 if :var_length in outputs
                     these_lengths = Ensemble.reactors[id].molecules
                     this_var = Dict(i => var(these_lengths))
-                    this_reactor_data[:var_length] = merge(this_reactor_data[:var_lengths], this_var)
+                    this_reactor_data[:var_length] = merge(this_reactor_data[:var_length], this_var)
                 end
             end
         end
