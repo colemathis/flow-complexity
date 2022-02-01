@@ -117,7 +117,6 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
     checkpoint = 0.0
 
     all_propensities = calc_propensities.(Ensemble.reactors)
-    println(all_propensities)
     next_taus = calc_next_rxn_times(all_propensities, tau)
 
     while tau < tau_max
@@ -176,7 +175,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         if tau > checkpoint
             i = round(tau, digits =3)
             checkpoint += output_freq
-            println(i)
+            # println(i)
             for id in Ensemble.reactor_ids
                 this_reactor_data = evolution_outputs[id]
                 if :complete_timeseries in outputs
@@ -203,18 +202,6 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
             end
         end
 
-        # if :complete_timeseries in outputs
-        #     evolution_outputs[:complete_timeseries] = complete_ts
-        # end
-
-        # if :molecule_count in outputs
-        #     evolution_outputs[:molecule_count] = mole_count 
-        # end
-
-        # if :average_length in outputs
-        #     evolution_outputs[:average_lengths] = ave_lengths 
-        #     evolution_outputs[:variance_lengths] = var_lengths
-        # end
     end
     return evolution_outputs
 end
