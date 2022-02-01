@@ -9,12 +9,12 @@ mutable struct Chemostat
     molecules::Array{Int64,1} # list storing all the molecules, non unique, duplicated molecules appear twice
     reaction_rate_consts::Array{Float64,1}  # [constructive, destructive, outflow]
     mass::Int64 # Total mass
-    mass_fixed::Int64 # Target Mass for fixed flow, if 0, mass can vary 
+    mass_fixed::Int64  # Target Mass for fixed flow, if 0, mass can vary
 end
 
 function constructive_rxn(chemostat::Chemostat)
-    ## Pick two random molecules from an array, 
-    ## join them and add the new molecule to the 
+    ## Pick two random molecules from an array,
+    ## join them and add the new molecule to the
     ## vector (removing the original ones)
     molecules = chemostat.molecules
     shuffle!(molecules) # Shuffle the molecules
