@@ -91,10 +91,11 @@ function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::
 
         if :average_length in outputs
             evolution_outputs[:average_lengths] = ave_lengths 
-            evolution_outputs[:variance_lengths] = var_lengths
+            evolution_outputs[:var_lengths] = var_lengths
         end
     end
-    return evolution_outputs
+    final_output = Dict(1 => evolution_outputs)
+    return final_output
 end
 
 

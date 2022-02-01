@@ -47,9 +47,11 @@ function bson_to_tidy_df(bfile)
         for t in times
             for var in recorded_vars
                 if var == :complete_timeseries
-                    time_counts = countmap(data_dict[r][:complete_timeseries][t])
-                    for (v,c) in time_counts
-                        push!(data, Dict("reactor"=> r,"time"=> t, "variable"=>string(v), "value"=> c))
+                    if data_dict[r][:complete_timeseries][t] != []
+                        time_counts = countmap(data_dict[r][:complete_timeseries][t])
+                        for (v,c) in time_counts
+                            push!(data, Dict("reactor"=> r,"time"=> t, "variable"=>string(v), "value"=> c))
+                        end
                     end
                 else
                     push!(data, Dict("reactor"=> r,"time" => t, "variable" => String(var), "value"=> get(data_dict[r][var],t,0) ))
