@@ -100,9 +100,10 @@ end
 
 
 
-function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::Float64, outputs::Array{Symbol,1})
+function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::Float64,
+                            outputs::Array{Symbol,1}, seed::Int64 =1337)
     ## Time evolution of a distributed system 
-
+    Random.seed!(seed)
     # # Figure out what we need to record
     evolution_outputs = Dict{Int64,Any}()
     for id in Ensemble.reactor_ids
@@ -161,10 +162,10 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         sort!(next_taus, by= x->x[1]) 
         # Check Mass
         for chemostat in Ensemble.reactors
-            if chemostat.mass_fixed != 0
+            if chemostat.fixed_mass != 0
                 chemostat.mass = calc_mass(chemostat)
-                if  chemostat.mass != chemostat.mass_fixed
-                    delta_mass = chemostat.mass_fixed - chemostat.mass
+                if  chemostat.mass != chemostat.fixed_mass
+                    delta_mass = chemostat.fixed_mass - chemostat.mass
                     new_moles = repeat([1], delta_mass)
                     chemostat.molecules = vcat(chemostat.molecules, new_moles)
                 end

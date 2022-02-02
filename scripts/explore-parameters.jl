@@ -5,9 +5,12 @@
 include("../src/Chemostats.jl")
 include("../src/TimeEvolve.jl")
 include("process_bson_to_csv.jl")
+
+using DrWatson
 using Random 
 using JLD2
 using FileIO
+using Dates
 
 
 function test_chemostat()
@@ -20,7 +23,7 @@ function test_chemostat()
 
     molecules = repeat([1], mass)
 
-    well_mixed_chemostat = Chemostat(0, [], [], molecules, reaction_rates, mass, mass)
+    well_mixed_chemostat = Chemostat(0, reaction_rates, molecules)
     record = [:molecule_count, :average_length, :complete_timeseries]
     evolution_out = evolve_well_mixed(well_mixed_chemostat, tau_max, 1.0, record)
     save("data/raw/test_run.bson", evolution_out)
@@ -63,12 +66,12 @@ function logunif(min, max)
     return r 
 end
 
-function save_data(data, directory, parameters)
+function save_data(data, parameters)
     fname = ""
     for p in parameters
         fname = fname*string(p)*"_"
     end
-    fname = directory*"/"*fname*".bson"
+    fname = datadir("sims", savename(parameters, "bson", connector = "^"))
     save(fname, data)
 end
 
@@ -95,14 +98,16 @@ end
 function complete_line_reactors_n_reactors(mass, outflow_rate, forward_rate, reactors)
     # Complete exploration of input parameters 
     for n in reactors
+        seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
         line_reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
         line_reactors = make_line_reactors(n, line_reactor_rates, mass, mass)
 
         record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
-        evolution_out = evolve_distributed(line_reactors, 100., 1.0, record)
+        evolution_out = evolve_distributed(line_reactors, 100., 1.0, record, seed)
 
-        params = [n, mass, outflow_rate, forward_rate]
-        save_data(evolution_out, "data/raw_line_reactor", params)
+        mode = "line-graph"
+        d = @strdict n mass outflow_rate forward_rate mode seed
+        save_data(evolution_out, d)
     end
 
 end

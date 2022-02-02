@@ -1,17 +1,73 @@
-using Distributions 
+using Distributions
 using Random
+using DrWatson
 
 mutable struct Chemostat
     ## This type contains all the information needed to run the time evolution at one spatial location
-    ID::Int64 # Unique identifer
-    neighbors::Array{Int64,1} # What other chemostats are you connected to? (Outflowing edges)
-    neighbor_flows::Array{Float64,1} # Relative flows to neighbors, should sum to unity 
-    molecules::Array{Int64,1} # list storing all the molecules, non unique, duplicated molecules appear twice
-    reaction_rate_consts::Array{Float64,1}  # [constructive, destructive, outflow]
+    ID::Int64 # Unique identifer within a simulation
+    reaction_rate_consts::Vector{Float64}  # [constructive, destructive, outflow]
+    molecules::Vector{Int64} # list storing all the molecules, non unique, duplicated molecules appear twice
     mass::Int64 # Total mass
-    mass_fixed::Int64  # Target Mass for fixed flow, if 0, mass can vary
+    fixed_mass::Int64  # Target Mass for fixed flow, if 0, mass can vary
+    neighbors::Vector{Int64} # What other chemostats are you connected to? (Outflowing edges)
+    neighbor_flows::Vector{Float64} # Relative flows to neighbors, should sum to unity
+    stabilized_integers::Vector{Int64} # List of integers that are stablized in this reactor
+    savename::String # A name that persists between simulations
 end
 
+function Chemostat(ID::Int64, reaction_rate_constants::Vector{Float64}; molecules = Vector{Int64}[],
+                   mass_fixed=false, neighbors = Vector{Int64}[], neighbor_flows = Vector{Float64}[],
+                   stabilized_integers = Vector{Int64}[])
+    # Check the savename, maybe you can just load it. 
+    this_savename = make_chemostat_name(reaction_rate_constants, stabilized_integers)
+    # Calculate the mass
+    if length(a) > 0
+        mass = sum(molecules)
+    else
+        mass = 0
+    end
+
+    if mass_fixed
+        fixed_mass = mass
+    else
+        fixed_mass = 0
+    end
+    # Check neighbors 
+    if neighbors != []
+        n_neighbors = length(neighbors)
+        if neighbor_flows ==[]
+            neighbor_flows = [1.0/n_neighbors for n in 1:n_neighbors]
+        else
+            if length(neighbor_flows) != n_neighbors
+                error("Number of neighbors and flows are different")
+            elseif sum(neighbor_flows) != 1.0
+                error("Neighbor Flows don't sum to unit")
+            end
+        end
+    end
+    return Chemostat(ID,
+                     reaction_rate_constants,
+                     molecules,
+                     mass,
+                     fixed_mass,
+                     neighbors,
+                     neighbor_flows,
+                     stabilized_integers,
+                     this_savename)
+end
+
+function parse_chemostat_name(name)
+
+
+    return reaction_rate_constants, stablized_integers
+end
+
+function make_chemostat_name(reaction_rate_consts, stabilized_integers)
+    name = 
+    name = "reaction_rate_consts="*string(reaction_rate_consts)
+    name = name*"^stablized_integers="*string(stabilized_integers)
+    return name
+end
 function constructive_rxn(chemostat::Chemostat)
     ## Pick two random molecules from an array,
     ## join them and add the new molecule to the
