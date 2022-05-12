@@ -12,7 +12,7 @@ mutable struct Ensemble
 end
 
 function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass::Int64;
-                     chemostat_list::Vector{Dict{String,Any}}, file::String)
+                     chemostat_specs= Vector{Dict{String,Any}}[], file= "")
     # First check the graph type 
     if graph_type == "ER"
         # Make graph
@@ -20,7 +20,7 @@ function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass:
         # Get inflow ids and make sure its a connected component
         inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
         # Get chemostats specifications 
-        chemostat_specs = sample(chemostat_list, N_reactors)
+        chemostat_specs = sample(chemostat_specs, N_reactors)
         # Get chemostat vector from specifications 
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     elseif graph_type == "BA"
@@ -78,7 +78,7 @@ function find_inflow_nodes(graph, n_sources)
     total_edges = length(edges(graph))
     in_degrees = indegree(graph, vertices(graph))
     no_in_nodes = [i for i in 1:length(in_degrees) if in_degrees[i] == 0]
-    sorted_nodes = sort!(collect(vertices(g)), by = x->indegree(graph,x))
+    sorted_nodes = sort!(collect(vertices(graph)), by = x->indegree(graph,x))
     num_no_in = length(no_in_nodes)
     if num_no_in >= n_sources
         # You're good just pick a sample of those with 0 in in_degrees
@@ -111,7 +111,7 @@ function find_inflow_nodes(graph, n_sources)
     new_edge_count = length(edges(graph))
     total_edges - new_edge_count
     while total_edges - new_edge_count > 0
-        source_node = sample(vertices(g))
+        source_node = sample(vertices(graph))
         destination_node = sample(other_nodes)
         add_edge!(graph, source_node, destination_node)
         new_edge_count = length(edges(graph))
@@ -135,7 +135,7 @@ function calc_next_rxn_times(all_propensities, tau)
 end
 
 
-function make_line_reactors(n, rxn_rates, inflow_mass, initial_mass)
+function make_line_reactors(n, rxn_rates, initial_mass)
 
     ensemble_graph = path_digraph(n)
     reactors = Array{Chemostat,1}()
@@ -152,7 +152,7 @@ function make_line_reactors(n, rxn_rates, inflow_mass, initial_mass)
         end
         neighbor = neighbors(ensemble_graph, i)
         neighbor_flow = [1.0]
-        this_reactor = Chemostat(i, rxn_rates, molecules, mass_fixed=inflow, neighbors=neighbor, neighbor_flows=neighbor_flow)
+        this_reactor = Chemostat(i, rxn_rates, molecules=molecules, mass_fixed=inflow, neighbors=neighbor, neighbor_flows=neighbor_flow)
         push!(reactors, this_reactor)
     end
 
@@ -162,10 +162,9 @@ function make_line_reactors(n, rxn_rates, inflow_mass, initial_mass)
 end
 
 
-
 function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     # Make the chemostats with the right neighbors 
-    chemostat_list = Vector{Chemostat}[]
+    chemostat_list = Chemostat[]
     reactors = collect(vertices(ensemble_graph))
     for r in reactors
         specs = sample(chemostat_specs)
@@ -173,15 +172,15 @@ function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass
         stabilized_integers = specs["stabilized_integers"]
         these_neigbors = neighbors(ensemble_graph, r)
         if r in inflow_ids
-            molecules = rep([1], mass)
-            fixed_mass= true
+            molecules = repeat([1], mass)
+            mass_fixed= true
             this_chemostat = Chemostat(r, reaction_rate_constants,
-                                        molecules=molecules,
-                                        fixed_mass = fixed_mass,
+                                        molecules = molecules,
+                                        mass_fixed = mass_fixed,
                                         neighbors = these_neigbors,
                                         stabilized_integers = stabilized_integers)
             push!(chemostat_list, this_chemostat)
-            
+
         else
             this_chemostat = Chemostat(r, reaction_rate_constants, 
                                         neighbors = these_neigbors,
@@ -190,4 +189,22 @@ function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass
         end
     end
     return chemostat_list
+end
+
+
+function gen_chemostat_spec_list(N_chemostats::Int64,
+                                    forward_rate::Float64,
+                                    backward_rate::Float64,
+                                    outflow::Float64)
+    # Generate a list of chemostat specs, which are dictionaries
+    single_dict = Dict("reaction_rate_constants" => [forward_rate, backward_rate, outflow],
+                        "stabilized_integers" => Int64[])
+    # Make a new array
+    spec_list = [single_dict]
+    # Push copies onto the array
+    for n in 1:(N_chemostats-1)
+        new_spec = copy(single_dict)
+        push!(spec_list, new_spec)
+    end
+    return spec_list 
 end

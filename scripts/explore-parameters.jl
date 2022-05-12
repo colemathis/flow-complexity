@@ -1,7 +1,8 @@
 # July 29 2021 
 # Exploring parameters of well mixed model 
 
-# Key parameters are Total Mass, Iterations, outflow rate, and epsilion (constructive process - destructive process = 2 epsilion)
+# Key parameters are Total Mass, Iterations, outflow rate, and epsilion
+# (constructive process - destructive process = 2 epsilion)
 include("../src/Chemostats.jl")
 include("../src/TimeEvolve.jl")
 include("process_bson_to_csv.jl")
@@ -32,9 +33,6 @@ function test_chemostat()
 
 end
 
-function output_test_run()
-
-end
 
 function complete_well_mixed_parameters(mass, outflow_rates, forward_rates, repetitions)
     # Complete exploration of input parameters 
@@ -100,7 +98,24 @@ function complete_line_reactors_n_reactors(mass, outflow_rate, forward_rate, rea
     for n in reactors
         seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
         line_reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
-        line_reactors = make_line_reactors(n, line_reactor_rates, mass, mass)
+        line_reactors = make_line_reactors(n, line_reactor_rates, mass)
+
+        record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
+        evolution_out = evolve_distributed(line_reactors, 100., 1.0, record, seed)
+
+        mode = "line-graph"
+        d = @strdict n mass outflow_rate forward_rate mode seed
+        save_data(evolution_out, d)
+    end
+
+end
+
+function run_graph_reactions(mass, n_reactors, n_inflow, n_outflow, graph_type, outflow_rate, forward_rate)
+    # Complete exploration of input parameters 
+    for n in reactors
+        seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
+        line_reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
+        line_reactors = make_line_reactors(n, line_reactor_rates, mass)
 
         record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
         evolution_out = evolve_distributed(line_reactors, 100., 1.0, record, seed)
