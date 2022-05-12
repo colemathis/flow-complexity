@@ -110,20 +110,17 @@ function complete_line_reactors_n_reactors(mass, outflow_rate, forward_rate, rea
 
 end
 
-function run_graph_reactions(mass, n_reactors, n_inflow, n_outflow, graph_type, outflow_rate, forward_rate)
-    # Complete exploration of input parameters 
-    for n in reactors
-        seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
-        line_reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
-        line_reactors = make_line_reactors(n, line_reactor_rates, mass)
+function run_graph_reactions(mass, n_reactors, n_inflow, graph_type, outflow_rate, forward_rate)
+    seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
+    reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
+    chemostat_specifications = gen_chemostat_spec_list(n_reactors, reactor_rates[1], reactor_rates[2], outflow_rate)
+    reactors = Ensemble(n_reactors, graph_type, n_inflow, mass, chemostat_list = chemostat_specifications)
 
-        record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
-        evolution_out = evolve_distributed(line_reactors, 100., 1.0, record, seed)
+    record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
+    evolution_out = evolve_distributed(reactors, 100., 1.0, record, seed)
 
-        mode = "line-graph"
-        d = @strdict n mass outflow_rate forward_rate mode seed
-        save_data(evolution_out, d)
-    end
+    d = @strdict n_reactors mass outflow_rate forward_rate graph_type seed
+    save_data(evolution_out, d)
 
 end
 
