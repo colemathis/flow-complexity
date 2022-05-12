@@ -3,6 +3,7 @@ include("Chemostats.jl")
 using Graphs
 using StatsBase
 
+## Ensemble Struct
 mutable struct Ensemble
     ## This type contains all the information needed to run the time evolution across spatial locations
     reactor_ids::Array{Int64,1} # What are the unique reactor ids
@@ -11,8 +12,9 @@ mutable struct Ensemble
     inflow_ids::Array{Int64,1} # Which reactors are sources? 
 end
 
+# Generator for Ensemble Struct
 function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass::Int64;
-                     chemostat_specs= Vector{Dict{String,Any}}[], file= "")
+                     chemostat_list= Vector{Dict{String,Any}}[], file= "")
     # First check the graph type 
     if graph_type == "ER"
         # Make graph
@@ -20,13 +22,13 @@ function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass:
         # Get inflow ids and make sure its a connected component
         inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
         # Get chemostats specifications 
-        chemostat_specs = sample(chemostat_specs, N_reactors)
+        chemostat_specs = sample(chemostat_list, N_reactors)
         # Get chemostat vector from specifications 
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     elseif graph_type == "BA"
-        ensemble_graph = barabasi_albert(N_reactors, 2, is_directed=true)
+        ensemble_graph = barabasi_albert(N_reactors, 2, is_directed=true) # Check why is this 2?
         # Get inflow ids
-        inflow_ids = find_inflow_nodes(ensemble_graph, N_sources)
+        inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
         # Get chemostats specifications 
         chemostat_specs = sample(chemostat_list, N_reactors)
         # Get chemostat vector from specifications 
@@ -35,7 +37,7 @@ function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass:
     elseif graph_type == "regular"
         ensemble_graph = random_regular_digraph(N_reactors, 4)
         # Get inflow ids
-        inflow_ids = find_inflow_nodes(ensemble_graph, N_sources)
+        inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
         # Get chemostats specifications 
         chemostat_specs = sample(chemostat_list, N_reactors)
         # Get chemostat vector from specifications 
@@ -134,34 +136,7 @@ function calc_next_rxn_times(all_propensities, tau)
 
 end
 
-
-function make_line_reactors(n, rxn_rates, initial_mass)
-
-    ensemble_graph = path_digraph(n)
-    reactors = Array{Chemostat,1}()
-    
-    for i in 1:n
-        if i ==1
-            inflow = true 
-            molecules = repeat([1], initial_mass)
-            mass= initial_mass
-        else
-            inflow = false
-            molecules = Array{Int64,1}()
-            mass = 0
-        end
-        neighbor = neighbors(ensemble_graph, i)
-        neighbor_flow = [1.0]
-        this_reactor = Chemostat(i, rxn_rates, molecules=molecules, mass_fixed=inflow, neighbors=neighbor, neighbor_flows=neighbor_flow)
-        push!(reactors, this_reactor)
-    end
-
-    line_ensemble = Ensemble(collect(1:n), reactors, ensemble_graph, [1])
-
-    return line_ensemble
-end
-
-
+# Get a set of chemostats with the correct specifications for a graph, including neighbor nodes
 function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     # Make the chemostats with the right neighbors 
     chemostat_list = Chemostat[]
@@ -191,7 +166,8 @@ function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass
     return chemostat_list
 end
 
-
+# This function will generate a list of chemostat specifications which
+# can be passed to the Ensemble constructor
 function gen_chemostat_spec_list(N_chemostats::Int64,
                                     forward_rate::Float64,
                                     backward_rate::Float64,
