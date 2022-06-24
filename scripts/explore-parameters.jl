@@ -12,6 +12,9 @@ using Random
 using JLD2
 using FileIO
 using Dates
+using DataFrames
+using Graphs
+using GraphIO
 
 
 function test_chemostat()
@@ -33,82 +36,60 @@ function test_chemostat()
 
 end
 
-
-function complete_well_mixed_parameters(mass, outflow_rates, forward_rates, repetitions)
-    # Complete exploration of input parameters 
-    for i in 1:repetitions
-        for outflow in outflow_rates
-            for f in forward_rates
-                well_mixed_rates = [f*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
-
-                molecules = repeat([1], mass)
-                well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
-
-                molecules = repeat([1], mass)
-
-                well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
-                record = [:molecule_count, :average_length, :complete_timeseries]
-                evolution_out = evolve_well_mixed(well_mixed_chemostat, 100., 1.0, record)
-
-                params = [i, mass, outflow, f]
-                save_data(evolution_out, "data/raw", params)
-            end
-        end
-    end
-
-end
-
 function logunif(min, max)
     scale = log10(max) - log10(min)
     r = 10^(scale*rand() + log10(min))
     return r 
 end
 
-function save_data(data, parameters)
-    fname = ""
-    for p in parameters
-        fname = fname*string(p)*"_"
-    end
-    fname = datadir("sims", savename(parameters, "bson", connector = "^"))
-    save(fname, data)
+function save_data(timeseries_data, run_parameters, reactors)
+    # Save all the data in a new directory with an updated simulation number
+    # Save Formats:
+    #   - timeseries_data as a bson 
+    #   - run parameters as a json
+    #   - graph as an edgelist (.txt)
+    sim_number = string(get_sim_number())
+    save(datadir("sims", sim_number, "timeseries.bson"), timeseries_data)
+    save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
+    edge_list = generate_edge_list(reactors)
+    save(datadir("sims", sim_number, "graph.csv"), edge_list)
+    # fname = datadir("sims", savename(parameters, "bson", connector = "^"))
+    # save(fname, data)
 end
 
-function complete_line_reactors_parameters(mass, outflow_rates, forward_rates, repetitions)
-    # Complete exploration of input parameters 
-    for i in 1:repetitions
-        for outflow in outflow_rates
-            for f in forward_rates
-                line_reactor_rates = [f*(1.0/(mass)), 1.0, outflow] # Constructive, destructive, outflow
-                line_reactors = make_line_reactors(3, line_reactor_rates, mass, mass)
-
-                record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
-                evolution_out = evolve_distributed(line_reactors, 100., 1.0, record)
-
-                params = [i, mass, outflow, f]
-                save_data(evolution_out, "data/raw_line_reactor", params)
-            end
+function generate_edge_list(reactors)
+    # Generate an edge list as a DataFrame for easy saving
+    graph = reactors.ensemble_graph
+    sources = []
+    destinations = []
+    source_inflow = []
+    these_edges = edges(graph)
+    for e in these_edges
+        push!(sources, src(e))
+        push!(destinations, dst(e))
+        if src(e) in reactors.inflow_ids
+            push!(source_inflow, true)
+        else
+            push!(source_inflow, false)
         end
-    end
-
+    end 
+    edge_dict = Dict("sources" => sources,
+                     "destinations" => destinations,
+                     "source_inflow" => source_inflow)
+    edge_df = DataFrame(edge_dict)
+    return edge_df
 end
 
-
-function complete_line_reactors_n_reactors(mass, outflow_rate, forward_rate, reactors)
-    # Complete exploration of input parameters 
-    for n in reactors
-        seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
-        line_reactor_rates = [forward_rate*(1.0/(mass)), 1.0, outflow_rate] # Constructive, destructive, outflow
-        line_reactors = make_line_reactors(n, line_reactor_rates, mass)
-
-        record = [:molecule_count, :average_length, :var_length, :complete_timeseries]
-        evolution_out = evolve_distributed(line_reactors, 100., 1.0, record, seed)
-
-        mode = "line-graph"
-        d = @strdict n mass outflow_rate forward_rate mode seed
-        save_data(evolution_out, d)
-    end
-
+function get_sim_number()
+    # Find the maximum number used as a directory in the sims folder. Add one to that, and return
+    # it. This will be the new simulation number
+    all_sim_numbers = [s for s in (tryparse.(Int,readdir(datadir("sims")))) if s !== nothing ]
+    println(all_sim_numbers)
+    
+    sim_number = maximum(all_sim_numbers) + 1
+    return sim_number
 end
+
 
 function run_graph_reactions(mass, n_reactors, n_inflow, graph_type, outflow_rate, forward_rate)
     seed = parse(Int64, Dates.format(now(), "SSMMHHddmm"))
@@ -120,7 +101,8 @@ function run_graph_reactions(mass, n_reactors, n_inflow, graph_type, outflow_rat
     evolution_out = evolve_distributed(reactors, 100., 1.0, record, seed)
 
     d = @strdict n_reactors mass outflow_rate forward_rate graph_type seed
-    save_data(evolution_out, d)
+    println(reactors.ensemble_graph)
+    save_data(evolution_out, d, reactors)
 
 end
 
