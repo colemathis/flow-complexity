@@ -41,11 +41,25 @@ function Simulation(
     N_inflow = 1,
     random_seed = parse(Int64, Dates.format(now(), "SSMMHHddmm")),
     recorded_variables = [:complete_timeseries],
-    stabilized_integers = Dict(-1 => Tuple(-1,)),
+    stabilized_integers = Dict(-1 => Tuple(-1,))
 )
     ## Figure out what you need to do here! 
-    
+
     # Get the simulation number of save name 
     sim_number = get_sim_number()
+    save_name = datadir("sims", string(sim_number))
+
+    # Form rates
+    single_rate = [forward_rate, 1.0, outflow_rate]
+    all_rates = zeros(3, N_reactors)
+    for i in 1:N_reactors
+        all_rates[i,:] = single_rate
+    end
+    
+    # Check output count
+    if output_count > 1
+        output_time = total_time / float(output_count)
+    end
+
     return Simulation()
 end
