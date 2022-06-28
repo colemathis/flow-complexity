@@ -6,13 +6,13 @@ using DataFrames
 using Graphs
 using GraphIO
 
-function save_data(timeseries_data, run_parameters, reactors)
+function save_data(timeseries_data, run_parameters, reactors, sim_number)
     # Save all the data in a new directory with an updated simulation number
     # Save Formats:
     #   - timeseries_data as a bson 
     #   - run parameters as a json
     #   - graph as an edgelist (.txt)
-    sim_number = string(get_sim_number())
+    sim_number = string(sim_number)
     save(datadir("sims", sim_number, "timeseries.bson"), timeseries_data)
     save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
     edge_list = generate_edge_list(reactors)

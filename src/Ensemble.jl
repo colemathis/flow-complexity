@@ -14,7 +14,7 @@ end
 
 # Generator for Ensemble Struct
 function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass::Int64;
-                     chemostat_list= Vector{Dict{String,Any}}[], file= "")
+                     chemostat_list= Vector{Dict{String,Any}}[])
     # First check the graph type 
     if graph_type == "ER"
         # Make graph
@@ -56,15 +56,6 @@ function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass:
         # Get chemostat vector from specifications 
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
-    elseif graph_type == "saved-input"
-        if file === nothing
-            error("Graph from file specified but file not provided")
-        elseif !isfile(file)
-            error("Input Graph file not found")
-        else
-            ensemble_graph, chemostat_specs, inflow_ids = read_graph_from_file(file)
-        end
-        chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     end
 
 

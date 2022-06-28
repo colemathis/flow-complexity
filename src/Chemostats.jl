@@ -12,14 +12,12 @@ mutable struct Chemostat
     neighbors::Vector{Int64} # What other chemostats are you connected to? (Outflowing edges)
     neighbor_flows::Vector{Float64} # Relative flows to neighbors, should sum to unity
     stabilized_integers::Vector{Int64} # List of integers that are stablized in this reactor
-    savename::String # A name that persists between simulations
-end;
+end
 
 function Chemostat(ID::Int64, reaction_rate_constants::Vector{Float64}; molecules = Vector{Int64}[],
                    mass_fixed=false, neighbors = Vector{Int64}[], neighbor_flows = Vector{Float64}[],
                    stabilized_integers = Vector{Int64}[])
     # Check the savename, maybe you can just load it. 
-    this_savename = make_chemostat_name(reaction_rate_constants, stabilized_integers)
     # Calculate the mass
     if length(molecules) > 0
         mass = sum(molecules)
@@ -52,22 +50,10 @@ function Chemostat(ID::Int64, reaction_rate_constants::Vector{Float64}; molecule
                      fixed_mass,
                      neighbors,
                      neighbor_flows,
-                     stabilized_integers,
-                     this_savename)
+                     stabilized_integers)
 end;
 
-function parse_chemostat_name(name)
 
-
-    return reaction_rate_constants, stablized_integers
-end
-
-function make_chemostat_name(reaction_rate_consts, stabilized_integers)
-    name = 
-    name = "reaction_rate_consts="*string(reaction_rate_consts)
-    name = name*"^stablized_integers="*string(stabilized_integers)
-    return name
-end
 function constructive_rxn(chemostat::Chemostat)
     ## Pick two random molecules from an array,
     ## join them and add the new molecule to the
