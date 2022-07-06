@@ -164,7 +164,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         for chemostat in Ensemble.reactors
             if chemostat.fixed_mass != 0
                 chemostat.mass = calc_mass(chemostat)
-                if  chemostat.mass != chemostat.fixed_mass
+                if chemostat.mass != chemostat.fixed_mass
                     delta_mass = chemostat.fixed_mass - chemostat.mass
                     new_moles = repeat([1], delta_mass)
                     chemostat.molecules = vcat(chemostat.molecules, new_moles)

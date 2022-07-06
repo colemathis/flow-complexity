@@ -13,7 +13,8 @@ function save_data(timeseries_data, run_parameters, reactors, sim_number)
     #   - run parameters as a json
     #   - graph as an edgelist (.txt)
     sim_number = string(sim_number)
-    save(datadir("sims", sim_number, "timeseries.bson"), timeseries_data)
+    time_series_df = convert_timeseries_to_tidy_df(timeseries_data)
+    save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
     save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
     edge_list = generate_edge_list(reactors)
     save(datadir("sims", sim_number, "graph.csv"), edge_list)
@@ -52,3 +53,33 @@ function get_sim_number()
     return sim_number
 end
 
+function convert_timeseries_to_tidy_df(timeseries)
+    println("Converting Dict to DF")
+    recorded_vars = [k for k in keys(timeseries[1])]
+    times = [t for t in keys(timeseries[1][recorded_vars[1]])]
+    reactors = collect(keys(timeseries))
+    data = []
+    for r in reactors
+        for t in times
+            for var in recorded_vars
+                if var == :complete_timeseries
+                    if timeseries[r][:complete_timeseries][t] != []
+                        time_counts = countmap(timeseries[r][:complete_timeseries][t])
+                        for (v,c) in time_counts
+                            push!(data, Dict("reactor"=> r,"time"=> t, "variable"=>string(v), "value"=> c))
+                        end
+                    end
+                else
+                    push!(data, Dict("reactor"=> r,"time" => t, "variable" => String(var), "value"=> get(timeseries[r][var],t,0) ))
+                end
+            end
+        end
+    end
+
+    tidy_df = DataFrame(time = map(x -> x["time"], data),
+                        reactor = map(x -> x["reactor"], data),
+                        variable = map(x -> x["variable"], data),
+                        value = map(x -> x["value"], data))
+
+    return tidy_df
+end

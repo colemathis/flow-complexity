@@ -19,3 +19,10 @@ Main goals:
     - Compute MA of Graphs. (pick forward/backward rate from sweep above and vary diffusion)
 
 To do those we'll need a coherent data management system, and an efficient analysis pipeline.
+
+# July 6th 
+
+Taking a look after a couple days away. The Simulation class is implemented now. I think the main thing to do is convert the .bson files to a .csv (somewhat efficiently) and then write some R scripts to do the analysis we want.
+
+The save system is working, now its time to write the analysis pipeline. 
+
