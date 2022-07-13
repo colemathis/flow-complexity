@@ -1,25 +1,32 @@
 using DrWatson
-using JLD2
 using FileIO
 using Dates
 using DataFrames
 using Graphs
 using GraphIO
+using BSON
 
-function save_data(timeseries_data, run_parameters, reactors, sim_number)
+function save_data(sim, run_parameters)
     # Save all the data in a new directory with an updated simulation number
-    # Save Formats:
-    #   - timeseries_data as a bson 
-    #   - run parameters as a json
-    #   - graph as an edgelist (.txt)
-    sim_number = string(sim_number)
-    time_series_df = convert_timeseries_to_tidy_df(timeseries_data)
+    # Save Formats: TODO: Update this shit
+    #   - timeseries_data as a csv
+    #   - run parameters as a csv
+    #   - graph as an edgelist (.csv)
+    #   - Simulation object as jld2 
+
+    sim_number = string(sim.sim_number)
+    
+    # Save time series
+    time_series_df = convert_timeseries_to_tidy_df(sim.time_evolution)
     save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
+    # Save Run parameters
     save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
+    # Save reactor graph
+    reactors = sim.ensemble
     edge_list = generate_edge_list(reactors)
     save(datadir("sims", sim_number, "graph.csv"), edge_list)
-    # fname = datadir("sims", savename(parameters, "bson", connector = "^"))
-    # save(fname, data)
+    # Save Simulation object 
+    save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
 end
 
 function generate_edge_list(reactors)

@@ -130,6 +130,6 @@ function RunSimulation(sim)
     println("Sim Completed")
     parameters = get_parameters(sim)
 
-    save_data(time_series_data, parameters, sim.ensemble, sim.sim_number)
+    save_data(sim, parameters)
    
 end
