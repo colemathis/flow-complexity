@@ -30,7 +30,7 @@ mutable struct Simulation
     ### Simulation Number
     sim_number::Int64
     save_directory::String
-
+    sim_notes::String
     ### The Ensemble
     ensemble::Ensemble
 end
@@ -47,6 +47,7 @@ function Simulation(
     output_time = 1.0,
     output_count = -1,
     N_inflow = 1,
+    notes = "None",
     random_seed = parse(Int64, Dates.format(now(), "SSMMHHddmm")),
     recorded_variables = [:complete_timeseries],
     stabilized_integers = Dict(-1 => Tuple(-1,))
@@ -91,6 +92,7 @@ function Simulation(
                       time_series,
                       sim_number,
                       save_name,
+                      notes,
                       this_ensemble)
 end
 
@@ -107,7 +109,7 @@ function get_parameters(sim)
     parameter_fields = [:total_time, :output_time, :output_count,
                         :random_seed, :graph_type, :N_reactors,
                         :N_inflow,:mass, :recorded_variables,
-                        :sim_number, :save_directory]
+                        :sim_number, :sim_notes, :save_directory]
     parameters = Dict(key=>getfield(sim, key) for key ∈ parameter_fields )
 
     all_rate_constants = sim.all_constants

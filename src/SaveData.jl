@@ -12,7 +12,7 @@ function save_data(sim, run_parameters)
     #   - timeseries_data as a csv
     #   - run parameters as a csv
     #   - graph as an edgelist (.csv)
-    #   - Simulation object as jld2 
+    #   - Simulation object as .BSON 
 
     sim_number = string(sim.sim_number)
     
@@ -27,6 +27,7 @@ function save_data(sim, run_parameters)
     save(datadir("sims", sim_number, "graph.csv"), edge_list)
     # Save Simulation object 
     save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
+    println("Data Saved")
 end
 
 function generate_edge_list(reactors)
@@ -61,7 +62,6 @@ function get_sim_number()
 end
 
 function convert_timeseries_to_tidy_df(timeseries)
-    println("Converting Dict to DF")
     recorded_vars = [k for k in keys(timeseries[1])]
     times = [t for t in keys(timeseries[1][recorded_vars[1]])]
     reactors = collect(keys(timeseries))

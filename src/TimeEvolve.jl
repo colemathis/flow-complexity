@@ -176,7 +176,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         if tau > checkpoint
             i = round(tau, digits =3)
             checkpoint += output_freq
-            # println(i)
+            println(i)
             for id in Ensemble.reactor_ids
                 this_reactor_data = evolution_outputs[id]
                 if :complete_timeseries in outputs
