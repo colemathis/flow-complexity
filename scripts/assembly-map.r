@@ -1,4 +1,3 @@
-#require(tidyverse)
 
 map_df_name <- "Assembly-10000.csv"
 

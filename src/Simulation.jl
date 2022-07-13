@@ -103,6 +103,22 @@ function generate_ensemble_from_specs(graph_type, N_reactors, N_inflow, forward_
     return this_ensemble
 end
 
+function get_parameters(sim)
+    parameter_fields = [:total_time, :output_time, :output_count,
+                        :random_seed, :graph_type, :N_reactors,
+                        :N_inflow,:mass, :recorded_variables,
+                        :sim_number, :save_directory]
+    parameters = Dict(key=>getfield(sim, key) for key ∈ parameter_fields )
+
+    all_rate_constants = sim.all_constants
+    forward_rates = all_rate_constants[:,1]
+    outflow_rates = all_rate_constants[:,3]
+    parameters[:ave_forward_rate] = mean(forward_rates)
+    parameters[:ave_outflow_rate] = mean(outflow_rates)
+ 
+    return parameters
+end
+
 function RunSimulation(sim)
 
     time_series_data = evolve_distributed(sim.ensemble,
@@ -112,12 +128,8 @@ function RunSimulation(sim)
                                           sim.random_seed)
     sim.time_evolution = time_series_data
     println("Sim Completed")
-    parameter_fields = [:total_time, :output_time, :output_count,
-                        :random_seed, :graph_type, :N_reactors,
-                        :N_inflow,:mass, :recorded_variables,
-                        :sim_number, :save_directory]
+    parameters = get_parameters(sim)
 
-    parameters = Dict(key=>getfield(sim, key) for key ∈ parameter_fields )
     save_data(time_series_data, parameters, sim.ensemble, sim.sim_number)
    
 end

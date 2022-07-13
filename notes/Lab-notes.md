@@ -26,3 +26,8 @@ Taking a look after a couple days away. The Simulation class is implemented now.
 
 The save system is working, now its time to write the analysis pipeline. 
 
+# July 12th 
+
+Analysis pipeline mostly sorted out. There's likely some bugs lurking about and I don't know what will happen as scale but we'll see. The big problem now is mostly a problem for the future, once specific compounds are stabilized by different reactors it will be difficult to keep track of all the information in coherent ways. The same problem exists for simulations with different rate constants in different reactors
+
+Need to check the assumptions of the simulation.
