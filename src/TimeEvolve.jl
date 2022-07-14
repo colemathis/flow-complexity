@@ -130,14 +130,16 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         next_reactor_propensities = all_propensities[next_reactor] 
         # Pick reaction 
         rxn = sample(["construction", "degradation", "outflow"], Weights(next_reactor_propensities))
-        #println(next_reactor, " \t", rxn)
+        println(next_reactor, " \t", rxn)
         this_chemostat = Ensemble.reactors[next_reactor]
+        
         # Execute Reaction and update propensities
         if rxn == "construction"
             this_chemostat = constructive_rxn(this_chemostat)
         elseif rxn == "degradation"
             this_chemostat = destructive_rxn(this_chemostat)
         elseif rxn == "outflow"
+            
             this_chemostat, outflow_direction = outflow_rxn(this_chemostat)
             if collect(keys(outflow_direction)) != []
                 outflow_target = collect(keys(outflow_direction))[1]
@@ -160,14 +162,17 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         chemostat_next_tau = tau - log(rand())/this_chemostat_total_p
         push!(next_taus, (chemostat_next_tau, next_reactor))
         sort!(next_taus, by= x->x[1]) 
-        # Check Mass
+        # Check Total 1s
         for chemostat in Ensemble.reactors
             if chemostat.fixed_mass != 0
                 chemostat.mass = calc_mass(chemostat)
-                if chemostat.mass != chemostat.fixed_mass
-                    delta_mass = chemostat.fixed_mass - chemostat.mass
-                    new_moles = repeat([1], delta_mass)
-                    chemostat.molecules = vcat(chemostat.molecules, new_moles)
+                chemo_ones = calc_ones(chemostat)
+                if chemo_ones != chemostat.fixed_mass
+                    delta_ones = chemostat.fixed_mass - chemo_ones
+                    if delta_ones > 0
+                        new_moles = repeat([1], delta_ones)
+                        chemostat.molecules = vcat(chemostat.molecules, new_moles)
+                    end
                 end
             end
         end
@@ -176,7 +181,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         if tau > checkpoint
             i = round(tau, digits =3)
             checkpoint += output_freq
-            println(i)
+            # println(i)
             for id in Ensemble.reactor_ids
                 this_reactor_data = evolution_outputs[id]
                 if :complete_timeseries in outputs

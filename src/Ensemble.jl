@@ -42,6 +42,18 @@ function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass:
         chemostat_specs = sample(chemostat_list, N_reactors)
         # Get chemostat vector from specifications 
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
+    
+    elseif graph_type == "lattice"
+        if (round(sqrt(N_reactors)))^2 != N_reactors
+            error("Lattice requested but N_reactors isn't square")
+        end 
+        ensemble_graph = lattice_digraph(N_reactors)
+        # Get inflow ids
+        inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
+        # Get chemostats specifications 
+        chemostat_specs = sample(chemostat_list, N_reactors)
+        # Get chemostat vector from specifications 
+        chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
     elseif graph_type == "line"
         if N_sources > 1
@@ -64,6 +76,27 @@ function Ensemble(N_reactors::Int64, graph_type::String, N_sources::Int64, mass:
                     ensemble_graph,
                     inflow_ids,
                     )
+end
+
+function lattice_digraph(N)
+
+    L = SimpleDiGraph(N)
+    n = sqrt(N)
+    rows = []
+    current = 0
+    for i in 1:n
+        for j in 0:(n-1)
+            current_node = i + n*j  
+            right_neighbor = current_node + 1
+            down_neighbor = current_node + n 
+            if i < n
+                add_edge!(L,(current_node, right_neighbor))
+            end
+    
+            add_edge!(L, (current_node, down_neighbor))
+        end
+    end
+    return L 
 end
 
 function find_inflow_nodes(graph, n_sources)

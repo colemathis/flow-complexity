@@ -115,6 +115,11 @@ function calc_mass(chemostat)
     return mass
 end
 
+function calc_ones(chemostat)
+    molecules = chemostat.molecules
+    all_ones = [m for m in molecules if m == 1]
+    return sum(all_ones)
+end
 function calc_propensities(chemostat)
     ## Calculate the propensities for each reaction time
     
