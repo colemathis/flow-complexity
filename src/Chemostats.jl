@@ -58,20 +58,20 @@ function constructive_rxn(chemostat::Chemostat)
     ## Pick two random molecules from an array,
     ## join them and add the new molecule to the
     ## vector (removing the original ones)
-    molecules = chemostat.molecules
+    molecules = copy(chemostat.molecules)
     shuffle!(molecules) # Shuffle the molecules
     a = pop!(molecules) # take the first one 
     b = pop!(molecules) # and the second one 
     c = a + b # combine them (add them)
     push!(molecules, c) # add the new one to the bottom of the list 
-    chemostat.molecules = molecules
+    chemostat.molecules = copy(molecules)
     return chemostat
 end
 
 function destructive_rxn(chemostat::Chemostat)
     ## Pick a random molecule (of length >1)
     ## split at a random point, add both fragments back to 
-    molecules = chemostat.molecules
+    molecules = copy(chemostat.molecules)
     shuffle!(molecules) # Shuffle the molecules
     
     big_moles = filter(x -> x > 1, molecules) # Ignore 1s
@@ -84,7 +84,7 @@ function destructive_rxn(chemostat::Chemostat)
         push!(molecules, b) # push both 
         push!(molecules, c)
     end
-    chemostat.molecules = molecules
+    chemostat.molecules = copy(molecules)
     return chemostat
 end
 
@@ -92,7 +92,7 @@ function outflow_rxn(chemostat)
     ## Pick two random molecules from an array, 
     ## join them and add the new molecule to the 
     ## vector (removing the original ones)
-    molecules = chemostat.molecules
+    molecules = copy(chemostat.molecules)
     neighbors = chemostat.neighbors
     neighbor_weights = chemostat.neighbor_flows
     shuffle!(molecules) # Shuffle the molecules
@@ -103,7 +103,7 @@ function outflow_rxn(chemostat)
     else
         outflow_direction = Dict{Int64,String}()
     end 
-    chemostat.molecules = molecules
+    chemostat.molecules = copy(molecules)
     return chemostat, outflow_direction
 end
 

@@ -48,6 +48,7 @@ function Simulation(
     output_count = -1,
     N_inflow = 1,
     notes = "None",
+    sim_number = -1,
     random_seed = parse(Int64, Dates.format(now(), "SSMMHHddmm")),
     recorded_variables = [:complete_timeseries],
     stabilized_integers = Dict(-1 => Tuple(-1,))
@@ -55,7 +56,9 @@ function Simulation(
     ## Figure out what you need to do here! 
 
     # Get the simulation number of save name 
-    sim_number = get_sim_number()
+    if sim_number < 0
+        sim_number = get_sim_number()
+    end
     save_name = datadir("sims", string(sim_number))
 
     # Form rates

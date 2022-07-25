@@ -119,18 +119,20 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
 
     all_propensities = calc_propensities.(Ensemble.reactors)
     next_taus = calc_next_rxn_times(all_propensities, tau)
-
+    switch = false
     while tau < tau_max
         # Determine next reaction 
         next_rxn = popfirst!(next_taus)
         next_reactor = next_rxn[2]
         tau = next_rxn[1]
         #println(tau)
-        
+
         next_reactor_propensities = all_propensities[next_reactor] 
         # Pick reaction 
         rxn = sample(["construction", "degradation", "outflow"], Weights(next_reactor_propensities))
-        println(next_reactor, " \t", rxn)
+        # if switch & (next_reactor != 1)
+        #     println(next_reactor, " \t", rxn)
+        # end
         this_chemostat = Ensemble.reactors[next_reactor]
         
         # Execute Reaction and update propensities
@@ -184,6 +186,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
             # println(i)
             for id in Ensemble.reactor_ids
                 this_reactor_data = evolution_outputs[id]
+                # println(countmap(Ensemble.reactors[id].molecules))
                 if :complete_timeseries in outputs
                     this_ts = Dict(i => Ensemble.reactors[id].molecules)
                     this_reactor_data[:complete_timeseries] = merge(this_reactor_data[:complete_timeseries], this_ts)
