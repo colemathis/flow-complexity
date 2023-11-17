@@ -1,41 +1,11 @@
-# July 29 2021 
-# Exploring parameters of well mixed model 
+# July 13 2022 
+# Exploring parameters of well mixed model, line chain, and lattice 
 
-# Key parameters are Total Mass, Iterations, outflow rate, and epsilion (constructive process - destructive process = 2 epsilion)
-include("../src/Chemostats.jl")
-include("../src/TimeEvolve.jl")
-using Random 
-using JLD2
-using FileIO
+using DrWatson
+using Distributed
+@quickactivate
 
-function complete_well_mixed_parameters(iteration_choices, outflow_rates, epsilions, repetitions)
-    # Complete exploration of input parameters 
-    for i in 1:repetitions
-        for max_iterations in iteration_choices
-            for outflow in outflow_rates
-                for ϵ in epsilions
-                    Initial_Mass = 10000
-                    A_fraction = 0.5
-                    well_mixed_rates = [((1.0 - outflow)/2.0) + ϵ, ((1.0 - outflow)/2.0) - ϵ , outflow] # Constructive, destructive, outflow
-
-                    nA = Int64(Initial_Mass*A_fraction)
-                    nB = Initial_Mass - nA
-                    As = repeat(["A"], nA) 
-                    Bs = repeat(["B"], nB)
-                    molecules = shuffle(vcat(As, Bs));
-                    well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, Initial_Mass, Initial_Mass)
-
-                    record = [:molecule_count, :average_length]
-                    evolution_out = evolve_well_mixed(well_mixed_chemostat, max_iterations, record)
-
-                    params = [i, max_iterations, outflow, ϵ]
-                    save_data(evolution_out, "data/raw", params)
-                end
-            end
-        end
-    end
-
-end
+@everywhere include("../src/Simulation.jl")
 
 function logunif(min, max)
     scale = log10(max) - log10(min)
@@ -43,11 +13,55 @@ function logunif(min, max)
     return r 
 end
 
-function save_data(data, directory, parameters)
-    fname = ""
-    for p in parameters
-        fname = fname*string(p)*"_"
+
+function run_lattice_reactions(N_reactors_list, f_rate_list, o_rate_list, current_sim)
+    @sync @distributed for N in N_reactors_list
+        i = 0
+        for f in f_rate_list
+            for o in o_rate_list
+                i += 1
+                sim_number  = current_sim + N*1000 + i
+                this_sim = Simulation(1000, "lattice", N ,f, o, sim_number = sim_number, notes = "Lattice Parameter Sweep July 14 2022")
+                RunSimulation(this_sim)
+            end
+        end
     end
-    fname = directory*"/"*fname*".bson"
-    save(fname, data)
+end
+
+function run_line_reactions(N_reactors_list, f_rate_list, o_rate_list, current_sim)
+    @sync @distributed for N in N_reactors_list
+        i = 0
+        for f in f_rate_list
+            for o in o_rate_list
+                i += 1
+                sim_number  = current_sim + N*1000 + i
+                this_sim = Simulation(1000, "line", N ,f, o, sim_number = sim_number, notes = "Line Parameter Sweep July 14 2022")
+                RunSimulation(this_sim)
+            end
+        end
+    end
+end
+
+function run_mixed_reactions(f_rate_list, o_rate_list)
+    for f in f_rate_list
+        for o in o_rate_list
+            this_sim = Simulation(1000, "line", 1,f, o, notes = "Mixed Parameter Sweep July 14 2022")
+            RunSimulation(this_sim)
+        end
+    end
+end
+
+function run_all_topologies()
+    f_rate_list = [0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
+    o_rate_list = [5.0, 10.0, 50.0, 100.0]
+    N_reactor_list = [4, 9, 16, 25]
+    current_sim = 26040
+    println("Running Line Reactions")
+    run_line_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
+    current_sim = 26040 + 97
+    println("Running Lattice Reaction")
+    run_lattice_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
+    current_sim = 26040 + (97*2)
+    println("Running Mixed Reactions")
+    run_mixed_reactions(f_rate_list, o_rate_list)
 end
