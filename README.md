@@ -9,7 +9,7 @@ Simulations are based on the type `Chemostat` in the `Chemostat.jl` file.
 
 ## Install Julia
 
-See [this link](https://julialang.org/downloads/). As of today, the latest Julia version is v1.10.0).
+See [this link](https://julialang.org/downloads/). As of today, the latest Julia version is v1.10.0.
 
 ## Cloning this project
 
