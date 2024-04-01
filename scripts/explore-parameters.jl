@@ -5,6 +5,8 @@ using DrWatson
 using Distributed
 @quickactivate
 
+# addprocs(10; exeflags=`--project=$(Base.active_project())`)
+
 @everywhere include("../src/Simulation.jl")
 
 function logunif(min, max)
