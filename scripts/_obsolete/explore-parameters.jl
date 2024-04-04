@@ -9,12 +9,56 @@ using Distributed
 
 @everywhere include("../src/Simulation.jl")
 
+"""
+
+##########################################################################
+LOG UNIFORM SAMPLE
+#p3 (seems unused)
+
+Generates a random number from a log-uniform distribution between the 
+specified minimum and maximum values.
+##########################################################################
+
+Input:
+
+    min = minimum
+    max = maximum
+
+Output:
+
+    r   = random number
+
+##########################################################################
+
+"""
+
 function logunif(min, max)
+
+    # calculate the scale
     scale = log10(max) - log10(min)
+
+    # get a random number from a log-uniform distribution
     r = 10^(scale*rand() + log10(min))
+
     return r 
+    
 end
 
+"""
+
+##########################################################################
+
+##########################################################################
+
+Input:
+
+
+Output:
+
+
+##########################################################################
+
+"""
 
 function run_lattice_reactions(N_reactors_list, f_rate_list, o_rate_list, current_sim)
     @sync @distributed for N in N_reactors_list
@@ -30,6 +74,22 @@ function run_lattice_reactions(N_reactors_list, f_rate_list, o_rate_list, curren
     end
 end
 
+"""
+
+##########################################################################
+
+##########################################################################
+
+Input:
+
+
+Output:
+
+
+##########################################################################
+
+"""
+
 function run_line_reactions(N_reactors_list, f_rate_list, o_rate_list, current_sim)
     @sync @distributed for N in N_reactors_list
         i = 0
@@ -44,6 +104,22 @@ function run_line_reactions(N_reactors_list, f_rate_list, o_rate_list, current_s
     end
 end
 
+"""
+
+##########################################################################
+
+##########################################################################
+
+Input:
+
+
+Output:
+
+
+##########################################################################
+
+"""
+
 function run_mixed_reactions(f_rate_list, o_rate_list)
     for f in f_rate_list
         for o in o_rate_list
@@ -52,6 +128,22 @@ function run_mixed_reactions(f_rate_list, o_rate_list)
         end
     end
 end
+
+"""
+
+##########################################################################
+
+##########################################################################
+
+Input:
+
+
+Output:
+
+
+##########################################################################
+
+"""
 
 function run_all_topologies()
     f_rate_list = [0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
@@ -67,3 +159,5 @@ function run_all_topologies()
     println("Running Mixed Reactions")
     run_mixed_reactions(f_rate_list, o_rate_list)
 end
+
+run_all_topologies()
