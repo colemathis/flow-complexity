@@ -1,13 +1,55 @@
+"""
+
+##########################################################################
+
+TIMEEVOLVE
+
+
+
+##########################################################################
+
+"""
+
 using StatsBase
 using Statistics
-include("Chemostats.jl")
-include("Ensemble.jl")
 
-function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::Float64, outputs::Array{Symbol,1})
-    ## Time evolution of a single well mixed chemostat
+# include("Chemostats.jl")
+# include("Ensemble.jl")
+#p3 to remove?
 
-    # Figure out what we need to record
+"""
+
+##########################################################################
+EVOLVE WELL MIXED #p1 broken !
+
+Time evolution of a single well mixed chemostat.
+##########################################################################
+
+Input:
+
+    chemostat       (Chemostat) = chemostat struct
+    tau_max         (float)     = total simulation time
+    output_freq     (float)     = interval at which data is recorded
+    outputs         (array)     = variables to record #p1 what’s "symbol" here?
+
+Output:
+
+    final_output    (dict)      = simulation output
+
+##########################################################################
+
+"""
+
+function evolve_well_mixed(chemostat    ::Chemostat, 
+                           tau_max      ::Float64, 
+                           output_freq  ::Float64, 
+                           outputs      ::Array{Symbol,1}
+                           )
+
+    # create simulation output dictionary
     evolution_outputs = Dict{Symbol,Any}()
+
+    # create dictionary for recorded variables
     if :complete_timeseries in outputs
         complete_ts = Dict{Int64, Array{Int64,1}}()
     end
@@ -21,17 +63,20 @@ function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::
         var_lengths = Dict{Int64, Float64}()
     end
 
-
+    # calculate the propensities for the chemostat
     propensities = calc_propensities(chemostat)
+
+    # set the time to zero, and the saving checkpoint to zero too
     tau = 0.0
     checkpoint = 0.0
+
+    # evolve the simulation
     while tau < tau_max
-        # Calculate Reaction Propensities
         
-        # Pick reaction 
+        # pick a reaction
         rxn = sample(["construction", "degradation", "outflow"],Weights(propensities))
 
-        # Execute Reaction 
+        # execute the reaction
         if rxn == "construction"
             chemostat = constructive_rxn(chemostat)
         elseif rxn == "degradation"
@@ -40,26 +85,59 @@ function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::
             chemostat, outflow_direction = outflow_rxn(chemostat)
         end
         
-        # Check Mass 
+        #p1 commenting this out for now
+        # calculate the total mass of the molecules
         chemostat.mass = calc_mass(chemostat)
+
+        # if the mass is different from the fixed mass and the fixed mass has been defined,
+        # then add mass 1 molecules to the chemostat
         if  chemostat.mass != chemostat.mass_fixed && chemostat.mass_fixed != 0
             delta_mass = chemostat.mass_fixed - chemostat.mass
             new_moles = repeat([1], delta_mass)
             chemostat.molecules = vcat(chemostat.molecules, new_moles)
         end
         
-        # Update propensities
+        # update propensities
         propensities = calc_propensities(chemostat)
 
-        # Update time 
+        # update time 
         total_p = sum(propensities)
+
+        # calculate the time step and define the new time #p1 what is this formula? gillespie? to check
         tau_step = -log(rand())/total_p
         tau += tau_step
 
-        # Record outputs
+        """
+        This Julia code is typically used in simulations of stochastic processes, 
+        such as the Gillespie algorithm in computational biology.
+
+        Here's a step-by-step explanation:
+        
+        1. `rand()` generates a random number between 0 and 1.
+        
+        2. `-log(rand())` takes the negative natural logarithm of this random number. 
+        This transforms the uniformly distributed random number into an exponentially distributed random number.
+        
+        3. This exponentially distributed random number is then divided by `total_p`, 
+        which could be a total rate or probability. The result is stored in `tau_step`.
+        
+        4. `tau += tau_step` increments the variable `tau` by `tau_step`.
+        
+        In the context of a simulation, `tau` could represent time, and this code would 
+        be used to calculate the time until the next event occurs. The time until the 
+        next event is often modeled as an exponentially distributed random variable in stochastic simulations.
+        """
+
+        # record the output
         if tau > checkpoint
+
+            # record the time
             i = round(tau, digits =3)
+
+            # set the next checkpoint
             checkpoint += output_freq
+
+            # record the other variables
             if :complete_timeseries in outputs
                 this_ts = Dict(i => chemostat.molecules)
                 complete_ts = merge(complete_ts, this_ts)
@@ -81,6 +159,8 @@ function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::
             
         end
 
+        # p2 is this duplicated (outputs vs evolution_outputs) because of performance issues?
+        # integrate the data into the output dictionary 
         if :complete_timeseries in outputs
             evolution_outputs[:complete_timeseries] = complete_ts
         end
@@ -94,18 +174,53 @@ function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::
             evolution_outputs[:var_lengths] = var_lengths
         end
     end
+
+    # get everything together
     final_output = Dict(1 => evolution_outputs)
+    
+    # and return the data
     return final_output
 end
 
+"""
 
+##########################################################################
+EVOLVE DISTRIBUTED SYSTEM
 
-function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::Float64,
-                            outputs::Array{Symbol,1}, seed::Int64 =1337)
-    ## Time evolution of a distributed system 
+Time evolution of a distributed system, i.e. an ensemble of chemostats
+structured in a specific topology (graph).
+##########################################################################
+
+Input:
+
+    Ensemble            (Ensemble)      = ensemble to evolve
+    tau_max             (float)         = total simulation time
+    output_freq         (float)         = interval at which data is recorded
+    outputs             (symbol array)  = variables to record #p1 symbol?
+    seed                (int)           = random seed
+
+Output:
+
+    evolution_outputs   (dict)          = simulation data
+
+##########################################################################
+
+"""
+
+function evolve_distributed(Ensemble, 
+                            tau_max     ::Float64, 
+                            output_freq ::Float64,
+                            outputs     ::Array{Symbol,1}, 
+                            seed        ::Int64             = 1337
+                            )
+
+    # set random seed
     Random.seed!(seed)
-    # # Figure out what we need to record
+
+    # create a dictionary holding the data of all reactors
     evolution_outputs = Dict{Int64,Any}()
+
+    # for each reactor, create a dictionary holding the variables and data
     for id in Ensemble.reactor_ids
         this_reactor_data = Dict{Symbol,Any}()
         for out in outputs
@@ -114,34 +229,49 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         evolution_outputs[id] = this_reactor_data
     end
     
+    # set the time to zero
     tau = 0.0
+
+    # set the next frame framed to zero too
     checkpoint = 0.0
 
+    # calculate reaction propensities
     all_propensities = calc_propensities.(Ensemble.reactors)
+
+    # use these propensities to calculate the next reaction times
     next_taus = calc_next_rxn_times(all_propensities, tau)
-    switch = false
+
+    switch = false #p3 not sure about this one
+
+    # main simulation loop
     while tau < tau_max
-        # Determine next reaction 
+
+        # determine next reaction (and its reactor) from next reaction times
         next_rxn = popfirst!(next_taus)
         next_reactor = next_rxn[2]
         tau = next_rxn[1]
-        #println(tau)
 
+        # determine the propensities for the reactor who will react next
         next_reactor_propensities = all_propensities[next_reactor] 
-        # Pick reaction 
+
+        # pick a reaction from the propensities
         rxn = sample(["construction", "degradation", "outflow"], Weights(next_reactor_propensities))
-        # if switch & (next_reactor != 1)
+
+        # if switch & (next_reactor != 1) #p3 not sure what’s this
         #     println(next_reactor, " \t", rxn)
         # end
+
+        # get the chemostat for this next reactor #p1: again, what’s the difference between reactor and chemostat?
         this_chemostat = Ensemble.reactors[next_reactor]
         
-        # Execute Reaction and update propensities
+        # execute reaction and update propensities
         if rxn == "construction"
             this_chemostat = constructive_rxn(this_chemostat)
         elseif rxn == "degradation"
             this_chemostat = destructive_rxn(this_chemostat)
         elseif rxn == "outflow"
             
+            # p1: review this code block later
             this_chemostat, outflow_direction = outflow_rxn(this_chemostat)
             if collect(keys(outflow_direction)) != []
                 outflow_target = collect(keys(outflow_direction))[1]
@@ -157,6 +287,7 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
             end
         end
 
+        # p1: review this code block later
         # Update Chemostat and calculate next reaction time
         Ensemble.reactors[next_reactor] = this_chemostat
         all_propensities[next_reactor] = calc_propensities(Ensemble.reactors[next_reactor])
@@ -179,30 +310,42 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
             end
         end
 
-        # Record outputs
+        # record outputs
         if tau > checkpoint
+
+            # record the time
             i = round(tau, digits =3)
+
+            # set the next record checkpoint
             checkpoint += output_freq
-            # println(i)
+
+            # for the current time frame, record the data for every reactor in the ensemble
             for id in Ensemble.reactor_ids
+
+                # p1: how is this_reactor_data put back in evolution_outputs?
                 this_reactor_data = evolution_outputs[id]
                 # println(countmap(Ensemble.reactors[id].molecules))
+
+                # add the time series data (molecules) to the data dictionary
                 if :complete_timeseries in outputs
                     this_ts = Dict(i => Ensemble.reactors[id].molecules)
                     this_reactor_data[:complete_timeseries] = merge(this_reactor_data[:complete_timeseries], this_ts)
                 end
             
+                # add the molecule count to the data dictionary
                 if :molecule_count in outputs
                     this_count = Dict(i => length(Ensemble.reactors[id].molecules))
                     this_reactor_data[:molecule_count] = merge(this_reactor_data[:molecule_count], this_count)
                 end
             
+                # add the average of the molecules length to the data dictionary
                 if :average_length in outputs
                     these_lengths = Ensemble.reactors[id].molecules
                     this_ave = Dict(i => mean(these_lengths))
                     this_reactor_data[:average_length] = merge(this_reactor_data[:average_length], this_ave)
                 end
                 
+                # add the variance of the molecule length to the data dictionary
                 if :var_length in outputs
                     these_lengths = Ensemble.reactors[id].molecules
                     this_var = Dict(i => var(these_lengths))
@@ -212,5 +355,8 @@ function evolve_distributed(Ensemble::Ensemble, tau_max::Float64, output_freq::F
         end
 
     end
+
+    # return the simulation data
     return evolution_outputs
+    
 end
