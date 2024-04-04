@@ -44,7 +44,8 @@ Output:
 
 function time_well_mixed_parameters()
     # Complete exploration of input parameters 
-    #FIXME: try to reduce the range for parameters here since the code crashes
+
+    #p1: try to reduce the range for parameters here since the code crashes at some point
     # ϵ_choices = [0.0, 0.0001, 0.001, 0.01, 0.1]
     ϵ_choices = [0.0, 0.0001]
     # outflow_choices = [0.0, 0.001]
@@ -65,44 +66,60 @@ function time_well_mixed_parameters()
                     well_mixed_rates = [((1.0 - outflow)/2.0) + ϵ, ((1.0 - outflow)/2.0) - ϵ , outflow] # Constructive, destructive, outflow
 
                     molecules = repeat([1], mass)
+
+                    # this was the original call:
                     # well_mixed_chemostat = Chemostat(0, [], [], molecules, well_mixed_rates, mass, mass)
+
+                    # here’s the constructor and the call being made in Ensemble.jl
                     #=
+                    function Chemostat(ID                       ::Int64,
+                                       reaction_rate_constants  ::Vector{Float64}; 
+                                       molecules                = Vector{Int64}[],
+                                       mass_fixed               = false, 
+                                       neighbors                = Vector{Int64}[], 
+                                       neighbor_flows           = Vector{Float64}[],
+                                       stabilized_integers      = Vector{Int64}[]
+                                       )
 
-                    function Chemostat(ID::Int64, 
-                                        reaction_rate_constants::Vector{Float64},
-                                        molecules = Vector{Int64}[],
-                                        mass_fixed=false, 
-                                        neighbors = Vector{Int64}[], 
-                                        neighbor_flows = Vector{Float64}[],
-                                        stabilized_integers = Vector{Int64}[])
-
-            this_chemostat = Chemostat(r, reaction_rate_constants,
+                    this_chemostat = Chemostat(r, reaction_rate_constants,
                                         molecules = molecules,
                                         mass_fixed = mass_fixed,
                                         neighbors = these_neigbors,
                                         stabilized_integers = stabilized_integers)
-
                     =#
-                    #FIXME: trying to fix the call to Chemostat here
-                    mass_fixed = true
+
+                    #p1: if I’m using the constructor I get the following error:
+                    # "type Chemostat has no field mass_fixed"
+                    
+                    # whereas if I try to instantiate directly the struct, the evolve_well_mixed()
+                    # function below fails at random points while iterating over parameter permutations
+                    
                     well_mixed_chemostat = Chemostat(0,
-                                                    well_mixed_rates, 
-                                                    molecules, 
-                                                    true, 
-                                                    [0], 
-                                                    [1.0],
-                                                    [0])
+                                                    well_mixed_rates,
+                                                    molecules=molecules, 
+                                                    mass_fixed=true, 
+                                                    neighbors=[0],
+                                                    neighbor_flows=[1.0], 
+                                                    stabilized_integers=[0])
 
                     record = [:molecule_count, :average_length]
                     if !ran_first
-                        #FIXME trying to fix the call to this too
+
+                        #p1 this is the original call:
                         # @elapsed evolution_out = evolve_well_mixed(well_mixed_chemostat, max_iterations, record);
+
+                        # function definition:
                         # function evolve_well_mixed(chemostat::Chemostat, tau_max::Float64, output_freq::Float64, outputs::Array{Symbol,1})
+
+                        # the modified call I’ve tried:
                         @elapsed evolution_out = evolve_well_mixed(well_mixed_chemostat, 100.0, 0.1, record);
+
                     end
-                    #FIXME this call too
+
+                    #p1 and this fails too
                     # runtime = @elapsed evolution_out = evolve_well_mixed(well_mixed_chemostat, max_iterations, record)
                     runtime = @elapsed evolution_out = evolve_well_mixed(well_mixed_chemostat, 100.0, 0.1, record);
+                    
                     results = [ϵ, outflow, max_iterations, mass, runtime]
                     push!(timing_df, results)
                 end
