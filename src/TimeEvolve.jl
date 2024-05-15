@@ -40,27 +40,27 @@ Output:
 
 """
 
-function evolve_well_mixed(chemostat    ::Chemostat, 
-                           tau_max      ::Float64, 
-                           output_freq  ::Float64, 
-                           outputs      ::Array{Symbol,1}
-                           )
+function evolve_well_mixed(chemostat::Chemostat,
+    tau_max::Float64,
+    output_freq::Float64,
+    outputs::Array{Symbol,1}
+)
 
     # create simulation output dictionary
     evolution_outputs = Dict{Symbol,Any}()
 
     # create dictionary for recorded variables
     if :complete_timeseries in outputs
-        complete_ts = Dict{Int64, Array{Int64,1}}()
+        complete_ts = Dict{Int64,Array{Int64,1}}()
     end
 
     if :molecule_count in outputs
-        mole_count = Dict{Int64, Int64}()
+        mole_count = Dict{Int64,Int64}()
     end
 
     if :average_length in outputs
-        ave_lengths = Dict{Int64, Float64}()
-        var_lengths = Dict{Int64, Float64}()
+        ave_lengths = Dict{Int64,Float64}()
+        var_lengths = Dict{Int64,Float64}()
     end
 
     # calculate the propensities for the chemostat
@@ -72,11 +72,10 @@ function evolve_well_mixed(chemostat    ::Chemostat,
 
     # evolve the simulation
     while tau < tau_max
-        
-        # pick a reaction
-        rxn = sample(["construction", "degradation", "outflow"],Weights(propensities))
 
-        # execute the reaction
+        # pick a reaction
+        rxn = sample(["construction", "degradation", "outflow"], Weights(propensities))
+
         if rxn == "construction"
             chemostat = constructive_rxn(chemostat)
         elseif rxn == "degradation"
@@ -84,19 +83,18 @@ function evolve_well_mixed(chemostat    ::Chemostat,
         elseif rxn == "outflow"
             chemostat, outflow_direction = outflow_rxn(chemostat)
         end
-        
+
         #p1 commenting this out for now
         # calculate the total mass of the molecules
         chemostat.mass = calc_mass(chemostat)
-
         # if the mass is different from the fixed mass and the fixed mass has been defined,
         # then add mass 1 molecules to the chemostat
-        if  chemostat.mass != chemostat.mass_fixed && chemostat.mass_fixed != 0
-            delta_mass = chemostat.mass_fixed - chemostat.mass
+        if chemostat.fixed_mass != chemostat.mass
+            delta_mass = chemostat.fixed_mass - chemostat.mass
             new_moles = repeat([1], delta_mass)
             chemostat.molecules = vcat(chemostat.molecules, new_moles)
         end
-        
+
         # update propensities
         propensities = calc_propensities(chemostat)
 
@@ -104,7 +102,7 @@ function evolve_well_mixed(chemostat    ::Chemostat,
         total_p = sum(propensities)
 
         # calculate the time step and define the new time #p1 what is this formula? gillespie? to check
-        tau_step = -log(rand())/total_p
+        tau_step = -log(rand()) / total_p
         tau += tau_step
 
         """
@@ -132,7 +130,7 @@ function evolve_well_mixed(chemostat    ::Chemostat,
         if tau > checkpoint
 
             # record the time
-            i = round(tau, digits =3)
+            i = round(tau, digits=3)
 
             # set the next checkpoint
             checkpoint += output_freq
@@ -142,12 +140,12 @@ function evolve_well_mixed(chemostat    ::Chemostat,
                 this_ts = Dict(i => chemostat.molecules)
                 complete_ts = merge(complete_ts, this_ts)
             end
-        
+
             if :molecule_count in outputs
                 this_count = Dict(i => length(chemostat.molecules))
                 mole_count = merge(mole_count, this_count)
             end
-        
+
             if :average_length in outputs
                 these_lengths = chemostat.molecules
                 this_ave = Dict(i => mean(these_lengths))
@@ -156,7 +154,7 @@ function evolve_well_mixed(chemostat    ::Chemostat,
                 this_var = Dict(i => var(these_lengths))
                 var_lengths = merge(var_lengths, this_var)
             end
-            
+
         end
 
         # p2 is this duplicated (outputs vs evolution_outputs) because of performance issues?
@@ -166,18 +164,18 @@ function evolve_well_mixed(chemostat    ::Chemostat,
         end
 
         if :molecule_count in outputs
-            evolution_outputs[:molecule_count] = mole_count 
+            evolution_outputs[:molecule_count] = mole_count
         end
 
         if :average_length in outputs
-            evolution_outputs[:average_lengths] = ave_lengths 
+            evolution_outputs[:average_lengths] = ave_lengths
             evolution_outputs[:var_lengths] = var_lengths
         end
     end
 
     # get everything together
     final_output = Dict(1 => evolution_outputs)
-    
+
     # and return the data
     return final_output
 end
@@ -207,12 +205,12 @@ Output:
 
 """
 
-function evolve_distributed(Ensemble, 
-                            tau_max     ::Float64, 
-                            output_freq ::Float64,
-                            outputs     ::Array{Symbol,1}, 
-                            seed        ::Int64             = 1337
-                            )
+function evolve_distributed(Ensemble,
+    tau_max::Float64,
+    output_freq::Float64,
+    outputs::Array{Symbol,1},
+    seed::Int64=1337
+)
 
     # set random seed
     Random.seed!(seed)
@@ -228,7 +226,7 @@ function evolve_distributed(Ensemble,
         end
         evolution_outputs[id] = this_reactor_data
     end
-    
+
     # set the time to zero
     tau = 0.0
 
@@ -252,7 +250,7 @@ function evolve_distributed(Ensemble,
         tau = next_rxn[1]
 
         # determine the propensities for the reactor who will react next
-        next_reactor_propensities = all_propensities[next_reactor] 
+        next_reactor_propensities = all_propensities[next_reactor]
 
         # pick a reaction from the propensities
         rxn = sample(["construction", "degradation", "outflow"], Weights(next_reactor_propensities))
@@ -263,14 +261,14 @@ function evolve_distributed(Ensemble,
 
         # get the chemostat for this next reactor #p1: again, what’s the difference between reactor and chemostat?
         this_chemostat = Ensemble.reactors[next_reactor]
-        
+
         # execute reaction and update propensities
         if rxn == "construction"
             this_chemostat = constructive_rxn(this_chemostat)
         elseif rxn == "degradation"
             this_chemostat = destructive_rxn(this_chemostat)
         elseif rxn == "outflow"
-            
+
             # p1: review this code block later
             this_chemostat, outflow_direction = outflow_rxn(this_chemostat)
             if collect(keys(outflow_direction)) != []
@@ -282,7 +280,7 @@ function evolve_distributed(Ensemble,
                 all_propensities[outflow_target] = calc_propensities(Ensemble.reactors[outflow_target])
                 next_taus = [nt for nt in next_taus if nt[2] != outflow_target]
                 outflow_total_p = sum(all_propensities[outflow_target])
-                outflow_target_next_tau = tau - log(rand())/outflow_total_p
+                outflow_target_next_tau = tau - log(rand()) / outflow_total_p
                 push!(next_taus, (outflow_target_next_tau, outflow_target))
             end
         end
@@ -292,9 +290,9 @@ function evolve_distributed(Ensemble,
         Ensemble.reactors[next_reactor] = this_chemostat
         all_propensities[next_reactor] = calc_propensities(Ensemble.reactors[next_reactor])
         this_chemostat_total_p = sum(all_propensities[next_reactor])
-        chemostat_next_tau = tau - log(rand())/this_chemostat_total_p
+        chemostat_next_tau = tau - log(rand()) / this_chemostat_total_p
         push!(next_taus, (chemostat_next_tau, next_reactor))
-        sort!(next_taus, by= x->x[1]) 
+        sort!(next_taus, by=x -> x[1])
         # Check Total 1s
         for chemostat in Ensemble.reactors
             if chemostat.fixed_mass != 0
@@ -314,7 +312,7 @@ function evolve_distributed(Ensemble,
         if tau > checkpoint
 
             # record the time
-            i = round(tau, digits =3)
+            i = round(tau, digits=3)
 
             # set the next record checkpoint
             checkpoint += output_freq
@@ -331,20 +329,20 @@ function evolve_distributed(Ensemble,
                     this_ts = Dict(i => Ensemble.reactors[id].molecules)
                     this_reactor_data[:complete_timeseries] = merge(this_reactor_data[:complete_timeseries], this_ts)
                 end
-            
+
                 # add the molecule count to the data dictionary
                 if :molecule_count in outputs
                     this_count = Dict(i => length(Ensemble.reactors[id].molecules))
                     this_reactor_data[:molecule_count] = merge(this_reactor_data[:molecule_count], this_count)
                 end
-            
+
                 # add the average of the molecules length to the data dictionary
                 if :average_length in outputs
                     these_lengths = Ensemble.reactors[id].molecules
                     this_ave = Dict(i => mean(these_lengths))
                     this_reactor_data[:average_length] = merge(this_reactor_data[:average_length], this_ave)
                 end
-                
+
                 # add the variance of the molecule length to the data dictionary
                 if :var_length in outputs
                     these_lengths = Ensemble.reactors[id].molecules
@@ -358,5 +356,5 @@ function evolve_distributed(Ensemble,
 
     # return the simulation data
     return evolution_outputs
-    
+
 end

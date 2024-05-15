@@ -40,14 +40,14 @@ This type contains all the information needed to run the time evolution at one s
 
 mutable struct Chemostat
 
-    ID                      ::Int64
-    reaction_rate_consts    ::Vector{Float64}
-    molecules               ::Vector{Int64}
-    mass                    ::Int64
-    fixed_mass              ::Int64
-    neighbors               ::Vector{Int64}
-    neighbor_flows          ::Vector{Float64}
-    stabilized_integers     ::Vector{Int64}
+    ID::Int64
+    reaction_rate_consts::Vector{Float64}
+    molecules::Vector{Int64}
+    mass::Int64
+    fixed_mass::Int64
+    neighbors::Vector{Int64}
+    neighbor_flows::Vector{Float64}
+    stabilized_integers::Vector{Int64}
 
 end
 
@@ -78,19 +78,19 @@ Output:
 """
 
 #p3: replaced semi-colon in the following...
-function Chemostat(ID                       ::Int64,
-                   reaction_rate_constants  ::Vector{Float64}; 
-                   molecules                = Vector{Int64}[], #p3 why a semi-colon here?
-                   mass_fixed               = false, 
-                   neighbors                = Vector{Int64}[], 
-                   neighbor_flows           = Vector{Float64}[],
-                   stabilized_integers      = Vector{Int64}[]
-                   )
+function Chemostat(ID::Int64,
+    reaction_rate_constants::Vector{Float64};
+    molecules=Vector{Int64}[], #p3 why a semi-colon here?
+    mass_fixed=false,
+    neighbors=Vector{Int64}[],
+    neighbor_flows=Vector{Float64}[],
+    stabilized_integers=Vector{Int64}[]
+)
 
-#p3: with a comma, to get the fully mixed code to work, but this breaks the distributed one !
-# function Chemostat(ID::Int64, reaction_rate_constants::Vector{Float64}, molecules = Vector{Int64}[],
-#                     mass_fixed=false, neighbors = Vector{Int64}[], neighbor_flows = Vector{Float64}[],
-#                     stabilized_integers = Vector{Int64}[])
+    #p3: with a comma, to get the fully mixed code to work, but this breaks the distributed one !
+    # function Chemostat(ID::Int64, reaction_rate_constants::Vector{Float64}, molecules = Vector{Int64}[],
+    #                     mass_fixed=false, neighbors = Vector{Int64}[], neighbor_flows = Vector{Float64}[],
+    #                     stabilized_integers = Vector{Int64}[])
 
     # Check the savename, maybe you can just load it. 
     #p3 what
@@ -113,8 +113,8 @@ function Chemostat(ID                       ::Int64,
     # or check if flows sum to unity
     if neighbors != []
         n_neighbors = length(neighbors)
-        if neighbor_flows ==[]
-            neighbor_flows = [1.0/n_neighbors for n in 1:n_neighbors]
+        if neighbor_flows == []
+            neighbor_flows = [1.0 / n_neighbors for n in 1:n_neighbors]
         else
             if length(neighbor_flows) != n_neighbors
                 error("Number of neighbors and flows are different")
@@ -126,13 +126,13 @@ function Chemostat(ID                       ::Int64,
 
     # return the Chemostat struct
     return Chemostat(ID,
-                     reaction_rate_constants,
-                     molecules,
-                     mass,
-                     fixed_mass,
-                     neighbors,
-                     neighbor_flows,
-                     stabilized_integers)
+        reaction_rate_constants,
+        molecules,
+        mass,
+        fixed_mass,
+        neighbors,
+        neighbor_flows,
+        stabilized_integers)
 end;
 
 """
@@ -201,7 +201,7 @@ function destructive_rxn(chemostat::Chemostat)
     # create temporary molecules array and shuffle it
     molecules = copy(chemostat.molecules)
     shuffle!(molecules) # Shuffle the molecules
-    
+
     # ignore molecules of length 1
     big_moles = filter(x -> x > 1, molecules)
 
@@ -209,7 +209,7 @@ function destructive_rxn(chemostat::Chemostat)
 
         # pick one molecule and remove it from the list
         a = pop!(big_moles)
-        mole_index = findfirst(x -> x == a,molecules)
+        mole_index = findfirst(x -> x == a, molecules)
         a = popat!(molecules, mole_index)
 
         # split it at a random point
@@ -270,7 +270,7 @@ function outflow_rxn(chemostat)
         outflow_direction = Dict(neighbor => a)
     else
         outflow_direction = Dict{Int64,String}()
-    end 
+    end
 
     # copy back the list of molecules
     chemostat.molecules = copy(molecules)
@@ -364,11 +364,11 @@ Output:
 """
 
 function calc_propensities(chemostat)
-    
+
     # Constructive - depends on n*n-1 (pairwise reaction)
     n = length(chemostat.molecules)
-    Cp = chemostat.reaction_rate_consts[1] * n * (n -1)
-    
+    Cp = chemostat.reaction_rate_consts[1] * n * (n - 1)
+
     # Destructive - depends on n
     Cd = chemostat.reaction_rate_consts[2] * n
 
@@ -378,5 +378,5 @@ function calc_propensities(chemostat)
     propensities = [Cp, Cd, Co]
 
     return propensities
-    
+
 end
