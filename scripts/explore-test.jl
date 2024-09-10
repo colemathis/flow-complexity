@@ -78,7 +78,7 @@ Output:
 
 """
 
-function run_lattice_reactions(N_reactors_list, 
+@everywhere function run_lattice_reactions(N_reactors_list, 
                                f_rate_list, 
                                o_rate_list, 
                                current_sim
@@ -113,7 +113,7 @@ function run_lattice_reactions(N_reactors_list,
         o = os[i]
         ind = inds[i]               #p3: unused
 
-        println("N=$N f=$f o=$o i=$i")
+        println("Running lattice sim with: N=$N f=$f o=$o i=$i")
 
         # calculate the sim number based on the # of reactors and parameter permutation index
         sim_number  = current_sim + N*1000 + i
@@ -149,7 +149,7 @@ Output:
 
 """
 
-function run_line_reactions(N_reactors_list, 
+@everywhere function run_line_reactions(N_reactors_list, 
                             f_rate_list, 
                             o_rate_list, 
                             current_sim
@@ -184,7 +184,7 @@ function run_line_reactions(N_reactors_list,
         o = os[i]
         ind = inds[i]               #p3: unused
 
-        println("N=$N f=$f o=$o i=$i")
+        println("Running line sim with: N=$N f=$f o=$o i=$i")
         
         # calculate the sim number based on the # of reactors and parameter permutation index
         sim_number  = current_sim + N*1000 + ind    #p3 replace with i
@@ -218,7 +218,7 @@ Output:
 
 """
 
-function run_mixed_reactions(f_rate_list, 
+@everywhere function run_mixed_reactions(f_rate_list, 
                              o_rate_list
                              )
 
@@ -231,11 +231,13 @@ function run_mixed_reactions(f_rate_list,
     # define vectors that will hold the parameters & index
     fs = zeros(Float64, nparams)
     os = zeros(Float64, nparams)
+    inds = zeros(Int, nparams)
     
     # pre-calculate the parameters for each simulation
     for i in 1:nparams
         fs[i] = params[i][1]
         os[i] = params[i][2]
+        inds[i] = i
     end
     
     # loop over all parameter combination and run the simulations in parallel
@@ -245,10 +247,10 @@ function run_mixed_reactions(f_rate_list,
         f = fs[i]
         o = os[i]
 
-        println("f=$f o=$o")
-
-        # run the simulation
-        this_sim = Simulation(1000, "line", 1,f, o, notes = "Mixed Parameter Sweep July 14 2022")
+        ind = inds[i]
+        println("Running mixed sim with: f=$f o=$o")
+        sim_number  = current_sim + ind
+        this_sim = Simulation(1000, "line", 1,f, o, sim_number=sim_number, notes = "Mixed Parameter Sweep July 14 2022")
         RunSimulation(this_sim)
 
     end
@@ -277,25 +279,27 @@ Output:
 
 function run_all_topologies()
 
-    # define the parameters we’ll explore
-    f_rate_list = [0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
-    o_rate_list = [5.0, 10.0, 50.0, 100.0]
-    N_reactor_list = [4, 9, 16, 25]
+    @sync begin
+        # define the parameters we’ll explore
+        f_rate_list = [0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
+        o_rate_list = [5.0, 10.0, 50.0, 100.0]
+        N_reactor_list = [4, 9, 16, 25]
 
-    # define next sim number we’ll be using and run the sim
-    current_sim = 26040
-    println("Running Line Reactions")
-    run_line_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
+        # define next sim number we’ll be using and run the sim
+        current_sim = 26040
+        # println("Running Line Reactions")
+        @async run_line_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
 
-    # define next sim number we’ll be using and run the sim
-    current_sim = 26040 + 97
-    println("Running Lattice Reaction")
-    run_lattice_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
+        # define next sim number we’ll be using and run the sim
+        current_sim = 26040 + 97
+        # println("Running Lattice Reaction")
+        @async run_lattice_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
 
-    # define next sim number we’ll be using and run the sim
-    current_sim = 26040 + (97*2)
-    println("Running Mixed Reactions")
-    run_mixed_reactions(f_rate_list, o_rate_list)
+        # define next sim number we’ll be using and run the sim
+        current_sim = 26040 + (97*2)
+        # println("Running Mixed Reactions")
+        @async run_mixed_reactions(f_rate_list, o_rate_list)
+    end
 
 end
 
