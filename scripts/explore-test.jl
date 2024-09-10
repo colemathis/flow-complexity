@@ -14,6 +14,10 @@ using DrWatson
 using Distributed
 @quickactivate
 
+# either use the -p switch to define the number of workers
+# or run the following inside the Julia REPL to spawn the workers
+# addprocs(10; exeflags=`--project=$(Base.active_project())`)
+
 @everywhere include("../src/Simulation.jl")
 
 """
