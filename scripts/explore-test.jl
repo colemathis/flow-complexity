@@ -219,7 +219,8 @@ Output:
 """
 
 @everywhere function run_mixed_reactions(f_rate_list, 
-                             o_rate_list
+                             o_rate_list,
+                             current_sim
                              )
 
     # compute parameter permutation
@@ -251,6 +252,7 @@ Output:
         println("Running mixed sim with: f=$f o=$o")
         sim_number  = current_sim + ind
         this_sim = Simulation(1000, "line", 1,f, o, sim_number=sim_number, notes = "Mixed Parameter Sweep July 14 2022")
+        # this_sim = Simulation(1000, "line", 1,f, o, notes = "Mixed Parameter Sweep July 14 2022")
         RunSimulation(this_sim)
 
     end
@@ -298,7 +300,7 @@ function run_all_topologies()
         # define next sim number we’ll be using and run the sim
         current_sim = 26040 + (97*2)
         # println("Running Mixed Reactions")
-        @async run_mixed_reactions(f_rate_list, o_rate_list)
+        @async run_mixed_reactions(f_rate_list, o_rate_list, current_sim)
     end
 
 end
