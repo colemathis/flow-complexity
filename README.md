@@ -5,13 +5,13 @@ This repository contains source code, notebooks, and maybe scripts to analyze ho
 
 Simulations are based on the type `Chemostat` in the `Chemostat.jl` file. 
 
-# Installation
+## Installation
 
-## Install Julia
+### Install Julia
 
 See [this link](https://julialang.org/downloads/). As of today, the latest Julia version is v1.10.0.
 
-## Cloning this project
+### Cloning this project
 
 Clone this repository using
 
@@ -35,9 +35,29 @@ include("scripts/explore-parameters.jl")
 run_all_topologies()
 ```
 
-# Usage
+## Basic Usage
 
-## Running with multiprocessing enabled
+### Minimal Working Example
+
+[to be completed]
+
+### Test timing
+
+Use `test_timing.jl`. This will write output to the file `timing_results.csv` located in the `data` directory (make sure the file exists).
+
+### Explore parameters
+
+The simulations will be save under `data/sims`.
+
+To put together the output data, use `get-parameter-sweep-stats.r` which reads everything under `data/sims` and writes to something like `2022_07_22_parameter_sweep_stats.csv`.
+
+[to be completed]
+
+## Advanced Usage
+
+...
+
+### Running with multiprocessing enabled
 
 Run Julia using
 
@@ -46,6 +66,10 @@ julia --project=. -p [num]
 ```
 
 where `[num]` represents the number of Julia processes to be launched.
+
+# Analysis
+
+[to be completed]
 
 ## Dr Watson
 
