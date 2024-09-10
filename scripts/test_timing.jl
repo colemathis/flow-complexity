@@ -46,8 +46,8 @@ function time_well_mixed_parameters()
     # Complete exploration of input parameters 
 
     #p1: try to reduce the range for parameters here since the code crashes at some point
-    # ϵ_choices = [0.0, 0.0001, 0.001, 0.01, 0.1]
-    ϵ_choices = [0.0, 0.0001]
+    ϵ_choices = [0.0, 0.0001, 0.001, 0.01, 0.1]
+    #ϵ_choices = [0.0, 0.0001]
     # outflow_choices = [0.0, 0.001]
     outflow_choices = [0.01, 0.001, 0.0]
     iteration_choices = [100, 200, 500, 1000, 2000, 5000, 10000, 20000]
