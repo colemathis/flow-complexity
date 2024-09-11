@@ -113,10 +113,10 @@ Output:
         o = os[i]
         ind = inds[i]               #p3: unused
 
-        println("Running lattice sim with: N=$N f=$f o=$o i=$i")
-
         # calculate the sim number based on the # of reactors and parameter permutation index
-        sim_number  = current_sim + N*1000 + i
+        sim_number  = current_sim + N*1000 + ind
+
+        println("$sim_number Running lattice sim with: N=$N f=$f o=$o")
 
         # run the simulation
         this_sim = Simulation(1000, "lattice", N ,f, o, sim_number = sim_number, notes = "Lattice Parameter Sweep July 14 2022")
@@ -183,11 +183,11 @@ Output:
         f = fs[i]
         o = os[i]
         ind = inds[i]               #p3: unused
-
-        println("Running line sim with: N=$N f=$f o=$o i=$i")
         
         # calculate the sim number based on the # of reactors and parameter permutation index
         sim_number  = current_sim + N*1000 + ind    #p3 replace with i
+
+        println("$sim_number Running line sim with: N=$N f=$f o=$o")
 
         # run the simulation
         this_sim = Simulation(1000, "line", N ,f, o, sim_number = sim_number, notes = "Line Parameter Sweep July 14 2022")
@@ -247,11 +247,15 @@ Output:
         # get the parameters for this simulation
         f = fs[i]
         o = os[i]
-
         ind = inds[i]
-        println("Running mixed sim with: f=$f o=$o")
+
+        # calculate the sim number based on the # of reactors and parameter permutation index
         sim_number  = current_sim + ind
-        this_sim = Simulation(1000, "line", 1,f, o, sim_number=sim_number, notes = "Mixed Parameter Sweep July 14 2022")
+
+        println("$sim_number Running mixed sim with: f=$f o=$o")
+
+        # run the simulation
+        this_sim = Simulation(1000, "line", 1,f, o, sim_number = sim_number, notes = "Mixed Parameter Sweep July 14 2022")
         # this_sim = Simulation(1000, "line", 1,f, o, notes = "Mixed Parameter Sweep July 14 2022")
         RunSimulation(this_sim)
 
@@ -288,19 +292,19 @@ function run_all_topologies()
         N_reactor_list = [4, 9, 16, 25]
 
         # define next sim number we’ll be using and run the sim
-        current_sim = 26040
+        line_current_sim = 26040
         # println("Running Line Reactions")
-        @async run_line_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
+        @async run_line_reactions(N_reactor_list, f_rate_list, o_rate_list, line_current_sim)
 
         # define next sim number we’ll be using and run the sim
-        current_sim = 26040 + 97
+        lattice_current_sim = 26040 + 97
         # println("Running Lattice Reaction")
-        @async run_lattice_reactions(N_reactor_list, f_rate_list, o_rate_list, current_sim)
+        @async run_lattice_reactions(N_reactor_list, f_rate_list, o_rate_list, lattice_current_sim)
 
         # define next sim number we’ll be using and run the sim
-        current_sim = 26040 + (97*2)
+        mixed_current_sim = 26040 + (97*2)
         # println("Running Mixed Reactions")
-        @async run_mixed_reactions(f_rate_list, o_rate_list, current_sim)
+        @async run_mixed_reactions(f_rate_list, o_rate_list, mixed_current_sim)
     end
 
 end
