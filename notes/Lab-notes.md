@@ -38,8 +38,14 @@ Lots of systems in place now. Just debugging the simulations before running the 
 
 # Sept 9, 2024
 
-## Getting this to work (Alex)
-
 - Seems like Cole has fixed the function call in `test_timing.jl`, I have lanched several simulations varying the parameter set and it executes normally.
 - I am now trying to get the parameter explorations to work (`test_timing.jl` and `explore-test.jl`), ideally using multiple CPU cores. The original file coded by Cole (`explore-test.jl`) was still looping sequentially over the different parameters which is why I have made a new version (`explore-test.jl`) that computes in advance the different parameter permutations and lanches the simulations using these pre-computed parameters. Seems to use the full extent of the multiprocessing module as seen from my CPU usage in e.g. `htop`.
+
+# Sept 11, 2024
+
+- Did a bunch of tests in the past few days---`test_timing.jl` and `explore-test.jl` are now working on Sol, the GCloud cluster, etc.
+
+# Sept 12, 2024
+
+- start coding a minimal working example: plotting the population time series
 

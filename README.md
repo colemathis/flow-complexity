@@ -59,13 +59,11 @@ To put together the output data, use `get-parameter-sweep-stats.r` which reads e
 
 ### Running with multiprocessing enabled
 
-Run Julia using
+For example, to run `explore-test.jl` from the `scripts` folder on 220 CPU,
 
 ```
-julia --project=. -p [num]
+julia -p 220 --project=.. explore-test.jl
 ```
-
-where `[num]` represents the number of Julia processes to be launched.
 
 # Analysis
 
