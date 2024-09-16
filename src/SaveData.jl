@@ -56,26 +56,31 @@ function save_data(sim,
         # #p1: what’s the conversion below?
         time_series_df = convert_timeseries_to_tidy_df(sim.time_evolution)
         # save the time series
-        save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
+        # save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
+        save(datadir(sim.save_name, "timeseries.csv"), time_series_df)
     end
 
     if sim.save_parameters
         # save parameters
-        save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
+        # save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
+        save(datadir(sim.save_name, "parameters.csv"), DataFrame(run_parameters))
     end
 
     if sim.save_graph
         # save reactor graph
         reactors = sim.ensemble
         edge_list = generate_edge_list(reactors)
-        save(datadir("sims", sim_number, "graph.csv"), edge_list)
+        # save(datadir("sims", sim_number, "graph.csv"), edge_list)
+        save(datadir(sim.save_name, "graph.csv"), edge_list)
     end
 
     if sim.save_simulation
         # save simulation object 
-        save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
-        println("Data Saved")
+        # save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
+        save(datadir(sim.save_name, "simulation.bson"), Dict(:sim =>sim))
     end
+
+    println("Data Saved")
 
 end
 

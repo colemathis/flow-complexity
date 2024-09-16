@@ -92,7 +92,7 @@ mutable struct Simulation
     save_parameters     ::Bool
     save_graph          ::Bool
     save_simulation     ::Bool
-    save_directory      ::String
+    save_name           ::String
     sim_notes           ::String
 
     ### The Ensemble
@@ -151,6 +151,7 @@ function Simulation(
     save_parameters     = true,
     save_graph          = true,
     save_simulation     = true,
+    save_directory      = "",
     random_seed         = parse(Int64, Dates.format(now(), "SSMMHHddmm")),
     recorded_variables  = [:complete_timeseries],
     stabilized_integers = Dict(-1 => Tuple(-1,))
@@ -160,7 +161,7 @@ function Simulation(
     if sim_number < 0
         sim_number = get_sim_number()
     end
-    save_name = datadir("sims", string(sim_number))
+    save_name = datadir("sims", save_directory, string(sim_number))
 
     # Create vectors containing the forward, outflow and backward rates
     # and assign these to every reactor
@@ -281,7 +282,7 @@ function get_parameters(sim)
     parameter_fields = [:total_time, :output_time, :output_count,
                         :random_seed, :graph_type, :N_reactors,
                         :N_inflow,:mass, :recorded_variables,
-                        :sim_number, :sim_notes, :save_directory]
+                        :sim_number, :sim_notes, :save_name]
 
     # create the dictionary that will hold all parameters
     parameters = Dict(key=>getfield(sim, key) for key ∈ parameter_fields )
