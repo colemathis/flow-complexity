@@ -52,23 +52,30 @@ function save_data(sim,
     # get the sim number
     sim_number = string(sim.sim_number)
     
-    # #p1: what’s the conversion below?
-    time_series_df = convert_timeseries_to_tidy_df(sim.time_evolution)
+    if sim.save_time_series
+        # #p1: what’s the conversion below?
+        time_series_df = convert_timeseries_to_tidy_df(sim.time_evolution)
+        # save the time series
+        save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
+    end
 
-    # save the time series
-    save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
+    if sim.save_parameters
+        # save parameters
+        save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
+    end
 
-    # save parameters
-    save(datadir("sims", sim_number, "parameters.csv"), DataFrame(run_parameters))
+    if sim.save_graph
+        # save reactor graph
+        reactors = sim.ensemble
+        edge_list = generate_edge_list(reactors)
+        save(datadir("sims", sim_number, "graph.csv"), edge_list)
+    end
 
-    # save reactor graph
-    reactors = sim.ensemble
-    edge_list = generate_edge_list(reactors)
-    save(datadir("sims", sim_number, "graph.csv"), edge_list)
-
-    # save simulation object 
-    save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
-    println("Data Saved")
+    if sim.save_simulation
+        # save simulation object 
+        save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
+        println("Data Saved")
+    end
 
 end
 

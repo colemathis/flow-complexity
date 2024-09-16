@@ -50,6 +50,10 @@ timeseries:
 
 simulation metadata:
     sim_number          (int)           = simulation number (e.g. 1...N)
+    save_time_series    (bool)          = 
+    save_parameters     (bool)          = 
+    save_graph          (bool)          = 
+    save_simulation     (bool)          = 
     save_directory      (string)        = save directory (e.g., "data")
     sim_notes           (string)        = notes 
     
@@ -84,6 +88,10 @@ mutable struct Simulation
 
     ### Simulation Number
     sim_number          ::Int64
+    save_time_series    ::Bool
+    save_parameters     ::Bool
+    save_graph          ::Bool
+    save_simulation     ::Bool
     save_directory      ::String
     sim_notes           ::String
 
@@ -139,6 +147,10 @@ function Simulation(
     N_inflow            = 1,
     notes               = "None",
     sim_number          = -1,
+    save_time_series    = true,
+    save_parameters     = true,
+    save_graph          = true,
+    save_simulation     = true,
     random_seed         = parse(Int64, Dates.format(now(), "SSMMHHddmm")),
     recorded_variables  = [:complete_timeseries],
     stabilized_integers = Dict(-1 => Tuple(-1,))
@@ -189,6 +201,10 @@ function Simulation(
                       recorded_variables,
                       time_series,
                       sim_number,
+                      save_time_series,
+                      save_parameters,
+                      save_graph,
+                      save_simulation,
                       save_name,
                       notes,
                       this_ensemble)
