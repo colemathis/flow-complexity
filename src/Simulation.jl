@@ -161,7 +161,8 @@ function Simulation(
     if sim_number < 0
         sim_number = get_sim_number()
     end
-    save_name = datadir("sims", save_directory, string(sim_number))
+    sim_number_string = lpad(sim_number,6,"0")
+    save_name = datadir("sims", save_directory, sim_number_string)
 
     # Create vectors containing the forward, outflow and backward rates
     # and assign these to every reactor
