@@ -19,6 +19,8 @@ using Graphs
 using Dates
 using GraphIO
 
+export Simulation, RunSimulation
+
 """
 
 ##########################################################################
@@ -152,7 +154,7 @@ function Simulation(
     save_graph          = true,
     save_simulation     = true,
     save_directory      = "",
-    random_seed         = parse(Int64, Dates.format(now(), "SSMMHHddmm")),
+    random_seed         = Random.rand(1:10000000),
     recorded_variables  = [:complete_timeseries],
     stabilized_integers = Dict(-1 => Tuple(-1,))
     )
