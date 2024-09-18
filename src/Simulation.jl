@@ -21,6 +21,9 @@ using GraphIO
 
 export Simulation, RunSimulation
 
+# Set the backward rate to a constant
+const backword_rate = 1.0
+
 """
 
 ##########################################################################
@@ -142,7 +145,6 @@ function Simulation(
     N_reactors          ::Int64,
     forward_rate        ::Float64,
     outflow_rate        ::Float64;
-    backword_rate       = 1.0,
     total_time          = 100.0,
     output_time         = 1.0,
     output_count        = -1,
