@@ -77,7 +77,8 @@ function save_data(sim,
     if sim.save_simulation
         # save simulation object 
         # save(datadir("sims", sim_number, "simulation.bson"), Dict(:sim =>sim))
-        save(datadir(sim.save_name, "simulation.bson"), Dict(:sim =>sim))
+        # save(datadir(sim.save_name, "simulation.bson"), Dict(:sim =>sim))
+        save(datadir(sim.save_name, "simulation.jld2"), Dict(:sim =>sim))
     end
 
     println("Data Saved")
