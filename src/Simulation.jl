@@ -18,6 +18,7 @@ include("TimeEvolve.jl")
 using Graphs
 using Dates
 using GraphIO
+using CSV
 
 # Set the backward rate to a constant
 const backword_rate = 1.0
@@ -364,4 +365,71 @@ function RunSimulation(sim)
     parameters = get_parameters(sim)
     save_data(sim, parameters)
    
+end
+
+"""
+
+##########################################################################
+GET PARAMETERS FROM CSV
+
+Read a CSV file to a DataFrame, correcting for variable types.
+##########################################################################
+
+Input:
+
+    fn     (string)    = CSV file name to be read
+
+Output:
+
+    params_df   (DataFrame)     = resulting parameter DataFrame
+
+##########################################################################
+
+"""
+
+function GetParamsFromCSV(fn)
+
+    params_df = DataFrame(CSV.File(fn))
+    
+    # convert all strings to "string"
+    df = params_df
+    for col in names(df)
+        if eltype(df[!, col]) <: AbstractString && eltype(df[!, col]) != String
+            df[!, col] = convert(Vector{String}, df[!, col])
+        end
+    end
+    params_df = df ;
+
+    return params_df
+
+end
+
+"""
+
+##########################################################################
+CONVERT DATAFRAME ROW TO DICTIONARY
+
+Converts a DataFrame row to a Dictionary, correcting for variable types.
+##########################################################################
+
+Input:
+
+    df          (DataFrame)     = input DataFrame
+    row_index   (integer)       = index of the row to convert
+
+Output:
+
+    d           (dict)          = resulting dictionary
+
+##########################################################################
+
+"""
+
+function DF_row_to_dict(df, row_index)
+
+    row = df[row_index, :]
+    d = Dict(Symbol(col) => row[col] for col in names(df))
+
+    return d
+
 end
