@@ -19,8 +19,6 @@ using Graphs
 using Dates
 using GraphIO
 
-export Simulation, RunSimulation
-
 # Set the backward rate to a constant
 const backword_rate = 1.0
 
@@ -139,12 +137,34 @@ Output:
 
 """
 
-function Simulation(
-    mass                ::Int64,
-    graph_type          ::String,
-    N_reactors          ::Int64,
-    forward_rate        ::Float64,
-    outflow_rate        ::Float64;
+# function Simulation(
+#     mass                ::Int64,
+#     graph_type          ::String,
+#     N_reactors          ::Int64,
+#     forward_rate        ::Float64,
+#     outflow_rate        ::Float64;
+#     total_time          = 100.0,
+#     output_time         = 1.0,
+#     output_count        = -1,
+#     N_inflow            = 1,
+#     notes               = "None",
+#     sim_number          = -1,
+#     save_time_series    = true,
+#     save_parameters     = true,
+#     save_graph          = true,
+#     save_simulation     = true,
+#     save_directory      = "",
+#     random_seed         = Random.rand(1:10000000),
+#     recorded_variables  = [:complete_timeseries],
+#     stabilized_integers = Dict(-1 => Tuple(-1,))
+#     )
+
+function Simulation(;
+    mass                = 0,
+    graph_type          = "line",
+    N_reactors          = 1,
+    forward_rate        = 1.0,
+    outflow_rate        = 1.0,
     total_time          = 100.0,
     output_time         = 1.0,
     output_count        = -1,
