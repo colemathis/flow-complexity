@@ -31,6 +31,6 @@ end
 
 println(params_df)
 
-arr_fn = "sims/MS00_MWE/array.csv"
+array_fn = "sims/MS00_MWE/array.csv"
 save(datadir(array_fn), params_df) ;
 
