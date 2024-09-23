@@ -20,12 +20,12 @@ params_df = DataFrame(
     notes = "dummy task"
 )
 
-# dummy example: copy the template 10 times and change the sim number
+# dummy example: copy the template 1000 times and change the sim number
 first_row = params_df[1, :]
-new_rows = [first_row for _ in 1:10]
+new_rows = [first_row for _ in 1:1000]
 params_df = DataFrame(new_rows)
 
-for i in 1:10
+for i in 1:1000
     params_df[i, :sim_number] = i
 end
 
