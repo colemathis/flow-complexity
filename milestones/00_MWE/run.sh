@@ -3,7 +3,7 @@
 #SBATCH --job-name=flow-complexity
 #SBATCH --partition=htc
 #SBATCH --qos=public
-#SBATCH --array=1-100
+#SBATCH --array=1-10
 #SBATCH --time=01:00:00
 #SBATCH --output=./data/logs/slurm_%a.log
 #SBATCH --error=./data/logs/slurm_%a.log

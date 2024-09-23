@@ -26,7 +26,7 @@ params_template = DataFrame(
 )
 
 # Number of simulations
-n = 100
+n = 10
 
 # Generate DataFrame with n rows based on the template
 params_df = vcat([params_template for _ in 1:n]...)
