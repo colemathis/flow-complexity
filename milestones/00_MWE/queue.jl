@@ -3,6 +3,10 @@ using DrWatson
 
 using DataFrames
 
+current_dir = pwd()
+milestones_dir = joinpath(projectdir(), "milestones")
+relative_path = relpath(current_dir, milestones_dir)
+
 # define a configuration template
 params_df = DataFrame(
     mass = 1000,
@@ -16,7 +20,7 @@ params_df = DataFrame(
     save_parameters = true,
     save_graph = false,
     save_simulation = true,
-    save_directory = "MS00_MWE",
+    save_directory = relative_path,
     notes = "dummy task"
 )
 

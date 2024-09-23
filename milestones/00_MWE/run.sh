@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=MS00
+#SBATCH --job-name=flow-complexity
 #SBATCH --partition=htc
 #SBATCH --qos=public
-#SBATCH --array=1-1000
+#SBATCH --array=1-10
 #SBATCH --time=01:00:00
 #SBATCH --output=./data/logs/slurm-%A_%a.out
 #SBATCH --error=./data/logs/slurm-%A_%a.out
