@@ -59,7 +59,7 @@ function save_data(sim,
         # save(datadir("sims", sim_number, "timeseries.csv"), time_series_df)
         # save(datadir(sim.save_name, "timeseries.csv"), time_series_df)
         fn = joinpath(sim.save_name, "timeseries.csv")
-        save(datadir(fn, time_series_df)
+        save(fn, time_series_df)
     end
 
     if sim.save_parameters
