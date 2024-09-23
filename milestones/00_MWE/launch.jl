@@ -56,7 +56,7 @@ end
 # load the parameters from the CSV, e.g. "sims/MS00_MWE/array1.csv"
 array_fn = ARGS[1]
 println("Loading parameter file $array_fn.")
-params_df = FlowComplexity.GetParamsFromCSV(datadir(array_fn))
+params_df = FlowComplexity.GetParamsFromCSV(array_fn)
 
 # get a param dictionary for simulation number <sim>
 sim = parse(Int, ARGS[2])
