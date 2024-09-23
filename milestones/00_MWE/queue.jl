@@ -18,14 +18,14 @@ params_df = DataFrame(
     sim_number = 1,
     save_time_series = true,
     save_parameters = true,
-    save_graph = false,
+    save_graph = true,
     save_simulation = true,
     save_directory = relative_path,
     notes = "dummy task"
 )
 
 # dummy example: copy the template n times and change the sim number
-n = 10
+n = 100
 first_row = params_df[1, :]
 new_rows = [first_row for _ in 1:n]
 params_df = DataFrame(new_rows)
