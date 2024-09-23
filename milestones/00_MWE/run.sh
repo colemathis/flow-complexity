@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #SBATCH --job-name=flow-complexity
 #SBATCH --partition=htc
 #SBATCH --qos=public
@@ -9,7 +10,14 @@
 #SBATCH --mail-type=NONE
 #SBATCH --mail-user="%u@asu.edu"
 
+# Load necessary modules
 module load julia
-ID=${SLURM_ARRAY_TASK_ID}
+
+# Create logs directory if it doesn't exist
 mkdir -p ./data/logs
+
+# Get the task ID from the SLURM array
+ID=${SLURM_ARRAY_TASK_ID}
+
+# Run the Julia script with the task ID and redirect output to a log file
 srun julia launch.jl ./data/array.csv ${ID} >> ./data/logs/launch.jl_${ID}.log

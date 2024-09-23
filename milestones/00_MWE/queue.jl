@@ -3,12 +3,13 @@ using DrWatson
 
 using DataFrames
 
+# Define directories and paths
 current_dir = pwd()
 milestones_dir = joinpath(projectdir(), "milestones")
 relative_path = relpath(current_dir, milestones_dir)
 
-# define a configuration template
-params_df = DataFrame(
+# Define a configuration template
+params_template = DataFrame(
     mass = 1000,
     graph_type = "line",
     N_reactors = 1,
@@ -24,16 +25,15 @@ params_df = DataFrame(
     notes = "dummy task"
 )
 
-# dummy example: copy the template n times and change the sim number
+# Number of simulations
 n = 100
-first_row = params_df[1, :]
-new_rows = [first_row for _ in 1:n]
-params_df = DataFrame(new_rows)
 
-for i in 1:n
-    params_df[i, :sim_number] = i
-end
+# Generate DataFrame with n rows based on the template
+params_df = vcat([params_template for _ in 1:n]...)
 
+# Update the sim_number for each row
+params_df.sim_number .= 1:n
+
+# Save the DataFrame to a CSV file
 array_fn = "./data/array.csv"
-save(array_fn, params_df) ;
-
+save(array_fn, params_df)
