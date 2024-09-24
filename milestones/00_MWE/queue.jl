@@ -13,16 +13,16 @@ params_template = DataFrame(
     mass = 1000,
     graph_type = "line",
     N_reactors = 1,
-    forward_rate = 1.0e-2,
+    forward_rate = 0.1,
     outflow_rate = 5.0,
-    total_time = 1.0,
+    total_time = 10,
     sim_number = 1,
     save_time_series = true,
     save_parameters = true,
     save_graph = true,
     save_simulation = true,
     save_directory = relative_path,
-    notes = "dummy task"
+    notes = "none"
 )
 
 # Number of simulations
