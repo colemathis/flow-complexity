@@ -18,7 +18,8 @@ function main(args)
     simulation = FlowComplexity.Simulation(; params_dict...)
     
     println("Launching simulation.")
-    FlowComplexity.RunSimulation(simulation)
+    elapsed_time = @elapsed FlowComplexity.RunSimulation(simulation)
+    println("Time taken: $elapsed_time seconds")
 end
 
 main(ARGS)
