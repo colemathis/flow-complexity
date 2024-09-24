@@ -22,7 +22,7 @@ params_template = DataFrame(
     save_graph = true,
     save_simulation = true,
     save_directory = relative_path,
-    notes = ""
+    notes = "none"
 )
 
 # Number of simulations
