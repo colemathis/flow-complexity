@@ -4,7 +4,7 @@
 #SBATCH --partition=htc
 #SBATCH --qos=public
 #SBATCH --array=1-10
-#SBATCH --time=01:00:00
+#SBATCH --time=04:00:00
 #SBATCH --output=./data/logs/slurm_%a.log
 #SBATCH --error=./data/logs/slurm_%a.log
 #SBATCH --mail-type=NONE
