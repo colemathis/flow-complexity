@@ -25,5 +25,6 @@ Manifest.toml
 .DS_Store
 .vscode/settings.json
 data/
+data.*/
 logs/
 figs/
