@@ -13,8 +13,8 @@ params_template = DataFrame(
     mass = 1000,
     graph_type = "line",
     N_reactors = 9,
-    forward_rate = 1.0,
-    outflow_rate = 5.0,
+    forward_rate = 0.01,
+    outflow_rate = 0.0,
     total_time = 1,
     sim_number = 1,
     save_time_series = true,
@@ -26,13 +26,18 @@ params_template = DataFrame(
 )
 
 # Number of simulations
-n = 10
+n = 100
 
 # Generate DataFrame with n rows based on the template
 params_df = vcat([params_template for _ in 1:n]...)
 
 # Update the sim_number for each row
 params_df.sim_number .= 1:n
+
+# Customize parameters
+for i in 1:100
+    params_df[i, :outflow_rate] = i*0.001
+end
 
 # Save the DataFrame to a CSV file
 array_fn = "./data/array.csv"
