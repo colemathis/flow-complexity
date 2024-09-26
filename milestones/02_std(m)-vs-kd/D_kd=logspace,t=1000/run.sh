@@ -9,6 +9,7 @@
 #SBATCH --error=./data/logs/slurm_%a.log
 #SBATCH --mail-type=NONE
 #SBATCH --mail-user="%u@asu.edu"
+#SBATCH --mem=4GB
 
 # Load necessary modules
 module load julia
