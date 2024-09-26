@@ -1,3 +1,7 @@
 - we’ve tried with kd=0.01 first but then tried kf=0.001 since it seemed the constructive reactions overpowered the diffusion
 - then we’re doing a log range for kd as to test for very small values near zero
 - I’m increasing tau_max from 100 --> 1000 since we’re not hitting the steady state (also trying to increase memory since this last batch failed)
+- then we realize there’s a bug in JLD2, fixed by upgrading the module
+- t=500 works, but t=1000 still fails (JLD2 file is really big...)
+- then I’m trying 2way diffusion, but I think that in Ensemble.jl the find_inflow_nodes scrambles the lattice—trying the 1way diffusion for now
+- 
