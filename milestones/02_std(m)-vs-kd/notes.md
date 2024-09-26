@@ -1,3 +1,3 @@
 - we’ve tried with kd=0.01 first but then tried kf=0.001 since it seemed the constructive reactions overpowered the diffusion
 - then we’re doing a log range for kd as to test for very small values near zero
-- I’m increasing tau_max from 100 --> 1000 since we’re not hitting the steady state
+- I’m increasing tau_max from 100 --> 1000 since we’re not hitting the steady state (also trying to increase memory since this last batch failed)
