@@ -11,7 +11,7 @@ relative_path = relpath(current_dir, milestones_dir)
 # Define a configuration template
 params_template = DataFrame(
     mass = 1000,
-    graph_type = "line",
+    graph_type = "lattice-2way",
     N_reactors = 9,
     forward_rate = 0.001,
     outflow_rate = 0.0,
