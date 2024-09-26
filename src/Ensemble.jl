@@ -139,6 +139,26 @@ function Ensemble(N_reactors        ::Int64,
         # Get chemostat vector from specifications  #p1: what
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
+        # lattice graph
+    elseif graph_type == "lattice-2way"
+
+        # check if N_reactors is a square
+        if (round(sqrt(N_reactors)))^2 != N_reactors
+            error("Lattice requested but N_reactors isn't square")
+        end 
+
+        # create lattice digraph
+        ensemble_graph = lattice_digraph_bidirectionnal(N_reactors)
+
+        # Get inflow ids #p1: what
+        inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
+
+        # Get chemostats specifications  #p1: what
+        chemostat_specs = sample(chemostat_list, N_reactors)
+
+        # Get chemostat vector from specifications  #p1: what
+        chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
+
     # line (path) digraph
     elseif graph_type == "line"
 
@@ -208,6 +228,54 @@ function lattice_digraph(N)
                 add_edge!(L,(current_node, right_neighbor))
             end
             add_edge!(L, (current_node, down_neighbor))
+        end
+    end
+
+    # return the graph
+    return L 
+
+end
+
+"""
+
+##########################################################################
+CREATE A LATTICE DIGRAPH WTIH BIDIRECTIONAL DIFFUSION
+
+Creates a lattice digraph with N nodes.
+##########################################################################
+
+Input:
+
+    N       (int)       = number of nodes
+
+Output:
+
+    L       (DiGraph)   = lattice digraph
+
+##########################################################################
+
+"""
+
+function lattice_digraph_bidirectionnal(N)
+
+    # construct a simple digraph with N vertices (and 0 edges)
+    L = SimpleDiGraph(N)
+
+    # link the vertices together (add edges) to form the lattice
+    n = sqrt(N)
+    rows = []
+    current = 0
+    for i in 1:n
+        for j in 0:(n-1)
+            current_node = i + n*j  
+            right_neighbor = current_node + 1
+            down_neighbor = current_node + n 
+            if i < n
+                add_edge!(L,(current_node, right_neighbor))
+                add_edge!(L,(right_neighbor, current_node))
+            end
+            add_edge!(L, (current_node, down_neighbor))
+            add_edge!(L, (down_neighbor, current_node))
         end
     end
 
