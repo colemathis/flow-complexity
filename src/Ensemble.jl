@@ -151,7 +151,8 @@ function Ensemble(N_reactors        ::Int64,
         ensemble_graph = lattice_digraph_bidirectionnal(N_reactors)
 
         # Get inflow ids #p1: what
-        inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
+        # inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
+        inflow_ids = [1]
 
         # Get chemostats specifications  #p1: what
         chemostat_specs = sample(chemostat_list, N_reactors)
