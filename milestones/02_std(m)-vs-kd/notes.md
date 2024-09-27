@@ -4,4 +4,10 @@
 - then we realize there’s a bug in JLD2, fixed by upgrading the module
 - t=500 works, but t=1000 still fails (JLD2 file is really big...)
 - then I’m trying 2way diffusion, but I think that in Ensemble.jl the find_inflow_nodes scrambles the lattice—trying the 1way diffusion for now
-- 
+
+
+
+H_lattice-2way-diffusion
+
+- I think I’ve fixed the thing with inflow_nodes
+- trying again 2way diffusion
