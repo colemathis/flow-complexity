@@ -35,7 +35,7 @@ params_df = vcat([params_template for _ in 1:n]...)
 params_df.sim_number .= 1:n
 
 # Customize parameters
-vals = exp10.(LinRange(-6,2,n))
+vals = exp10.(LinRange(-6,1,n))
 for i in 1:n
     params_df[i, :outflow_rate] = vals[i]
 end
