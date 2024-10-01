@@ -28,3 +28,5 @@ data/
 data.*/
 logs/
 figs/
+plots/
+plots.*/
