@@ -11,3 +11,34 @@ H_lattice-2way-diffusion
 
 - I think I’ve fixed the thing with inflow_nodes
 - trying again 2way diffusion
+
+
+
+I_lattice-2way-diffusion-wider
+
+- the STD of (H) was too large, trying again with a new set of parameters: changing the forward rate to 5e-5 and the number of reactors to 25, and the diffusion 1e-6...1e2
+- result: parameter sweep too large, exceeded 4h computation limit
+
+
+
+J_lattice-2way-diffusion-wider-T=100
+
+- reducing T to try again (I)
+- ==(still running...)==
+
+
+
+K_lattice-2way-diffusion-wider-1e1-T=100
+
+- reducing diffusion parameter range because it’s still too long to compute
+- result: means & std zero everywhere, is this because forward rate = 5e-5? that’s the value cole had used in his PPT figure but maybe there’s something else going on
+
+
+
+L_lattice-2way-diffusion-increased-kd
+
+- well here I’m increasing again the forward rate to what I had set initially, still keeping a wider range for the diffusion rate coefficient
+- results: interesting fig
+
+
+
