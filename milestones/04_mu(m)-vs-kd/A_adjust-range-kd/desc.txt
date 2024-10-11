@@ -1,0 +1,3 @@
+Continuation of milestone 02 (which was named std(m) but ended up being mu(m)).
+
+For now, we want to adjust the range for parameter k_d as to clearly show that there is a maximum in molecular complexity. I’ll try to play with the other parameters in order to reduce computational time, because right now high values (>10) for k_d take several hours to compute.
