@@ -42,3 +42,4 @@ L_lattice-2way-diffusion-increased-kd
 
 
 
+note: for the 51 pegasi b proposal we’re using the figs from `L_lattice-2way-diffusion-increased-kd` and `03_AI-vs-C` (data from 02L)
