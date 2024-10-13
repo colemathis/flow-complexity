@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH --job-name=flow-complexity
-#SBATCH --partition=htc
+#SBATCH --partition=general
 #SBATCH --qos=public
 #SBATCH --array=1-100
-#SBATCH --time=04:00:00
+#SBATCH --time=3-00:00:00
 #SBATCH --output=./data/logs/slurm_%a.log
 #SBATCH --error=./data/logs/slurm_%a.log
 #SBATCH --mail-type=NONE
