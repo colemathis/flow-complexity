@@ -31,3 +31,4 @@ figs/
 plots/
 plots.*/
 *~
+._.DS_Store
