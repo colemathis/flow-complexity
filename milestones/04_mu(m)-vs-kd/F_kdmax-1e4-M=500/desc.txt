@@ -1,0 +1,1 @@
+This is a copy of (C), but with M=500.
