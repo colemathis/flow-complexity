@@ -32,3 +32,4 @@ plots/
 plots.*/
 *~
 ._.DS_Store
+.CondaPkg
