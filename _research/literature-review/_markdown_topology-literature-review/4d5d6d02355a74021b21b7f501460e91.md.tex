@@ -1,0 +1,18 @@
+\markdownRendererDocumentBegin
+\markdownRendererStrongEmphasis{tldr;} Modeling an Artificial Chemistry system in the thermodynamically reversible regime leads to self-organization of autocatalytic cycles, and by blocking simple ACSs we get more complex ones yielding super-exponential growth\markdownRendererInterblockSeparator
+{}\markdownRendererUlBegin
+\markdownRendererUlItem the authors show that even very simple chemistries in the TD reversible regime can self-organize to form complex autocatalytic cycles, with the catalytic effect emerging from the network structure\markdownRendererUlItemEnd 
+\markdownRendererUlItem by suppressing the direct reaction from reactants to products, we get ACS, leading to exponential growth—exponential autocatalysis is interesting from an ool point of view as it could exist before the invention of cell membranes/compartmentalization needed to increase concentrations\markdownRendererUlItemEnd 
+\markdownRendererUlItem previous approaches: Fontana/Buss, Kauffman—but these lack TD considerations, which we reintroduce here\markdownRendererUlItemEnd 
+\markdownRendererUlItem we demonstrate that ACSs \markdownRendererEmphasis{necessarily} arise in chemistry that meets simple preconditions by blocking autocatalysis, which leads to ACSs appearing through a second-order mechanism\markdownRendererUlItemEnd 
+\markdownRendererUlItem energy “flowing downhill”, blocking simple autocatalysis yields more complex cycles, alongside bistability and oscillations—this depends on the topology of the reaction network\markdownRendererUlItemEnd 
+\markdownRendererUlItem key feature of including TD considerations in an AC system: the direction of reactions isn’t constrained, such that equilibrium will follow the principle of detailed balance\markdownRendererUlItemEnd 
+\markdownRendererUlItem here we use, as an implementation of chemical dynamics, mass-action kinetics—a well-mixed reactor where molecules collide at random and react with a probability proportional to the rate constant of the reaction—TD puts constraints on the values of these constants\markdownRendererUlItemEnd 
+\markdownRendererUlItem A-polymerization model: we use unary strings (A, AA, AAA, …) noted A1, A2, A3, …which can be thought of as non-oriented polymers with all the reactions of the form Ai+Aj-->A(i+j)\markdownRendererUlItemEnd 
+\markdownRendererUlItem we will block certain reactions, and only allow reactions in the set called R (permitted reactions)\markdownRendererUlItemEnd 
+\markdownRendererUlItem rate constants are ks (synthesis) and kd (decomposition) and are uniform\markdownRendererUlItemEnd 
+\markdownRendererUlItem mass action kinetics leads to a set of ODEs for the concentration of each species (eq. 2)\markdownRendererUlItemEnd 
+\markdownRendererUlItem the linear case: we disallow monomers from forming a dimer and conversely, but all other reactions are permitted (some autocatalytic cycles can convert monomers into dimers)—we then observe exponential growth due to ACS cycles with the distribution of polymers depending on the rate constants (see fig1)\markdownRendererUlItemEnd 
+\markdownRendererUlItem superexponential growth: if we prevent first-order autocatalysis by explicitely banning species from reacting, exponential growth still occurs through second-order mechanisms\markdownRendererUlItemEnd 
+\markdownRendererUlItem additional conclusion: non-equilibrium systems, under \markdownRendererEmphasis{some} conditions, tend not only to flow downhill but to find faster and faster ways to do it—relevant for ool research as this combinatorial explosion would mean a faster exploration of possible primitive replicators\markdownRendererUlItemEnd 
+\markdownRendererUlEnd \markdownRendererDocumentEnd

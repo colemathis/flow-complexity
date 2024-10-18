@@ -1,0 +1,85 @@
+\begin{thebibliography}{}
+\makeatletter
+\relax
+\def\mn@urlcharsother{\let\do\@makeother \do\$\do\&\do\#\do\^\do\_\do\%\do\~}
+\def\mn@doi{\begingroup\mn@urlcharsother \@ifnextchar [ {\mn@doi@}
+  {\mn@doi@[]}}
+\def\mn@doi@[#1]#2{\def\@tempa{#1}\ifx\@tempa\@empty \href
+  {http://dx.doi.org/#2} {doi:#2}\else \href {http://dx.doi.org/#2} {#1}\fi
+  \endgroup}
+\def\mn@eprint#1#2{\mn@eprint@#1:#2::\@nil}
+\def\mn@eprint@arXiv#1{\href {http://arxiv.org/abs/#1} {{\tt arXiv:#1}}}
+\def\mn@eprint@dblp#1{\href {http://dblp.uni-trier.de/rec/bibtex/#1.xml}
+  {dblp:#1}}
+\def\mn@eprint@#1:#2:#3:#4\@nil{\def\@tempa {#1}\def\@tempb {#2}\def\@tempc
+  {#3}\ifx \@tempc \@empty \let \@tempc \@tempb \let \@tempb \@tempa \fi \ifx
+  \@tempb \@empty \def\@tempb {arXiv}\fi \@ifundefined
+  {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
+  mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
+
+\bibitem[\protect\citeauthoryear{Chogani \& Pl{\"u}mper}{Chogani \&
+  Pl{\"u}mper}{2023}]{chogani_decoding_2023}
+Chogani A.,  Pl{\"u}mper O.,  2023, \mn@doi [Contributions to Mineralogy and
+  Petrology] {10.1007/s00410-023-02062-4}, 178, 78
+
+\bibitem[\protect\citeauthoryear{Dittrich, Ziegler  \& Banzhaf}{Dittrich
+  et~al.}{2001}]{dittrich_artificial_2001}
+Dittrich P.,  Ziegler J.,   Banzhaf W.,  2001, \mn@doi [Artificial Life]
+  {10.1162/106454601753238636}, 7, 225
+
+\bibitem[\protect\citeauthoryear{Fontana \& Buss}{Fontana \&
+  Buss}{1994}]{fontana_what_1994}
+Fontana W.,  Buss L.~W.,  1994, \mn@doi [Proceedings of the National Academy of
+  Sciences] {10.1073/pnas.91.2.757}, 91, 757
+
+\bibitem[\protect\citeauthoryear{Jirasek et~al.,}{Jirasek
+  et~al.}{2023}]{jirasek_multimodal_2023}
+Jirasek M.,  et~al., 2023, Multimodal {{Techniques}} for {{Detecting Alien
+  Life}} Using {{Assembly Theory}} and {{Spectroscopy}} (\mn@eprint {arXiv}
+  {2302.13753}), \mn@doi{10.48550/arXiv.2302.13753}
+
+\bibitem[\protect\citeauthoryear{Liu}{Liu}{2020}]{liu_definition_2020}
+Liu Y.,  2020, \mn@doi [Biology Direct] {10.1186/s13062-020-00269-0}, 15, 15
+
+\bibitem[\protect\citeauthoryear{Marshall, Murray  \& Cronin}{Marshall
+  et~al.}{2017}]{marshall_probabilistic_2017}
+Marshall S.~M.,  Murray A. R.~G.,   Cronin L.,  2017, \mn@doi [Philosophical
+  Transactions of the Royal Society A: Mathematical, Physical and Engineering
+  Sciences] {10.1098/rsta.2016.0342}, 375, 20160342
+
+\bibitem[\protect\citeauthoryear{Marshall et~al.,}{Marshall
+  et~al.}{2021}]{marshall_identifying_2021}
+Marshall S.~M.,  et~al., 2021, \mn@doi [Nature Communications]
+  {10.1038/s41467-021-23258-x}, 12, 3033
+
+\bibitem[\protect\citeauthoryear{Marshall, Moore, Murray, Walker  \&
+  Cronin}{Marshall et~al.}{2022}]{marshall_formalising_2022}
+Marshall S.~M.,  Moore D.~G.,  Murray A. R.~G.,  Walker S.~I.,   Cronin L.,
+  2022, \mn@doi [Entropy] {10.3390/e24070884}, 24, 884
+
+\bibitem[\protect\citeauthoryear{Sharma, Czegel, Lachmann, Kempes, Walker  \&
+  Cronin}{Sharma et~al.}{2023}]{sharma_assembly_2023}
+Sharma A.,  Czegel D.,  Lachmann M.,  Kempes C.~P.,  Walker S.~I.,   Cronin L.,
+   2023, \mn@doi [Nature] {10.1038/s41586-023-06600-9}, pp~1--8
+
+\bibitem[\protect\citeauthoryear{Tallarek, Hlushkou, Trebel  \&
+  H{\"o}ltzel}{Tallarek et~al.}{2023}]{tallarek_probing_2023}
+Tallarek U.,  Hlushkou D.,  Trebel N.,   H{\"o}ltzel A.,  2023, \mn@doi [Chemie
+  Ingenieur Technik] {10.1002/cite.202300027}, 95, 1777
+
+\bibitem[\protect\citeauthoryear{Virgo, Ikegami  \& McGregor}{Virgo
+  et~al.}{2016}]{virgo_complex_2016}
+Virgo N.,  Ikegami T.,   McGregor S.,  2016, \mn@doi [Artificial Life]
+  {10.1162/ARTL_a_00195}, 22, 138
+
+\bibitem[\protect\citeauthoryear{Walker}{Walker}{2024}]{walker_life_2024}
+Walker S.~I.,  2024, Life as No One Knows It: The Physics of Life's Emergence.
+Riverhead Books, New York
+
+\bibitem[\protect\citeauthoryear{Walker, Grover  \& Hud}{Walker
+  et~al.}{2012}]{walker_universal_2012}
+Walker S.~I.,  Grover M.~A.,   Hud N.~V.,  2012, \mn@doi [PLoS ONE]
+  {10.1371/journal.pone.0034166}, 7, e34166
+
+\makeatother
+\end{thebibliography}
