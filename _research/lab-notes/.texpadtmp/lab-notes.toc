@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Description of the system}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Artificial chemistry}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}System of reactors}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Topologies}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Integer chemistry and Assembly Theory}{3}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Experiments}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Preliminary experiments (Sep-Oct 2024)}{5}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Varying the diffusion rate}{5}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Measuring distance from source}{6}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}Measuring detection thresholds}{7}{subsubsection.2.1.3}%
+\contentsline {subsubsection}{\numberline {2.1.4}Upcoming experiments}{7}{subsubsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.2}Title (date)}{8}{subsection.2.2}%
+\contentsline {section}{\numberline {3}References}{8}{section.3}%
