@@ -7,33 +7,14 @@ Simulations are based on the type `Chemostat` in the `Chemostat.jl` file.
 
 ## Installation
 
-### Install Julia
+1. Use `juliaup status` to see which julia version is installed, then remove/rename as needed $HOME/.julia*
+1. Install julia using `juliaup add 1.10.2`
+1. From the repo folder, open julia using `julia --project=.`
+1. Install required packages with `using Pkg; Pkg.instantiate()` (this takes some time)
+1. Exit julia then open it again (without any argument)
+1. Install DrWatson using `Pkg.add(name="DrWatson", version="2.17.0")` then pin this version to the home environment using `Pkg.pin(name="DrWatson", version="2.17.0")`.
 
-See [this link](https://julialang.org/downloads/). As of today, the latest Julia version is v1.10.0.
-
-### Cloning this project
-
-Clone this repository using
-
-```
-git clone https://github.com/ELIFE-ASU/flow-complexity
-```
-
-then install the dependencies using
-
-```
-cd flow-complexity
-julia --project=.
-```
-
-type the `]` key to enter pkg mode, then `instantiate`.
-
-Test using:
-
-```
-include("scripts/explore-parameters.jl")
-run_all_topologies()
-```
+If stuck in dependency hell, update packages using `Pkg.update()` then commit the updated `Manifest.toml`
 
 ## Basic Usage
 
