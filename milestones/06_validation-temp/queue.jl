@@ -26,13 +26,13 @@ params_template = DataFrame(
 )
 
 # Number of simulations
-# n = 10
+n = 1
 
 # Generate DataFrame with n rows based on the template
-# params_df = vcat([params_template for _ in 1:n]...)
+params_df = vcat([params_template for _ in 1:n]...)
 
 # Update the sim_number for each row
-# params_df.sim_number .= 1:n
+params_df.sim_number .= 1:n
 
 # Customize parameters
 # vals = exp10.(LinRange(-6,2,n))
