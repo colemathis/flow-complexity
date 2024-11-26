@@ -105,27 +105,6 @@ function evolve_well_mixed(chemostat::Chemostat,
         tau_step = -log(rand()) / total_p
         tau += tau_step
 
-        """
-        This Julia code is typically used in simulations of stochastic processes, 
-        such as the Gillespie algorithm in computational biology.
-
-        Here's a step-by-step explanation:
-        
-        1. `rand()` generates a random number between 0 and 1.
-        
-        2. `-log(rand())` takes the negative natural logarithm of this random number. 
-        This transforms the uniformly distributed random number into an exponentially distributed random number.
-        
-        3. This exponentially distributed random number is then divided by `total_p`, 
-        which could be a total rate or probability. The result is stored in `tau_step`.
-        
-        4. `tau += tau_step` increments the variable `tau` by `tau_step`.
-        
-        In the context of a simulation, `tau` could represent time, and this code would 
-        be used to calculate the time until the next event occurs. The time until the 
-        next event is often modeled as an exponentially distributed random variable in stochastic simulations.
-        """
-
         # record the output
         if tau > checkpoint
 
@@ -235,6 +214,7 @@ function evolve_distributed(Ensemble,
 
     # calculate reaction propensities
     all_propensities = calc_propensities.(Ensemble.reactors)
+    # returns a vector of vector containing the propensities for each reactor
 
     # use these propensities to calculate the next reaction times
     next_taus = calc_next_rxn_times(all_propensities, tau)
@@ -259,7 +239,7 @@ function evolve_distributed(Ensemble,
         #     println(next_reactor, " \t", rxn)
         # end
 
-        # get the chemostat for this next reactor #p1: again, what’s the difference between reactor and chemostat?
+        # get the chemostat for this next reactor
         this_chemostat = Ensemble.reactors[next_reactor]
 
         # execute reaction and update propensities
@@ -269,7 +249,6 @@ function evolve_distributed(Ensemble,
             this_chemostat = destructive_rxn(this_chemostat)
         elseif rxn == "outflow"
 
-            # p1: review this code block later
             this_chemostat, outflow_direction = outflow_rxn(this_chemostat)
             if collect(keys(outflow_direction)) != []
                 outflow_target = collect(keys(outflow_direction))[1]
@@ -285,9 +264,8 @@ function evolve_distributed(Ensemble,
             end
         end
 
-        # p1: review this code block later
         # Update Chemostat and calculate next reaction time
-        Ensemble.reactors[next_reactor] = this_chemostat
+        Ensemble.reactors[next_reactor] = this_chemostat # i don’t know what this line does
         all_propensities[next_reactor] = calc_propensities(Ensemble.reactors[next_reactor])
         this_chemostat_total_p = sum(all_propensities[next_reactor])
         chemostat_next_tau = tau - log(rand()) / this_chemostat_total_p

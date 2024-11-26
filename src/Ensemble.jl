@@ -403,20 +403,15 @@ function calc_next_rxn_times(all_propensities,
 
     # sum these up
     total_p = sum.(all_propensities)
-    # print(total_p)
-
-    # #p1: no idea
+    
     tau_steps = -log.(rand(n))./total_p
-
-    # #p1: no idea
+    
     reactor_steps = collect(zip(tau_steps .+ tau, 1:n))
 
-    # #p1: no idea
     reactor_steps = sort(reactor_steps, by = x->x[1])
 
     # println(reactor_steps)
 
-    # #p1 no idea
     return reactor_steps
 
 end
