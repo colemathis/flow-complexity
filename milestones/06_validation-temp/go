@@ -1,0 +1,12 @@
+#! /usr/bin/env zsh
+
+flow queue
+flow launch 1
+flow extract
+
+julia plot.jl
+
+imgcat figs/time-series.pdf
+imgcat figs/hist.pdf
+
+

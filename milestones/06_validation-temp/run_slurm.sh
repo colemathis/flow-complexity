@@ -21,4 +21,6 @@ mkdir -p ./data/logs
 ID=${SLURM_ARRAY_TASK_ID}
 
 # Run the Julia script with the task ID and redirect output to a log file
-srun julia launch.jl ./data/array.csv ${ID} >> ./data/logs/launch.jl_${ID}.log
+# srun julia launch.jl ./data/array.csv ${ID} >> ./data/logs/launch.jl_${ID}.log
+srun flow launch ${ID} >> ./data/logs/launch.jl_${ID}.log
+

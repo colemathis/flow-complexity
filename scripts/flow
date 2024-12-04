@@ -1,0 +1,26 @@
+#! /usr/bin/env zsh
+
+# Get the directory where the script is located
+SCRIPT_DIR=$(dirname "$0")
+SCRIPT_DIR=$(cd "$SCRIPT_DIR" && pwd)
+
+case "$1" in
+    
+    "queue")
+	julia "$SCRIPT_DIR/queue.jl"
+	;;
+    
+    "launch")
+	julia "$SCRIPT_DIR/launch.jl" $2
+	;;
+    
+    "extract")
+	julia "$SCRIPT_DIR/extract.jl"
+	;;
+    
+    *)
+	echo "Usage: flow {queue|launch|extract}"
+	;;
+    
+esac
+
