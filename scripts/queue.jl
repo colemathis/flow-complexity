@@ -8,4 +8,5 @@ current_directory = pwd()
 fn = joinpath(current_directory, "params.jl")
 include(fn)
 
+mkpath("data")
 FC.write_params_file(params_array)

@@ -11,16 +11,13 @@
 #SBATCH --mail-user="%u@asu.edu"
 #SBATCH --mem=4GB
 
-# Load necessary modules
 module load julia
 
-# Create logs directory if it doesn't exist
-mkdir -p ./data/logs
+LOGS_DIR=./data/logs
+mkdir -p ${LOGS_DIR}
 
-# Get the task ID from the SLURM array
 ID=${SLURM_ARRAY_TASK_ID}
-
-# Run the Julia script with the task ID and redirect output to a log file
-# srun julia launch.jl ./data/array.csv ${ID} >> ./data/logs/launch.jl_${ID}.log
-srun flow launch ${ID} >> ./data/logs/launch.jl_${ID}.log
+ID_PADDED=$(printf "%06d" $ID)
+LOG_FN=$(printf flow_${ID_PADDED}.log)
+srun flow launch ${ID} >> ${LOGS_DIR}/${LOG_FN}
 
