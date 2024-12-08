@@ -1,0 +1,18 @@
+#! /usr/bin/env zsh
+
+NUM="$1"
+
+if [ -z "$NUM" ]; then
+  echo "Error: No argument provided."
+  exit 1
+fi
+
+flow queue
+flow launch $NUM
+flow extract
+
+julia plot.jl
+
+imgcat figs/*
+
+

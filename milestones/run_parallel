@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+NUM="$1"
+
+if [ -z "$NUM" ]; then
+  echo "Error: No argument provided."
+  exit 1
+fi
+
+flow queue
+
+mkdir -p ./data/logs
+
+for (( i=1; i<=NUM; i++ ))
+do
+    echo flow launch ${i} '>>' ./data/logs/launch.jl_${i}.log >> parallel.tmp
+done
+
+cat parallel.tmp | nice -n 10 parallel
+rm parallel.tmp
+
+flow extract
+
+julia plot.jl
+
+imgcat figs/*
