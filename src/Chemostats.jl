@@ -19,8 +19,6 @@ mutable struct Chemostat
 end
 
 #==============================================================================#
-# FUNCTIONS
-#==============================================================================#
 
 function Chemostat(ID::Int64,
                    reaction_rate_constants::Vector{Float64};
@@ -71,6 +69,8 @@ function Chemostat(ID::Int64,
 end;
 
 #==============================================================================#
+# FUNCTIONS
+#==============================================================================#
 
 function calc_mass(chemostat)
 
@@ -114,3 +114,52 @@ function calc_propensities(chemostat)
     return propensities
 
 end
+
+#==============================================================================#
+
+function pick_molecule_at_random(molecules)
+
+    n = length(molecules)
+    random_index = rand(1:n)
+    a = popat!(molecules, random_index)
+
+    return a
+    
+end
+
+#==============================================================================#
+
+function insert_molecule_at_random(molecules, m)
+
+    n = length(molecules)
+    random_index = rand(1:n+1)
+    insert!(molecules, random_index, m)
+
+end
+
+
+#==============================================================================#
+
+function keep_ones_fixed(ensemble)
+    for chemostat in ensemble.reactors
+        if chemostat.fixed_mass != 0
+            # Update the mass of the chemostat
+            chemostat.mass = calc_mass(chemostat)
+            # Calculate the current number of ones
+            current_ones = calc_ones(chemostat)
+            # Determine the difference from the fixed mass
+            delta_ones = chemostat.fixed_mass - current_ones
+
+            if delta_ones > 0
+                # Add the necessary number of ones
+                for i in 1:delta_ones
+                    insert_molecule_at_random(chemostat.molecules, 1)
+                end
+                
+                # append!(chemostat.molecules, ones(Int, delta_ones))
+            end
+        end
+    end
+end
+
+#==============================================================================#

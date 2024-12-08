@@ -1,7 +1,9 @@
+include("Pipeline.jl")
 include("Chemostats.jl")
 include("Ensemble.jl")
-include("SaveData.jl")
-include("TimeEvolve.jl")
+include("EvolveStochastic.jl")
+include("EvolveTauleaping.jl")
+include("Analysis.jl")
 
 using CSV, DataFrames
 
@@ -20,7 +22,6 @@ mutable struct Simulation
 
 end
 
-
 #==============================================================================#
 
 function Simulation(; user_params = Dict{Symbol, Any}())
@@ -35,6 +36,8 @@ function Simulation(; user_params = Dict{Symbol, Any}())
     
 end
 
+#==============================================================================#
+# FUNCTIONS
 #==============================================================================#
 
 function apply_params_default_values()
@@ -51,8 +54,7 @@ function apply_params_default_values()
         :sim_number     => 1,
         :method         => "exact",
         :method         => "tau-leaping",
-        :save_directory => "",
-        :save_name      => ".",
+        :save_name      => get_relative_path(),
         :random_seed    => 1,
     )
     
@@ -107,21 +109,25 @@ function RunSimulation(sim)
     
     sim.output[:timestamps] = []
     sim.output[:populations] = []
-    
-    if sim.params[:method] == "exact"
-        println("Launching sim using exact algorithm")
-        evolve_distributed_exact(sim)
-    elseif sim.params[:method] == "tau-leaping"
-        println("Launching sim using tau-leaping algorithm")
-        evolve_distributed_tau_leaping(sim)
-    else
-        println("error: method unknown")
-        exit()
+
+    elapsed_time = @elapsed begin
+        if sim.params[:method] == "exact"
+            println("Launching simulation using exact algorithm...")
+            evolve_distributed_exact(sim)
+        elseif sim.params[:method] == "tau-leaping"
+            println("Launching simulation using tau-leaping algorithm...")
+            evolve_distributed_tau_leaping(sim)
+        else
+            println("error: method unknown")
+            exit()
+        end
     end
 
-    println("Sim Completed")
+    elapsed_time = round(elapsed_time, digits = 2)
+    println("Sim Completed. Time taken: $elapsed_time seconds.")
 
     save_data(sim)
+    println("")
     
 end
 
@@ -141,8 +147,40 @@ function save_data(sim)
 
     sim_number = string(sim.params[:sim_number])    
     fn = joinpath(sim.params[:save_name], "simulation.jld2")
-    save(fn, Dict("sim" =>sim))
+    save(fn, Dict("sim" => sim))
 
-    println("Data Saved in $fn")
+    rel = relpath(fn, pwd())
+    println("Data saved in $rel")
 
 end
+
+#==============================================================================#
+
+function save_checkpoint(sim, tau::Float64)
+    
+    i = round(tau, digits=3)
+    # println("   saving at t=$i")
+    print(".")
+    
+    # record the current time
+    push!(sim.output[:timestamps], i)
+    
+    # loop over reactors then and add vector of molecules
+    push!(sim.output[:populations], [])
+    for i in 1:sim.params[:N_reactors]
+        copy_of_molecules = copy(sim.ensemble.reactors[i].molecules)
+        push!(sim.output[:populations][end], copy_of_molecules)
+    end
+
+    # the resulting ndim array will have dimensions:
+    # 1 = time id (NOT time stamp)
+    # 2 = reactor id
+    # 3 = molecule vector
+    #
+    # so if time id is "t", reactor id is "i" and we want to access molecule "m",
+    # sim.populations[t, i, m]
+    
+end
+
+#==============================================================================#
+
