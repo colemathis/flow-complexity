@@ -70,10 +70,18 @@ function evolve_distributed_tau_leaping(sim)
             
         end                
 
-        if sim.params[:mass] == 0
-            # call in-flow rxn
-        else
+        if sim.params[:mass] > 0
             keep_ones_fixed(Ensemble)
+        end
+
+        if sim.params[:inflow_mols] > 0
+            for id in Ensemble.inflow_ids
+                this_chemostat = Ensemble.reactors[id]
+                nmol = sim.params[:inflow_mols] * dt
+                for i in 1:nmol
+                    insert_molecule_at_random(this_chemostat.molecules, 1)
+                end
+            end
         end
 
         if tau >= checkpoint
