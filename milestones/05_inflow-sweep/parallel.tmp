@@ -1,0 +1,10 @@
+flow launch 1 >> ./data/logs/launch.jl_1.log
+flow launch 2 >> ./data/logs/launch.jl_2.log
+flow launch 3 >> ./data/logs/launch.jl_3.log
+flow launch 4 >> ./data/logs/launch.jl_4.log
+flow launch 5 >> ./data/logs/launch.jl_5.log
+flow launch 6 >> ./data/logs/launch.jl_6.log
+flow launch 7 >> ./data/logs/launch.jl_7.log
+flow launch 8 >> ./data/logs/launch.jl_8.log
+flow launch 9 >> ./data/logs/launch.jl_9.log
+flow launch 10 >> ./data/logs/launch.jl_10.log
