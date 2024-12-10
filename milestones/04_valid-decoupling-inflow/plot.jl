@@ -44,7 +44,8 @@ ts_multi = copy(pop)
 sim_no = 1
 filter!(row -> row.sim_number == sim_no, ts_multi)
 
-p = plot(layout = grid(5, 5), size = (900, 900), legend=nothing, link=:both, ylim = (0, 1000))
+# p = plot(layout = grid(5, 5), size = (900, 900), legend=nothing, link=:both, ylim = (0, 1000))
+p = plot(layout = grid(5, 5), size = (900, 900), legend=nothing, link=:both, ylim = (0, 10000))
 
 nspecies = 10
 nchem = sim_array[sim_no].params[:N_reactors]

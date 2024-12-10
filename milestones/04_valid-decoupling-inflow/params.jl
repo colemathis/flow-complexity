@@ -1,6 +1,7 @@
 nsim = 1
 params_template = Dict(
-    :mass           => 1000,
+    :mass           => 0,
+    :inflow_mols    => 1e5,
     :graph_type     => "lattice-2way",
     :N_reactors     => 25,
     :forward_rate   => 1e-3,
