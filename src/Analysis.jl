@@ -62,121 +62,125 @@ end
 
 # obsolete?
 
-function calculate_sim_populations(sim)
+# function calculate_sim_populations(sim)
 
-    nt = length(sim.output[:timestamps])
-    nchem = sim.params[:N_reactors]
+#     nt = length(sim.output[:timestamps])
+#     nchem = sim.params[:N_reactors]
 
-    # find max specie
-    max_specie = 0
-    for i in 1:nt
-        for j in 1:nchem
-            mols = sim.output[:populations][i][j]
-            if mols != []
-                m = maximum(mols)
-            else
-                m = 0
-            end
-            if m > max_specie
-                max_specie = m
-            end
-        end
-    end
+#     # find max specie
+#     max_specie = 0
+#     for i in 1:nt
+#         for j in 1:nchem
+#             mols = sim.output[:populations][i][j]
+#             if mols != []
+#                 m = maximum(mols)
+#             else
+#                 m = 0
+#             end
+#             if m > max_specie
+#                 max_specie = m
+#             end
+#         end
+#     end
     
-    pop = zeros(Int, nt, nchem, max_specie)
+#     pop = zeros(Int, nt, nchem, max_specie)
 
-    for i in 1:nt
-        for j in 1:nchem
-            mols = sim.output[:populations][i][j]
-            species = unique(mols)
-            for s in species
-                pop[i,j,s] = count(x -> x == s, mols)
-            end
-        end
-    end
+#     for i in 1:nt
+#         for j in 1:nchem
+#             mols = sim.output[:populations][i][j]
+#             species = unique(mols)
+#             for s in species
+#                 pop[i,j,s] = count(x -> x == s, mols)
+#             end
+#         end
+#     end
     
-    return pop
+#     return pop
 
-end
+# end
 
 #==============================================================================#
 
 # obsolete?
 
-function calculate_array_populations(sim_array)
+# function calculate_array_populations(sim_array)
 
-    nsim = length(sim_array)
-    sim = sim_array[1]
-    nt = length(sim.output[:timestamps])
-    nchem = sim.params[:N_reactors]
+#     nsim = length(sim_array)
+#     sim = sim_array[1]
+#     nt = length(sim.output[:timestamps])
+#     nchem = sim.params[:N_reactors]
 
-    # find max specie
-    max_specie = 0
-    for i in 1:nsim
-        for j in 1:nt
-            for k in 1:nchem
-                mols = sim_array[i].output[:populations][j][k]
-                if mols != []
-                    m = maximum(mols)
-                else
-                    m = 0
-                end
-                if m > max_specie
-                    max_specie = m
-                end
-            end
-        end
-    end
+#     # find max specie
+#     max_specie = 0
+#     for i in 1:nsim
+#         for j in 1:nt
+#             for k in 1:nchem
+#                 mols = sim_array[i].output[:populations][j][k]
+#                 if mols != []
+#                     m = maximum(mols)
+#                 else
+#                     m = 0
+#                 end
+#                 if m > max_specie
+#                     max_specie = m
+#                 end
+#             end
+#         end
+#     end
     
-    pop = zeros(Int, nsim, nt, nchem, max_specie)
+#     pop = zeros(Int, nsim, nt, nchem, max_specie)
 
-    for i in 1:nsim
-        for j in 1:nt
-            for k in 1:nchem
-                mols = sim_array[i].output[:populations][j][k]
-                species = unique(mols)
-                for s in species
-                    pop[i,j,k,s] = count(x -> x == s, mols)
-                end
-            end
-        end
-    end
+#     for i in 1:nsim
+#         for j in 1:nt
+#             for k in 1:nchem
+#                 mols = sim_array[i].output[:populations][j][k]
+#                 species = unique(mols)
+#                 for s in species
+#                     pop[i,j,k,s] = count(x -> x == s, mols)
+#                 end
+#             end
+#         end
+#     end
     
-    return pop
+#     return pop
     
-end
+# end
 
 #==============================================================================#
 
-function create_populations_dataframe(sim_array)
+# obsolete
 
-    pop = DataFrame()
+# function create_populations_dataframe(sim_array)
 
-    nsim = length(sim_array)
-    for i in 1:nsim
-        sim = sim_array[i]
-        sim_number = sim.params[:sim_number]
-        nt = length(sim.output[:timestamps])
-        nchem = sim.params[:N_reactors]
-        for j in 1:nt
-            ts = sim.output[:timestamps][j]
-            for k in 1:nchem
-                mols = sim.output[:populations][j][k]
-                unique_mols = unique(mols)
-                for m in unique_mols
-                    f = count(x -> x == m, mols)
-                    r = (sim_number = sim_number,
-                         time = ts,
-                         chemostat_id = k,
-                         integer = m,
-                         frequency = f)
-                    push!(pop, r)
-                end
-            end
-        end
-    end
+#     pop = DataFrame()
 
-    return pop
+#     nsim = length(sim_array)
+#     for i in 1:nsim
+#         sim = sim_array[i]
+#         sim_number = sim.params[:sim_number]
+#         nt = length(sim.output[:timestamps])
+#         nchem = sim.params[:N_reactors]
+#         for j in 1:nt
+#             ts = sim.output[:timestamps][j]
+#             for k in 1:nchem
+#                 mols = sim.output[:populations][j][k]
+#                 unique_mols = unique(mols)
+#                 for m in unique_mols
+#                     f = count(x -> x == m, mols)
+#                     r = (sim_number = sim_number,
+#                          time = ts,
+#                          chemostat_id = k,
+#                          integer = m,
+#                          frequency = f)
+#                     push!(pop, r)
+#                 end
+#             end
+#         end
+#     end
+
+#     return pop
     
-end
+# end
+
+#==============================================================================#
 

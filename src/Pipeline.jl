@@ -1,4 +1,5 @@
 using JLD2
+using CSV
 
 #==============================================================================#
 # FUNCTIONS
@@ -18,7 +19,7 @@ end
 
 function write_params_file(params_array)
 
-    array_fn = "./data/array.csv"
+    array_fn = "./data/params.csv"
     println("Writing parameters for simulation array in $array_fn")
     CSV.write(array_fn, params_array)
     println("Done.")
@@ -31,20 +32,25 @@ end
 function extract()
 
     directory = "./data/sims"
-    nsim = count(isdir, readdir(directory, join=true))
+    # nsim = count(isdir, readdir(directory, join=true))
+    nsim = count(isfile, readdir(directory, join=true))
     sim_array = []
-
+    params = []
+    
     println("Found $nsim simulation files in data folder. Loading data...")
     for i in 1:nsim
         sim_number_str = sim_number_string(i)
-        sim_path = joinpath(directory, sim_number_str, "simulation.jld2")
+        sim_path = joinpath(directory, "$sim_number_str.jld2")
         sim = load(sim_path)["sim"]
         push!(sim_array, sim)
     end
+    timeseries = consolidate_array_time_series(sim_array)
+    
     println("Loading done. Saving data array...")
     
-    output_file = joinpath("./data", "data.jld2")
-    @save output_file sim_array
+    CSV.write("data/timeseries.csv", timeseries)
+    @save "data/sim_array.jld2" sim_array
+    
     println("Saving done.")
     println("")
     
@@ -52,20 +58,38 @@ end
 
 #==============================================================================#
 
-function load_simulation_array()
+function consolidate_array_time_series(sim_array)
 
-    file_path = joinpath("./data", "data.jld2")
-    @load file_path sim_array
+    new_ts = DataFrame()
 
-    return sim_array
+    nsim = length(sim_array)
+    for i in 1:nsim
+        sim = sim_array[i]
+        append!(new_ts, sim.output[:timeseries])
+    end
+
+    return new_ts
 
 end
 
 #==============================================================================#
 
+# obsolete ?
+
+# function load_simulation_array()
+
+#     file_path = joinpath("./data", "data.jld2")
+#     @load file_path sim_array
+
+#     return sim_array
+
+# end
+
+#==============================================================================#
+
 function launch_simulation(sim)
 
-    array_fn = "./data/array.csv"
+    array_fn = "./data/params.csv"
     
     if typeof(sim) == String
         sim = parse(Int, sim)

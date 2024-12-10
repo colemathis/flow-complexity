@@ -104,8 +104,9 @@ function RunSimulation(sim)
 
     sim_number = sim.params[:sim_number]
 
-    sim_number_string = lpad(sim_number,6,"0")
-    sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims", sim_number_string)
+    # sim_number_string = lpad(sim_number,6,"0")
+    # sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims", sim_number_string)
+    sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims")
     
     sim.output[:timestamps] = []
     sim.output[:populations] = []
@@ -123,6 +124,11 @@ function RunSimulation(sim)
         end
     end
 
+    # calculate time series and delete molecules
+    ts = calculate_time_series(sim)
+    sim.output[:timeseries] = ts
+    delete!(sim.output, :populations)
+    
     elapsed_time = round(elapsed_time, digits = 2)
     println("Sim Completed. Time taken: $elapsed_time seconds.")
 
@@ -145,8 +151,11 @@ end
 
 function save_data(sim)
 
-    sim_number = string(sim.params[:sim_number])    
-    fn = joinpath(sim.params[:save_name], "simulation.jld2")
+    # sim_number = string(sim.params[:sim_number])
+    sim_number = sim.params[:sim_number]
+    sim_number_str = sim_number_string(sim_number)
+    # fn = joinpath(sim.params[:save_name], "simulation.jld2")
+    fn = joinpath(sim.params[:save_name], "$sim_number_str.jld2")
     save(fn, Dict("sim" => sim))
 
     rel = relpath(fn, pwd())
@@ -183,4 +192,32 @@ function save_checkpoint(sim, tau::Float64)
 end
 
 #==============================================================================#
+
+function calculate_time_series(sim)
+
+    ts = DataFrame()
+
+    sim_number = sim.params[:sim_number]
+    nt = length(sim.output[:timestamps])
+    nchem = sim.params[:N_reactors]
+    for j in 1:nt
+        time = sim.output[:timestamps][j]
+        for k in 1:nchem
+            mols = sim.output[:populations][j][k]
+            unique_mols = unique(mols)
+            for m in unique_mols
+                f = count(x -> x == m, mols)
+                r = (sim_number = sim_number,
+                     time = time,
+                     chemostat_id = k,
+                     integer = m,
+                     frequency = f)
+                push!(ts, r)
+            end
+        end
+    end
+
+    return ts
+    
+end
 
