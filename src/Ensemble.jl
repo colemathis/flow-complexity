@@ -245,23 +245,6 @@ end
 
 #==============================================================================#
 
-function calc_next_rxn_times(all_propensities, tau)
-
-    # how many different propensities do we have?
-    n = length(all_propensities)
-
-    # sum these up
-    total_p = sum.(all_propensities)
-    tau_steps = -log.(rand(n))./total_p
-    reactor_steps = collect(zip(tau_steps .+ tau, 1:n))
-    reactor_steps = sort(reactor_steps, by = x->x[1])
-
-    return reactor_steps
-
-end
-
-#==============================================================================#
-
 function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
     # Make the chemostats with the right neighbors 
