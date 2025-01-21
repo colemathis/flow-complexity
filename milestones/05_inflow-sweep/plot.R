@@ -38,7 +38,10 @@ plot_timeseries <- function() {
               ## legend.text = element_text(color = "white"),
               ## legend.title = element_text(color = "white"),
               legend.position = "none",
-              axis.text = element_blank()
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.ticks = element_blank(),
+            panel.grid = element_blank()
               )
     
     ggsave("figs/time-series_R.pdf", plot = p)
