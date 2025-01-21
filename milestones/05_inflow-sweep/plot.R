@@ -21,20 +21,25 @@ plot_timeseries <- function() {
     p <- ggplot(gts, aes(x = time,
                          y = freq_mean,
                          color = factor(integer))) +
-        geom_line() +
-        labs(title = "Time series for sim 1, avg over all chemostats",
-             x = "Time",
-             y = "Count",
+        geom_line(size = 2) +
+        labs(
+             ## title = "Time series for sim 1, avg over all chemostats",
+             ## x = "Time",
+            ## y = "Count",
              color = "Integers") +
-        theme(legend.position = "right",
+        theme(
+            ## legend.position = "right",
               panel.background = element_rect(fill = "black"),
               plot.background = element_rect(fill = "black"),
-              axis.text = element_text(color = "white"),
-              axis.title = element_text(color = "white"),
-              plot.title = element_text(color = "white"),
-              legend.background = element_rect(fill = "black"),
-              legend.text = element_text(color = "white"),
-              legend.title = element_text(color = "white"))
+              ## axis.text = element_text(color = "white"),
+              ## axis.title = element_text(color = "white"),
+              ## plot.title = element_text(color = "white"),
+              ## legend.background = element_rect(fill = "black"),
+              ## legend.text = element_text(color = "white"),
+              ## legend.title = element_text(color = "white"),
+              legend.position = "none",
+              axis.text = element_blank()
+              )
     
     ggsave("figs/time-series_R.pdf", plot = p)
     
