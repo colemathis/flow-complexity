@@ -7,15 +7,15 @@ SCRIPT_DIR=$(cd "$SCRIPT_DIR" && pwd)
 case "$1" in
     
     "queue")
-	julia "$SCRIPT_DIR/queue.jl"
+	julia --project "$SCRIPT_DIR/queue.jl"
 	;;
     
     "launch")
-	julia "$SCRIPT_DIR/launch.jl" $2
+	julia --project "$SCRIPT_DIR/launch.jl" $2
 	;;
     
     "extract")
-	julia "$SCRIPT_DIR/extract.jl"
+	julia --project "$SCRIPT_DIR/extract.jl"
 	;;
     
     *)
