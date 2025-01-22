@@ -7,7 +7,7 @@ if [ -z "$NUM" ]; then
   exit 1
 fi
 
-flow queue
+# flow queue
 
 mkdir -p ./data/logs
 
@@ -19,8 +19,8 @@ done
 cat parallel.tmp | nice -n 10 parallel
 rm parallel.tmp
 
-flow extract
+# flow extract
 
-julia plot.jl
+# julia plot.jl
 
-imgcat figs/*
+# imgcat figs/*
