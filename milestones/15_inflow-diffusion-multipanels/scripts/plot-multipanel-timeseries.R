@@ -35,12 +35,15 @@ merged_data <- merge(params, processed_data, by = "sim_number") %>%
 
 p <- ggplot(merged_data, aes(x = time, y = frequency, color = factor(integer))) +
     geom_line(alpha = 0.7) +
-    facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "free_y",
+    facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
                labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
+    scale_y_log10(labels = label_scientific()) +
     theme_bw() +
-    theme(axis.text = element_text(size = 6), legend.position = "none",
-          plot.title = element_text(hjust = 0.5)) +
-    labs(x = TeX("$log_{10} (k_d)$"), y = TeX("$log_{10} (I)$"),
-         title = "Time Series of Simulations", color = "Integer")
+    theme(legend.position = "none", axis.text = element_text(size = 6),
+          plot.title = element_text(hjust = 0.5),
+          strip.text = element_text(color = "white"), 
+          strip.background.x = element_rect(fill = "blue"), strip.background.y = element_rect(fill = "red")) +
+    labs(x = TeX("time"), y = TeX("frequency"),
+         title = ("Time Series of Simulations \n (blue = diffusion, red = inflow)"))
 
 ggsave("figs/multipanel-timeseries.pdf", plot = p, width = 8, height = 8)

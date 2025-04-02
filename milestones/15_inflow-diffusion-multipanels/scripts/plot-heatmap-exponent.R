@@ -21,13 +21,13 @@ nrows <- 10
 selected_sims <- 1:(nrows^2)
 
 params <- read.csv("data/params.csv")
-processed_data_path <- "data/multipanel-histograms/processed_data_200int.csv"
+processed_data_path <- "data/heatmap-exponent/processed_data.csv"
 
 processed_data <- if (file.exists(processed_data_path)) {
     read.csv(processed_data_path)
 } else {
     read.csv("data/timeseries.csv") %>%
-        filter(sim_number %in% selected_sims, integer %in% 1:200) %>%
+        filter(sim_number %in% selected_sims, integer %in% 1:50) %>%
         filter(time == max(time)) %>%
         group_by(sim_number, time, integer) %>%
         reframe(frequency = sum(frequency)) %>%
@@ -68,22 +68,33 @@ fit_lines <- merged_data %>%
     mutate(log_integer = as.numeric(log_integer), 
            fitted_y = intercept + slope * log_integer)
 
-p <- ggplot(merged_data, aes(x = log_integer, y = log_frequency)) +
-    geom_point(shape = 4, color = "black", size = 0.5) +
-    # geom_smooth doesn’t make the coefficients available but it’s useful as a validation
-    # geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue", linewidth = 1.0, linetype = "dashed") +
-    geom_line(data = fit_lines, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
-              color = "red", linewidth = 0.5) +
-    facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
-                labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
-    # scale_x_log10() + 
-    # scale_y_log10() +
-    theme_bw() +
-    theme(legend.position = "none", axis.text = element_text(size = 6),
-          plot.title = element_text(hjust = 0.5),
-          strip.text = element_text(color = "white"), 
-          strip.background.x = element_rect(fill = "blue"), strip.background.y = element_rect(fill = "red")) +
-    labs(x = TeX("$log_{10}$ (integer value)"), y = TeX("$log_{10} (frequency)$"),
-         title = ("Integer Distributions with Power-Law Fit \n (blue = diffusion, red = inflow)"))
+############################
+# HEATMAP OF POWER-LAW EXPONENTS
+############################
 
-ggsave("figs/multipanel-histograms.pdf", plot = p, width = 8, height = 8)
+heatmap_matrix <- matrix(fits$slope, nrow = nrows, ncol = nrows)
+heatmap_matrix <- -heatmap_matrix
+
+heatmap_plot <- ggplot(melt(heatmap_matrix), aes(Var1, Var2, fill = value)) +
+    geom_tile(color = "black") +
+    labs(x = TeX("$log_{10} (k_d)$"), y = TeX("$log_{10} (I)$"), fill = "Exponent") +
+    theme_bw() +
+    scale_x_continuous(breaks = 1:nrows, labels = sprintf("%.2f", log10(params$outflow_rate[seq(1, nrows, by = 1)])), expand = c(0, 0)) +
+    scale_y_continuous(breaks = 1:nrows, labels = sprintf("%.2f", log10(params$inflow_mols[seq(1, nsims, by = nrows)])), expand = c(0, 0)) +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))
+
+# print(heatmap_plot)
+
+# Linear scale
+heatmap_plot_linear <- heatmap_plot +
+    scale_fill_gradientn(colors = c("blue", "white", "red")) +
+    labs(title = "Exponent of Power-law Fit \n (Linear Scale Colormap)")
+
+ggsave("figs/heatmap-exponents-linear.pdf", plot = heatmap_plot_linear, width = 8, height = 7)
+
+# Log scale
+heatmap_plot_log <- heatmap_plot +
+    scale_fill_gradientn(colors = c("blue", "white", "red"), trans = "log", labels = scales::scientific) +
+    labs(title = "Exponent of Power-law Fit \n (Log Scale Colormap)")
+
+ggsave("figs/heatmap-exponents-log.pdf", plot = heatmap_plot_log, width = 8, height = 7)

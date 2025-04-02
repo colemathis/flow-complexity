@@ -21,17 +21,17 @@ nrows <- 10
 selected_sims <- 1:(nrows^2)
 
 params <- read.csv("data/params.csv")
-processed_data_path <- "data/multipanel-histograms/processed_data_200int.csv"
+processed_data_path <- "data/multipanel-histograms-inflow-outflow/processed_data_200int.csv"
 
 processed_data <- if (file.exists(processed_data_path)) {
     read.csv(processed_data_path)
 } else {
     read.csv("data/timeseries.csv") %>%
-        filter(sim_number %in% selected_sims, integer %in% 1:200) %>%
+        filter(sim_number %in% selected_sims, integer %in% 1:50) %>%
         filter(time == max(time)) %>%
-        group_by(sim_number, time, integer) %>%
-        reframe(frequency = sum(frequency)) %>%
-        ungroup() %>%
+        # group_by(sim_number, time, integer) %>%
+        # reframe(frequency = sum(frequency)) %>%
+        # ungroup() %>%
         {write.csv(., processed_data_path, row.names = FALSE); .}
 }
 
@@ -69,21 +69,20 @@ fit_lines <- merged_data %>%
            fitted_y = intercept + slope * log_integer)
 
 p <- ggplot(merged_data, aes(x = log_integer, y = log_frequency)) +
-    geom_point(shape = 4, color = "black", size = 0.5) +
-    # geom_smooth doesn’t make the coefficients available but it’s useful as a validation
-    # geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue", linewidth = 1.0, linetype = "dashed") +
-    geom_line(data = fit_lines, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
-              color = "red", linewidth = 0.5) +
+    geom_point(data = merged_data %>% filter(chemostat_id == 1), 
+               shape = 4, color = "darkgreen", size = 0.5) +
+    geom_point(data = merged_data %>% filter(chemostat_id == 25), 
+               shape = 4, color = "darkorange", size = 0.5) +
+    # geom_line(data = fit_lines, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
+    #           color = "red", linewidth = 0.5) +
     facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
                 labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
-    # scale_x_log10() + 
-    # scale_y_log10() +
     theme_bw() +
     theme(legend.position = "none", axis.text = element_text(size = 6),
           plot.title = element_text(hjust = 0.5),
           strip.text = element_text(color = "white"), 
           strip.background.x = element_rect(fill = "blue"), strip.background.y = element_rect(fill = "red")) +
     labs(x = TeX("$log_{10}$ (integer value)"), y = TeX("$log_{10} (frequency)$"),
-         title = ("Integer Distributions with Power-Law Fit \n (blue = diffusion, red = inflow)"))
+         title = ("Integer Distributions Inflow/Outflow with Power-Law Fit \n (blue = diffusion, red = inflow)"))
 
-ggsave("figs/multipanel-histograms.pdf", plot = p, width = 8, height = 8)
+ggsave("figs/multipanel-histograms-inflow-outflow.pdf", plot = p, width = 8, height = 8)
