@@ -258,6 +258,9 @@ function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass
 
         reaction_rate_constants = specs["reaction_rate_constants"]
 
+        # Return a list of all neighbors reachable from vertex v in g. For directed graphs, the default is equivalent to outneighbors;
+        # i.e.: Return a list of all neighbors connected to vertex v by an outgoing edge.
+        # In other words, this lists all neighbors having an outflow directed to this chemostat.
         these_neigbors = neighbors(ensemble_graph, r)
 
         if r in inflow_ids
