@@ -9,6 +9,10 @@ case "$1" in
     "queue")
 	julia --project "$SCRIPT_DIR/queue.jl"
 	;;
+
+	"dry")
+	julia --project "$SCRIPT_DIR/dry.jl" $2
+	;;
     
     "launch")
 	julia --project "$SCRIPT_DIR/launch.jl" $2

@@ -1,10 +1,11 @@
 using StatsBase
+using Dates
 
 #==============================================================================#
 # FUNCTION
 #==============================================================================#
 
-function evolve_distributed_tau_leaping(sim)
+function evolve_distributed_tau_leaping(sim; dry_run=false)
 
     Ensemble = sim.ensemble
 
@@ -22,6 +23,11 @@ function evolve_distributed_tau_leaping(sim)
     skipped_constructive_rxn = 0
     skipped_destructive_rxn = 0
     skipped_diffusion_rxn = 0
+
+    if dry_run == true
+        # record current time
+        dry_start = Dates.now()
+    end
 
     while tau <= sim.params[:total_time]
         tau = round(tau, digits=5) # workaround for numerical errors
@@ -90,6 +96,15 @@ function evolve_distributed_tau_leaping(sim)
         end
 
         tau += dt
+
+        if dry_run == true && tau >= sim.params[:total_time] * 0.1
+            total_time = Dates.now() - dry_start
+            total_time = Dates.value(total_time) / 1000
+            forecasted_time = (sim.params[:total_time] / tau) * (total_time)
+            println("")
+            println("Dry Run Completed. Time taken: $(round(total_time, digits=2)) seconds. Forecasted time: $(round(forecasted_time, digits=2)) seconds.")
+            exit()
+        end
     
     end
 

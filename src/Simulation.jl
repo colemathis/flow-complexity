@@ -100,7 +100,7 @@ end
 
 #==============================================================================#
 
-function RunSimulation(sim)
+function RunSimulation(sim; dry_run=false)
 
     sim_number = sim.params[:sim_number]
 
@@ -113,11 +113,15 @@ function RunSimulation(sim)
 
     elapsed_time = @elapsed begin
         if sim.params[:method] == "exact"
+            if dry_run == true
+                println("Dry run for exact algorithm unsupported.")
+                exit()
+            end
             println("Launching simulation using exact algorithm...")
             evolve_distributed_exact(sim)
         elseif sim.params[:method] == "tau-leaping"
             println("Launching simulation using tau-leaping algorithm...")
-            evolve_distributed_tau_leaping(sim)
+            evolve_distributed_tau_leaping(sim; dry_run=dry_run)
         else
             println("error: method unknown")
             exit()

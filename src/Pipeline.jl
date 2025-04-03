@@ -87,7 +87,7 @@ end
 
 #==============================================================================#
 
-function launch_simulation(sim)
+function launch_simulation(sim; dry_run=false)
 
     array_fn = "./data/params.csv"
     
@@ -117,7 +117,7 @@ function launch_simulation(sim)
     println("Parameters loaded.")
     
     simulation = FlowComplexity.Simulation(; user_params = params_dict)
-    RunSimulation(simulation)
+    RunSimulation(simulation, dry_run=dry_run)
     
 end
 
