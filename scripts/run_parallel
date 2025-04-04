@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+# This script runs the 'flow launch' command in parallel for a specified number of times using GNU Parallel.
+
 NUM="$1"
 
 if [ -z "$NUM" ]; then
-  echo "Error: No argument provided."
+  echo "Usage: ./run_parallel.sh <number_of_parallel_processes>"
   exit 1
 fi
 
@@ -18,9 +20,3 @@ done
 
 cat parallel.tmp | nice -n 10 parallel
 rm parallel.tmp
-
-# flow extract
-
-# julia plot.jl
-
-# imgcat figs/*

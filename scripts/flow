@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# This script is a wrapper for running different Julia scripts related to the flow project.
+
 # Get the directory where the script is located
 SCRIPT_DIR=$(dirname "$0")
 SCRIPT_DIR=$(cd "$SCRIPT_DIR" && pwd)
@@ -23,7 +25,25 @@ case "$1" in
 	;;
     
     *)
-	echo "Usage: flow {queue|launch|extract}"
+	cat << EOF
+Usage: flow <command> [options]
+This script is a wrapper for running different Julia scripts related to the flow project.
+
+Commands:
+  queue                  Create a queue of jobs to be run in data/params.csv
+  dry <sim_number>       Run the first 10% iterations of simulation sim_number
+                         and prints calculation time estimates
+  launch <sim_number>    Launch simulation sim_number
+  extract                Extract data in data/sims and save it in 
+                         data/sim_array.jld2
+
+Examples:
+  flow queue
+  flow dry 99
+  flow launch 99
+  flow extract
+  
+EOF
 	;;
     
 esac
