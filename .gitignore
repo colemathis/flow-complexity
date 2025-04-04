@@ -36,3 +36,5 @@ plots.*/
 .CondaPkg
 Manifest.toml
 milestones/99_test/params.jl
+.RData
+.Rhistory
