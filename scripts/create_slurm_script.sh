@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This script creates a SLURM script in the current folder to run the 'flow launch' command in parallel.
+
+cat << 'EOF' > run.slurm
+#!/bin/bash
+
 #SBATCH --job-name=flow-complexity
 #SBATCH --partition=htc
 #SBATCH --qos=public
@@ -20,4 +25,6 @@ ID=${SLURM_ARRAY_TASK_ID}
 ID_PADDED=$(printf "%06d" $ID)
 LOG_FN=$(printf flow_${ID_PADDED}.log)
 srun flow launch ${ID} >> ${LOGS_DIR}/${LOG_FN}
+EOF
 
+echo "SLURM script created. Run with sbatch run.slurm"
