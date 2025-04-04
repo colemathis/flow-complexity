@@ -32,7 +32,8 @@ processed_data <- if (file.exists(processed_data_path)) {
         # group_by(sim_number, time, integer) %>%
         # reframe(frequency = sum(frequency)) %>%
         # ungroup() %>%
-        {write.csv(., processed_data_path, row.names = FALSE); .}
+        {dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE); 
+        write.csv(., processed_data_path, row.names = FALSE); .}
 }
 
 ############################

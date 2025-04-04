@@ -7,6 +7,7 @@ options(conflicts.policy = list(warn.conflicts = FALSE))
 library(dplyr)
 library(ggplot2)
 library(latex2exp)
+library(scales)
 
 ############################
 # DATA PROCESSING
@@ -14,14 +15,15 @@ library(latex2exp)
 
 selected_sim <- 62
 params <- read.csv("data/params.csv")
-file_path <- sprintf("data/single-timeseries/single_%d.csv", selected_sim)
+processed_data_path <- sprintf("data/single-timeseries/single_%d.csv", selected_sim)
 
 processed_data <- if (file.exists(file_path)) {
     read.csv(file_path)
 } else {
     read.csv("data/timeseries.csv") %>%
         filter(sim_number == selected_sim, integer %in% 1:10) %>%
-        {write.csv(., file_path, row.names = FALSE); .}
+        {dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE); 
+        write.csv(., processed_data_path, row.names = FALSE); .}
 }
 
 grid_size <- sqrt(params$N_reactors[params$sim_number == selected_sim])

@@ -30,7 +30,8 @@ processed_data <- if (file.exists(processed_data_path)) {
         filter(sim_number %in% selected_sims, time == max_time) %>%
         group_by(sim_number) %>%
         summarise(mean_integer = sum(integer * frequency) / sum(frequency), .groups = "drop") %>%
-        {write.csv(., processed_data_path, row.names = FALSE); .}
+        {dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE); 
+        write.csv(., processed_data_path, row.names = FALSE); .}
 }
 
 ############################
@@ -53,6 +54,7 @@ heatmap_plot_linear <- heatmap_plot +
     scale_fill_gradientn(colors = c("blue", "white", "red")) +
     labs(title = "Integer Average Across Simulations \n (Linear Scale Colormap)")
 
+# print(heatmap_plot_linear)
 ggsave("figs/heatmap-avg-integer-linear.pdf", plot = heatmap_plot_linear, width = 8, height = 7)
 
 # Log scale
@@ -60,6 +62,7 @@ heatmap_plot_log <- heatmap_plot +
     scale_fill_gradientn(colors = c("blue", "white", "red"), trans = "log", labels = scales::scientific) +
     labs(title = "Integer Average Across Simulations \n (Log Scale Colormap)")
 
+# print(heatmap_plot_log)
 ggsave("figs/heatmap-avg-integer-log.pdf", plot = heatmap_plot_log, width = 8, height = 7)
 
 # print(heatmap_plot)

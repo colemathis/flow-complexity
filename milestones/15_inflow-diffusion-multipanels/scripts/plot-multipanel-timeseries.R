@@ -23,7 +23,8 @@ processed_data <- if (file.exists(processed_data_path)) {
         filter(sim_number %in% selected_sims, integer %in% 1:10) %>%
         group_by(sim_number, time, integer) %>%
         summarise(frequency = sum(frequency), .groups = "drop") %>%
-        {write.csv(., processed_data_path, row.names = FALSE); .}
+        {dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE); 
+        write.csv(., processed_data_path, row.names = FALSE); .}
 }
 
 ############################

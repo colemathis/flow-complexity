@@ -12,6 +12,7 @@ library(scales)
 library(MASS)
 library(purrr)
 library(tidyr)
+library(reshape2)
 
 ############################
 # DATA PROCESSING
@@ -19,6 +20,7 @@ library(tidyr)
 
 nrows <- 10
 selected_sims <- 1:(nrows^2)
+nsims <- nrows^2
 
 params <- read.csv("data/params.csv")
 processed_data_path <- "data/heatmap-exponent/processed_data.csv"
@@ -32,7 +34,8 @@ processed_data <- if (file.exists(processed_data_path)) {
         group_by(sim_number, time, integer) %>%
         reframe(frequency = sum(frequency)) %>%
         ungroup() %>%
-        {write.csv(., processed_data_path, row.names = FALSE); .}
+        {dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE); 
+        write.csv(., processed_data_path, row.names = FALSE); .}
 }
 
 ############################
