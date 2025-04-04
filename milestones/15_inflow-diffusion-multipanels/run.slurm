@@ -46,8 +46,8 @@ mkdir -p ${LOGS_DIR}
 ID=${SLURM_ARRAY_TASK_ID}
 
 # Set logfile
-ID_PADDED=$(printf "%06d" $ID)
-LOG_FN=$(printf flow_${ID_PADDED}.log)
+# ID_PADDED=$(printf "%06d" $ID)
+# LOG_FN=$(printf flow_${ID_PADDED}.log)
 
 # Launch simulation and redirect output to logfile
-srun flow launch ${ID} >> ${LOGS_DIR}/${LOG_FN}
+srun flow launch ${ID} # >> ${LOGS_DIR}/${LOG_FN}
