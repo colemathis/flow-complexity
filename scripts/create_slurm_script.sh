@@ -6,7 +6,6 @@ cat << 'EOF' > run.slurm
 #!/bin/bash
 
 # Parameters which shouldn’t be modified
-#SBATCH --job-name=flow-complexity
 #SBATCH --output=./data/logs/slurm_%a.log
 #SBATCH --error=./data/logs/slurm_%a.log
 #SBATCH --mail-type=NONE
@@ -16,6 +15,12 @@ cat << 'EOF' > run.slurm
 #################################
 # CUSTOMIZABLE SLURM PARAMETERS
 #################################
+
+# Job name:
+#
+#   Sets the job name
+
+#SBATCH --job-name=flow-complexity
 
 # Partition:
 #
