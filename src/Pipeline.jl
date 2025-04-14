@@ -114,7 +114,13 @@ function launch_simulation(sim; dry_run=false)
 
     params_dict = params_dict_array[sim]
 
-    println("Parameters loaded.")
+    println("Parameters loaded.\n")
+
+    for (k, v) in params_dict
+    	println("   $k = $v")
+    end
+
+    println("")
     
     simulation = FlowComplexity.Simulation(; user_params = params_dict)
     RunSimulation(simulation, dry_run=dry_run)
