@@ -22,6 +22,7 @@ selected_sims <- 1:nsims
 max_time <- params$total_time[params$sim_number == 1]
 
 processed_data_path <- sprintf("data/heatmap-avg-integer/processed_data.csv")
+# dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE)
 
 processed_data <- if (file.exists(processed_data_path)) {
     read.csv(processed_data_path)
