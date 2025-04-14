@@ -172,8 +172,8 @@ end
 function save_checkpoint(sim, tau::Float64)
     
     i = round(tau, digits=3)
-    # println("   saving at t=$i")
-    print(".")
+    println("   saving at t=$i")
+    # print(".")
     
     # record the current time
     push!(sim.output[:timestamps], i)
