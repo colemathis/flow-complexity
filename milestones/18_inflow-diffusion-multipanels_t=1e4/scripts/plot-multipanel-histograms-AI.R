@@ -1,0 +1,97 @@
+############################
+# IMPORTS
+############################
+
+options(conflicts.policy = list(warn.conflicts = FALSE))
+
+library(dplyr)
+library(ggplot2)
+library(latex2exp)
+library(gridExtra)
+library(scales)
+library(MASS)
+library(purrr)
+library(tidyr)
+
+############################
+# DATA PROCESSING
+############################
+
+nrows <- 10
+selected_sims <- 1:(nrows^2)
+
+params <- read.csv("data/params.csv")
+processed_data_path <- "data/multipanel-histograms-AI/processed_data_200int.csv"
+
+if (file.exists(processed_data_path)) {
+    processed_data <- read.csv(processed_data_path)
+} else {
+    processed_data <- read.csv("data/timeseries.csv") %>%
+        filter(sim_number %in% selected_sims, integer %in% 1:200) %>%
+        filter(time == max(time))
+
+    ai <- read.csv("data/Assembly-10000.csv")
+
+    processed_data <- processed_data %>%
+        left_join(ai, by = c("integer" = "integer"))
+
+    processed_data <- processed_data %>%
+        group_by(sim_number, time, assemblyindex) %>%
+        reframe(frequency = sum(frequency)) %>%
+        ungroup() %>%
+        {dir.create(dirname(processed_data_path), recursive = TRUE, showWarnings = FALSE); 
+        write.csv(., processed_data_path, row.names = FALSE); .}
+}
+
+############################
+# CREATE MULTIPANEL PLOT
+############################
+
+# get the parameters and sim data together
+merged_data <- merge(params, processed_data, by = "sim_number") %>%
+    mutate(inflow_mols = factor(inflow_mols, levels = rev(sort(unique(inflow_mols)))))
+
+# store the logarithms of the integer and frequency
+merged_data <- merged_data %>%
+    mutate(assemblyindex = as.numeric(assemblyindex),
+           frequency = as.numeric(frequency),
+           log_assemblyindex = log10(assemblyindex),
+           log_frequency = log10(frequency)) %>%
+    filter(is.finite(log_assemblyindex), is.finite(log_frequency))
+
+# fit a power-law to each combination of inflow and outflow
+fits <- merged_data %>%
+    group_by(inflow_mols, outflow_rate) %>%
+    nest() %>%
+    mutate(fit = map(data, ~ lm(log_frequency ~ log_assemblyindex, data = .x))) %>%
+    transmute(inflow_mols, outflow_rate, 
+              intercept = map_dbl(fit, ~ coef(.x)[1]), 
+              slope = map_dbl(fit, ~ coef(.x)[2]))
+
+# calculate the fitted values from the coefficients
+fit_lines <- merged_data %>%
+    ungroup() %>% 
+    distinct(inflow_mols, outflow_rate, log_assemblyindex) %>% 
+    inner_join(fits, by = c("inflow_mols", "outflow_rate")) %>%
+    mutate(log_assemblyindex = as.numeric(log_assemblyindex), 
+           fitted_y = intercept + slope * log_assemblyindex)
+
+p <- ggplot(merged_data, aes(x = log_assemblyindex, y = log_frequency)) +
+    geom_point(shape = 4, color = "black", size = 0.5) +
+    # geom_smooth doesn’t make the coefficients available but it’s useful as a validation
+    # geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue", linewidth = 1.0, linetype = "dashed") +
+    geom_line(data = fit_lines, aes(x = log_assemblyindex, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
+              color = "red", linewidth = 0.5) +
+    facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
+                labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
+    # scale_x_log10() + 
+    # scale_y_log10() +
+    theme_bw() +
+    theme(legend.position = "none", axis.text = element_text(size = 6),
+          plot.title = element_text(hjust = 0.5),
+          strip.text = element_text(color = "white"), 
+          strip.background.x = element_rect(fill = "blue"), strip.background.y = element_rect(fill = "red")) +
+    labs(x = TeX("$log_{10}$ (assembly index)"), y = TeX("$log_{10} (frequency)$"),
+         title = ("Integer Distributions with Power-Law Fit \n (blue = diffusion, red = inflow)"))
+
+ggsave("figs/multipanel-histograms-AI.pdf", plot = p, width = 8, height = 8)
