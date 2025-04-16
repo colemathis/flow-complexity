@@ -17,8 +17,8 @@ selected_sim <- 62
 params <- read.csv("data/params.csv")
 processed_data_path <- sprintf("data/single-timeseries/single_%d.csv", selected_sim)
 
-processed_data <- if (file.exists(file_path)) {
-    read.csv(file_path)
+processed_data <- if (file.exists(processed_data_path)) {
+    read.csv(processed_data_path)
 } else {
     read.csv("data/timeseries.csv") %>%
         filter(sim_number == selected_sim, integer %in% 1:10) %>%

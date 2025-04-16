@@ -21,13 +21,13 @@ nrows <- 10
 selected_sims <- 1:(nrows^2)
 
 params <- read.csv("data/params.csv")
-processed_data_path <- "data/multipanel-histograms/processed_data_200int.csv"
+processed_data_path <- "data/multipanel-histograms/processed_data_50int.csv"
 
 processed_data <- if (file.exists(processed_data_path)) {
     read.csv(processed_data_path)
 } else {
     read.csv("data/timeseries.csv") %>%
-        filter(sim_number %in% selected_sims, integer %in% 1:200) %>%
+        filter(sim_number %in% selected_sims, integer %in% 1:50) %>%
         filter(time == max(time)) %>%
         group_by(sim_number, time, integer) %>%
         reframe(frequency = sum(frequency)) %>%

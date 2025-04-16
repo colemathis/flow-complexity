@@ -7,6 +7,7 @@ options(conflicts.policy = list(warn.conflicts = FALSE))
 library(dplyr)
 library(ggplot2)
 library(latex2exp)
+library(scales)
 
 ############################
 # DATA PROCESSING
