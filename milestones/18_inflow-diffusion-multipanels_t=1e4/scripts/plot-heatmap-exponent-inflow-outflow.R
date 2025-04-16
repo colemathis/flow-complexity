@@ -12,6 +12,7 @@ library(scales)
 library(MASS)
 library(purrr)
 library(tidyr)
+library(reshape2)
 
 ############################
 # DATA PROCESSING
@@ -19,9 +20,10 @@ library(tidyr)
 
 nrows <- 10
 selected_sims <- 1:(nrows^2)
+nsims <- nrows^2
 
 params <- read.csv("data/params.csv")
-processed_data_path <- "data/multipanel-histograms-inflow-outflow/processed_data_200int.csv"
+processed_data_path <- "data/heatmap-exponent-inflow-outflow/processed_data.csv"
 
 processed_data <- if (file.exists(processed_data_path)) {
     read.csv(processed_data_path)
@@ -62,12 +64,12 @@ fits_inflow <- merged_data %>% filter(chemostat_id == 1) %>%
               slope = map_dbl(fit, ~ coef(.x)[2]))
 
 # calculate the fitted values from the coefficients
-fit_lines_inflow <- merged_data %>%
-    ungroup() %>% 
-    distinct(inflow_mols, outflow_rate, log_integer) %>% 
-    inner_join(fits_inflow, by = c("inflow_mols", "outflow_rate")) %>%
-    mutate(log_integer = as.numeric(log_integer), 
-           fitted_y = intercept + slope * log_integer)
+# fit_lines_inflow <- merged_data %>%
+#     ungroup() %>% 
+#     distinct(inflow_mols, outflow_rate, log_integer) %>% 
+#     inner_join(fits_inflow, by = c("inflow_mols", "outflow_rate")) %>%
+#     mutate(log_integer = as.numeric(log_integer), 
+#            fitted_y = intercept + slope * log_integer)
 
 # fit a power-law to each combination of inflow and outflow
 fits_outflow <- merged_data %>% filter(chemostat_id == 25) %>% 
@@ -79,30 +81,44 @@ fits_outflow <- merged_data %>% filter(chemostat_id == 25) %>%
               slope = map_dbl(fit, ~ coef(.x)[2]))
 
 # calculate the fitted values from the coefficients
-fit_lines_outflow <- merged_data %>%
-    ungroup() %>% 
-    distinct(inflow_mols, outflow_rate, log_integer) %>% 
-    inner_join(fits_outflow, by = c("inflow_mols", "outflow_rate")) %>%
-    mutate(log_integer = as.numeric(log_integer), 
-           fitted_y = intercept + slope * log_integer)
+# fit_lines_outflow <- merged_data %>%
+#     ungroup() %>% 
+#     distinct(inflow_mols, outflow_rate, log_integer) %>% 
+#     inner_join(fits_outflow, by = c("inflow_mols", "outflow_rate")) %>%
+#     mutate(log_integer = as.numeric(log_integer), 
+#            fitted_y = intercept + slope * log_integer)
 
-p <- ggplot(merged_data, aes(x = log_integer, y = log_frequency)) +
-    geom_point(data = merged_data %>% filter(chemostat_id == 1), 
-               shape = 4, color = "darkgreen", size = 0.5) +
-    geom_point(data = merged_data %>% filter(chemostat_id == 25), 
-               shape = 4, color = "darkorange", size = 0.5) +
-    geom_line(data = fit_lines_inflow, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
-              color = "blue", linewidth = 0.5) +
-        geom_line(data = fit_lines_outflow, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
-              color = "red", linewidth = 0.5) +
-    facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
-                labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
+############################
+# HEATMAP OF POWER-LAW EXPONENTS
+############################
+
+# slope of power-law fits (i.e., k in x^{-k}, so they’re positive)
+k_inflow <- -fits_inflow$slope
+k_outflow <- -fits_outflow$slope
+
+heatmap_matrix <- matrix(k_outflow-k_inflow, nrow = nrows, ncol = nrows)
+# heatmap_matrix <- -heatmap_matrix
+
+heatmap_plot <- ggplot(melt(heatmap_matrix), aes(Var1, Var2, fill = value)) +
+    geom_tile(color = "black") +
+    labs(x = TeX("$log_{10} (k_d)$"), y = TeX("$log_{10} (I)$"), fill = TeX("$Delta k$")) +
     theme_bw() +
-    theme(legend.position = "none", axis.text = element_text(size = 6),
-          plot.title = element_text(hjust = 0.5),
-          strip.text = element_text(color = "white"), 
-          strip.background.x = element_rect(fill = "blue"), strip.background.y = element_rect(fill = "red")) +
-    labs(x = TeX("$log_{10}$ (integer value)"), y = TeX("$log_{10} (frequency)$"),
-         title = ("Integer Distributions Inflow/Outflow with Power-Law Fit \n (blue = diffusion, red = inflow)"))
+    scale_x_continuous(breaks = 1:nrows, labels = sprintf("%.2f", log10(params$outflow_rate[seq(1, nrows, by = 1)])), expand = c(0, 0)) +
+    scale_y_continuous(breaks = 1:nrows, labels = sprintf("%.2f", log10(params$inflow_mols[seq(1, nsims, by = nrows)])), expand = c(0, 0)) +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))
 
-ggsave("figs/multipanel-histograms-inflow-outflow.pdf", plot = p, width = 8, height = 8)
+# print(heatmap_plot)
+
+# Linear scale
+heatmap_plot_linear <- heatmap_plot +
+    scale_fill_gradientn(colors = c("blue", "white", "red")) +
+    labs(title = TeX("Difference between exponents of power law fits ($k_{outflow}-k_{inflow}$)"))
+
+ggsave("figs/heatmap-exponents-inflow-outflow-linear.pdf", plot = heatmap_plot_linear, width = 8, height = 7)
+
+# Log scale
+# heatmap_plot_log <- heatmap_plot +
+#     scale_fill_gradientn(colors = c("blue", "white", "red"), trans = "log", labels = scales::scientific) +
+#     labs(title = "(Exponent of Outflow Power-law Fit) - (Exponent of Inflow Power-law Fit)")
+
+# ggsave("figs/heatmap-exponents-inflow-outflow-log.pdf", plot = heatmap_plot_log, width = 8, height = 7)
