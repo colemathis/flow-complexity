@@ -54,14 +54,14 @@ heatmap_plot <- ggplot(melt(heatmap_matrix), aes(Var1, Var2, fill = value)) +
 
 # Linear scale
 heatmap_plot_linear <- heatmap_plot +
-    scale_fill_gradientn(colors = c("blue", "white", "red")) +
+    scale_fill_distiller(palette = "Spectral") +
     labs(title = "Total Mass Across Simulations \n (Linear Scale Colormap)")
 
 ggsave("figs/heatmap-total-mass-linear.pdf", plot = heatmap_plot_linear, width = 8, height = 7)
 
 # Log scale
 heatmap_plot_log <- heatmap_plot +
-    scale_fill_gradientn(colors = c("blue", "white", "red"), trans = "log", labels = scales::scientific) +
+    scale_fill_distiller(palette = "Spectral", trans = "log", labels = scales::scientific) +
     labs(title = "Total Mass Across Simulations \n (Log Scale Colormap)")
 
 ggsave("figs/heatmap-total-mass-log.pdf", plot = heatmap_plot_log, width = 8, height = 7)

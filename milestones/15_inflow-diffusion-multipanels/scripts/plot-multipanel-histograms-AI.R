@@ -82,6 +82,7 @@ p <- ggplot(merged_data, aes(x = log_assemblyindex, y = log_frequency)) +
     # geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "blue", linewidth = 1.0, linetype = "dashed") +
     geom_line(data = fit_lines, aes(x = log_assemblyindex, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
               color = "red", linewidth = 0.5) +
+    geom_abline(slope = -1, intercept = 4, linetype = "dashed", color = "black", linewidth = 0.25) +
     facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
                 labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
     # scale_x_log10() + 

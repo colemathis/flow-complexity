@@ -96,29 +96,29 @@ fits_outflow <- merged_data %>% filter(chemostat_id == 25) %>%
 k_inflow <- -fits_inflow$slope
 k_outflow <- -fits_outflow$slope
 
-heatmap_matrix <- matrix(k_outflow-k_inflow, nrow = nrows, ncol = nrows)
-# heatmap_matrix <- -heatmap_matrix
+heatmap_matrix_inflow <- matrix(k_inflow, nrow = nrows, ncol = nrows)
+heatmap_matrix_outflow <- matrix(k_outflow, nrow = nrows, ncol = nrows)
+heatmap_matrix_diff <- matrix(k_outflow-k_inflow, nrow = nrows, ncol = nrows)
 
-heatmap_plot <- ggplot(melt(heatmap_matrix), aes(Var1, Var2, fill = value)) +
+heatmap_plot <- ggplot(melt(heatmap_matrix_diff), aes(Var1, Var2, fill = value)) +
     geom_tile(color = "black") +
     labs(x = TeX("$log_{10} (k_d)$"), y = TeX("$log_{10} (I)$"), fill = TeX("$Delta k$")) +
     theme_bw() +
+    scale_fill_distiller(palette = "Spectral") +
     scale_x_continuous(breaks = 1:nrows, labels = sprintf("%.2f", log10(params$outflow_rate[seq(1, nrows, by = 1)])), expand = c(0, 0)) +
     scale_y_continuous(breaks = 1:nrows, labels = sprintf("%.2f", log10(params$inflow_mols[seq(1, nsims, by = nrows)])), expand = c(0, 0)) +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))
 
-# print(heatmap_plot)
-
-# Linear scale
-heatmap_plot_linear <- heatmap_plot +
-    scale_fill_gradientn(colors = c("blue", "white", "red")) +
+heatmap_plot_diff <- heatmap_plot +
     labs(title = TeX("Difference between exponents of power law fits ($k_{outflow}-k_{inflow}$)"))
+ggsave("figs/heatmap-exponents-diff.pdf", plot = heatmap_plot_diff, width = 8, height = 7)
 
-ggsave("figs/heatmap-exponents-inflow-outflow-linear.pdf", plot = heatmap_plot_linear, width = 8, height = 7)
+heatmap_plot_inflow <- heatmap_plot_diff %+% melt(heatmap_matrix_inflow)
+heatmap_plot_inflow <- heatmap_plot_inflow +
+    labs(title = TeX("Exponents of power law fit at inflow ($k_{inflow}$)"))
+ggsave("figs/heatmap-exponents-inflow.pdf", plot = heatmap_plot_inflow, width = 8, height = 7)
 
-# Log scale
-# heatmap_plot_log <- heatmap_plot +
-#     scale_fill_gradientn(colors = c("blue", "white", "red"), trans = "log", labels = scales::scientific) +
-#     labs(title = "(Exponent of Outflow Power-law Fit) - (Exponent of Inflow Power-law Fit)")
-
-# ggsave("figs/heatmap-exponents-inflow-outflow-log.pdf", plot = heatmap_plot_log, width = 8, height = 7)
+heatmap_plot_outflow <- heatmap_plot_diff %+% melt(heatmap_matrix_outflow)
+heatmap_plot_outflow <- heatmap_plot_outflow +
+    labs(title = TeX("Exponents of power law fit at outflow ($k_{outflow}$)"))
+ggsave("figs/heatmap-exponents-outflow.pdf", plot = heatmap_plot_outflow, width = 8, height = 7)

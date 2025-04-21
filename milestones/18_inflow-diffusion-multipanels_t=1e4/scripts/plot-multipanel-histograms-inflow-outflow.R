@@ -93,8 +93,9 @@ p <- ggplot(merged_data, aes(x = log_integer, y = log_frequency)) +
                shape = 4, color = "darkorange", size = 0.5) +
     geom_line(data = fit_lines_inflow, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
               color = "blue", linewidth = 0.5) +
-        geom_line(data = fit_lines_outflow, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
+    geom_line(data = fit_lines_outflow, aes(x = log_integer, y = fitted_y, group = interaction(inflow_mols, outflow_rate)), 
               color = "red", linewidth = 0.5) +
+    geom_abline(slope = -1, intercept = 4, linetype = "dashed", color = "black", linewidth = 0.25) +
     facet_grid(rows = vars(inflow_mols), cols = vars(outflow_rate), scales = "fixed",
                 labeller = labeller(.default = function(x) sprintf("%.2f", log10(as.numeric(x))))) +
     theme_bw() +
