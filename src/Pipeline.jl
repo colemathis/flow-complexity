@@ -50,6 +50,20 @@ function extract()
     
     CSV.write("data/timeseries.csv", timeseries)
     @save "data/sim_array.jld2" sim_array
+
+    io_nodes = DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
+    for i in 1:nsim
+        sim_number = i
+        g = sim_array[i].ensemble.ensemble_graph
+        for e in edges(g)
+            push!(io_nodes, (
+                sim_number = sim_number,
+                chemostat_in = src(e),
+                chemostat_out = dst(e)
+            ))
+        end
+    end
+    CSV.write("data/graphs.csv", io_nodes)
     
     println("Saving done.")
     println("")
@@ -128,4 +142,3 @@ function launch_simulation(sim; dry_run=false)
 end
 
 #==============================================================================#
-
