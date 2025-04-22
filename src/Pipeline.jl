@@ -46,10 +46,12 @@ function extract()
     end
     timeseries = consolidate_array_time_series(sim_array)
     
-    println("Loading done. Saving data array...")
+    println("Loading done. Saving data...")
     
     CSV.write("data/timeseries.csv", timeseries)
-    @save "data/sim_array.jld2" sim_array
+    
+    # skip saving as jld2 for now
+    # @save "data/sim_array.jld2" sim_array
 
     io_nodes = DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
     for i in 1:nsim
