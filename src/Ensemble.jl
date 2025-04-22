@@ -1,5 +1,6 @@
 using Graphs
 using StatsBase
+using Random
 
 #==============================================================================#
 # DATA TYPES
@@ -21,6 +22,7 @@ end
 function Ensemble(N_reactors        ::Int64, 
                   graph_type        ::String, 
                   N_sources         ::Int64, 
+                  randomize_edges   ::Bool,
                   mass              ::Int64;
                   chemostat_list    = Vector{Dict{String,Any}}[]
                   )
@@ -113,6 +115,11 @@ function Ensemble(N_reactors        ::Int64,
         # Get chemostat vector from specifications  #p1: what
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
+    end
+
+    if randomize_edges == true
+        # Randomize the edges of the graph while preserving the degree distribution
+        ensemble_graph = randomize_directed_preserving_degree!(ensemble_graph, 10 * ne(ensemble_graph))
     end
 
     # return the Ensemble
@@ -310,4 +317,42 @@ function gen_chemostat_spec_list(N_chemostats   ::Int64,
     # return the list of chemostat specs
     return spec_list 
     
+end
+
+#==============================================================================#
+
+function randomize_directed_preserving_degree!(g::SimpleDiGraph, nswap::Int)
+    edges = collect(Graphs.edges(g))
+    swaps = 0
+    tries = 0
+
+    while swaps < nswap && tries < 100 * nswap
+        tries += 1
+
+        e1, e2 = rand(edges, 2)
+        u1, v1 = src(e1), dst(e1)
+        u2, v2 = src(e2), dst(e2)
+
+        # Skip if any overlap between the four nodes
+        if length(Set([u1, v1, u2, v2])) < 4
+            continue
+        end
+
+        # Proposed new edges: (u1→v2), (u2→v1)
+        if has_edge(g, u1, v2) || has_edge(g, u2, v1) || u1 == v2 || u2 == v1
+            continue
+        end
+
+        # Perform the swap
+        rem_edge!(g, u1, v1)
+        rem_edge!(g, u2, v2)
+        add_edge!(g, u1, v2)
+        add_edge!(g, u2, v1)
+
+        # Update edge list and count
+        edges = collect(Graphs.edges(g))
+        swaps += 1
+    end
+
+    return g
 end

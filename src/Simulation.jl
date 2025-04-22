@@ -43,19 +43,20 @@ end
 function apply_params_default_values()
 
     default_values = Dict(
-        :mass           => 1000,
-        :graph_type     => "line",
-        :N_reactors     => 1,
-        :forward_rate   => 1e-3,
-        :outflow_rate   => 0.0,
-        :total_time     => 100,
-        :output_time    => 1.0,
-        :N_inflow       => 1,
-        :sim_number     => 1,
-        :method         => "exact",
-        :method         => "tau-leaping",
-        :save_name      => get_relative_path(),
-        :random_seed    => 1,
+        :mass               => 1000,
+        :graph_type         => "line",
+        :randomize_edges    => false,
+        :N_reactors         => 1,
+        :forward_rate       => 1e-3,
+        :outflow_rate       => 0.0,
+        :total_time         => 100,
+        :output_time        => 1.0,
+        :N_inflow           => 1,
+        :sim_number         => 1,
+        :method             => "exact",
+        :method             => "tau-leaping",
+        :save_name          => get_relative_path(),
+        :random_seed        => 1,
     )
     
     return default_values
@@ -91,6 +92,7 @@ function generate_ensemble_from_specs(params)
     ensemble = Ensemble(params[:N_reactors],
                              params[:graph_type],
                              params[:N_inflow],
+                             params[:randomize_edges],
                              params[:mass],
                              chemostat_list=chemostat_list)
 
