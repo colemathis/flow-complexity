@@ -90,6 +90,12 @@ function Ensemble(N_reactors        ::Int64,
 
         # create lattice digraph
         ensemble_graph = lattice_digraph_bidirectionnal(N_reactors)
+
+        if randomize_edges == true
+            # Randomize the edges of the graph while preserving the degree distribution
+            ensemble_graph = randomize_directed_preserving_degree!(ensemble_graph, 10 * ne(ensemble_graph))
+        end
+
         # Get inflow ids #p1: what
         # inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
         inflow_ids = [1]
@@ -117,10 +123,10 @@ function Ensemble(N_reactors        ::Int64,
 
     end
 
-    if randomize_edges == true
-        # Randomize the edges of the graph while preserving the degree distribution
-        ensemble_graph = randomize_directed_preserving_degree!(ensemble_graph, 10 * ne(ensemble_graph))
-    end
+    # if randomize_edges == true
+    #     # Randomize the edges of the graph while preserving the degree distribution
+    #     ensemble_graph = randomize_directed_preserving_degree!(ensemble_graph, 10 * ne(ensemble_graph))
+    # end
 
     # return the Ensemble
     return Ensemble(collect(1:N_reactors),
