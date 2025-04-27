@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.1)  21 OCT 2024 12:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.1)  22 APR 2025 20:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -80,6 +80,8 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/graphics/dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/xcolor/svgnam.def
+File: svgnam.def 2021/10/31 v2.13 Predefined colors according to SVG 1.1 (UK)
 )) (/usr/local/texlive/2022/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2021/10/15 v2.17l AMS math features
 \@mathmargin=\skip49
@@ -548,31 +550,65 @@ Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 \tcb@temp=\box71
 \tcb@temp=\box72
 \tcb@temp=\box73
-) (/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.aux
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count323
+\lst@gtempboxa=\box74
+\lst@token=\toks40
+\lst@length=\count324
+\lst@currlwidth=\dimen283
+\lst@column=\count325
+\lst@pos=\count326
+\lst@lostspace=\dimen284
+\lst@width=\dimen285
+\lst@newlines=\count327
+\lst@lineno=\count328
+\lst@maxwidth=\dimen286
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count329
+\lst@skipnumbers=\count330
+\lst@framebox=\box75
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2021/12/21 4.1b verbatim text (tvz,hv)
+\FV@CodeLineNo=\count331
+\FV@InFile=\read5
+\FV@TabBox=\box76
+\c@FancyVerbLine=\count332
+\FV@StepNumber=\count333
+\FV@OutFile=\write4
+) (/usr/local/texlive/2022/texmf-dist/tex/latex/showlabels/showlabels.sty
+Package: showlabels 2021/10/27 v1.9.1
 
-LaTeX Warning: Label `fig:prelim-diffusion' multiply defined.
-
+Package: `showlabels' v1.9.1 <2021/10/27>
+with amsmath equation tags
+\SL@labelposition=\count334
 )
+\c@tcb@cnt@hintBox=\count335
+ (/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.aux)
 \openout1 = `lab-notes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -582,15 +618,15 @@ LaTeX Font Info:    ... okay on input line 61.
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
-* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* h-part:(L,W,R)=(92.14519pt, 430.00462pt, 92.14519pt)
+* v-part:(T,H,B)=(95.39737pt, 556.47656pt, 143.09605pt)
 * \paperwidth=614.295pt
 * \paperheight=794.96999pt
-* \textwidth=469.75502pt
-* \textheight=650.43001pt
-* \oddsidemargin=0.0pt
-* \evensidemargin=0.0pt
-* \topmargin=-37.0pt
+* \textwidth=430.00462pt
+* \textheight=556.47656pt
+* \oddsidemargin=19.8752pt
+* \evensidemargin=19.8752pt
+* \topmargin=-13.87262pt
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=11.0pt
@@ -610,24 +646,30 @@ LaTeX Font Info:    ... okay on input line 61.
 
 (/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count323
-\scratchdimen=\dimen283
-\scratchbox=\box74
-\nofMPsegments=\count324
-\nofMParguments=\count325
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count326
-\MPscratchDim=\dimen284
-\MPnumerator=\count327
-\makeMPintoPDFobject=\count328
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count336
+\scratchdimen=\dimen287
+\scratchbox=\box77
+\nofMPsegments=\count337
+\nofMParguments=\count338
+\everyMPshowfont=\toks41
+\MPscratchCnt=\count339
+\MPscratchDim=\dimen288
+\MPnumerator=\count340
+\makeMPintoPDFobject=\count341
+\everyMPtoPDFconversion=\toks42
 ) (/usr/local/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+ (/usr/local/texlive/2022/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 61.
+Package hyperref Info: Link coloring ON on input line 93.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (/usr/local/texlive/2022/texmf-dist/tex/latex/refcount/refcount.sty
@@ -635,65 +677,33 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/usr/local/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count329
+\c@section@level=\count342
 )
-LaTeX Info: Redefining \ref on input line 61.
-LaTeX Info: Redefining \pageref on input line 61.
-LaTeX Info: Redefining \nameref on input line 61.
- (/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.out) (/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.out)
-\@outlinefile=\write4
-\openout4 = `lab-notes.out'.
+LaTeX Info: Redefining \ref on input line 93.
+LaTeX Info: Redefining \pageref on input line 93.
+LaTeX Info: Redefining \nameref on input line 93.
+ (/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.out) (/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.out)
+\@outlinefile=\write5
+\openout5 = `lab-notes.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
- (/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.toc
-LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
+\c@lstlisting=\count343
+LaTeX Font Info:    Trying to load font information for U+msa on input line 96.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 96.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
-\tf@toc=\write5
-\openout5 = `lab-notes.toc'.
+) [1
+
+{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.toc)
+\tf@toc=\write6
+\openout6 = `lab-notes.toc'.
 
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[1{/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
-
-]
-<figures/system/abstraction-stage.pdf, id=82, 792.44255pt x 403.96321pt>
-File: figures/system/abstraction-stage.pdf Graphic file (type pdf)
-<use figures/system/abstraction-stage.pdf>
-Package pdftex.def Info: figures/system/abstraction-stage.pdf  used on input line 76.
-(pdftex.def)             Requested size: 422.77664pt x 215.5172pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/single-reactor.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/single-reactor.pdf, id=86, 341.01202pt x 424.67358pt>
-File: figures/system/single-reactor.pdf Graphic file (type pdf)
-<use figures/system/single-reactor.pdf>
-Package pdftex.def Info: figures/system/single-reactor.pdf  used on input line 102.
-(pdftex.def)             Requested size: 164.41711pt x 204.75467pt.
-
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/ensemble.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/ensemble.pdf, id=87, 313.58154pt x 298.95389pt>
-File: figures/system/ensemble.pdf Graphic file (type pdf)
-<use figures/system/ensemble.pdf>
-Package pdftex.def Info: figures/system/ensemble.pdf  used on input line 103.
-(pdftex.def)             Requested size: 187.89914pt x 179.13194pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -703,48 +713,93 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [2
 
- <./figures/system/abstraction-stage.pdf, page is rotated 90 degrees>]
+]
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-path.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/graph-path.pdf, id=104, 88.6753pt x 382.85034pt>
-File: figures/system/graph-path.pdf Graphic file (type pdf)
-<use figures/system/graph-path.pdf>
-Package pdftex.def Info: figures/system/graph-path.pdf  used on input line 114.
-(pdftex.def)             Requested size: 23.48918pt x 101.41396pt.
+./lab-notes.tex:102: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.102 \label{sec:previous-notes}
+                                
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:102: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.102 \label{sec:previous-notes}
+                                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:102: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.102 \label{sec:previous-notes}
+                                
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
 
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-lattice.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/graph-lattice.pdf, id=105, 387.07312pt x 387.07312pt>
-File: figures/system/graph-lattice.pdf Graphic file (type pdf)
-<use figures/system/graph-lattice.pdf>
-Package pdftex.def Info: figures/system/graph-lattice.pdf  used on input line 116.
-(pdftex.def)             Requested size: 93.94957pt x 93.94485pt.
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
+[]\OT1/cmr/m/n/10.95 sec:previous-
+ []
 
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-ER.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/graph-ER.pdf, id=106, 593.98009pt x 457.45003pt>
-File: figures/system/graph-ER.pdf Graphic file (type pdf)
-<use figures/system/graph-ER.pdf>
-Package pdftex.def Info: figures/system/graph-ER.pdf  used on input line 117.
-(pdftex.def)             Requested size: 117.43875pt x 90.44136pt.
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 102--102
+[][]  
+ []
+
+./lab-notes.tex:102: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.102 \label{sec:previous-notes}
+                                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:102: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.102 \label{sec:previous-notes}
+                                
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:102: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.102 \label{sec:previous-notes}
+                                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:102: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.102 \label{sec:previous-notes}
+                                
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
 
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-regular.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/graph-regular.pdf, id=107, 420.8533pt x 419.44604pt>
-File: figures/system/graph-regular.pdf Graphic file (type pdf)
-<use figures/system/graph-regular.pdf>
-Package pdftex.def Info: figures/system/graph-regular.pdf  used on input line 119.
-(pdftex.def)             Requested size: 117.43875pt x 117.04086pt.
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
 
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-BA.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/system/graph-BA.pdf, id=108, 574.96704pt x 551.30067pt>
-File: figures/system/graph-BA.pdf Graphic file (type pdf)
-<use figures/system/graph-BA.pdf>
-Package pdftex.def Info: figures/system/graph-BA.pdf  used on input line 121.
-(pdftex.def)             Requested size: 117.43875pt x 112.60516pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+ []
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -753,13 +808,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3 <./figures/system/single-reactor.pdf> <./figures/system/ensemble.pdf>]
-<figures/system/integers-assembly.pdf, id=131, 401.5pt x 301.125pt>
-File: figures/system/integers-assembly.pdf Graphic file (type pdf)
-<use figures/system/integers-assembly.pdf>
-Package pdftex.def Info: figures/system/integers-assembly.pdf  used on input line 132.
-(pdftex.def)             Requested size: 187.89914pt x 140.92683pt.
+[3
 
+]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -767,12 +818,232 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[4 <./figures/system/graph-path.pdf> <./figures/system/graph-lattice.pdf> <./figures/system/graph-ER.pdf> <./figures/system/graph-regular.pdf> <./figures/system/graph-BA.pdf> <./figures/system/integers-assembly.pdf>]
-<figures/results/1-prelim/ts-gridplot.pdf, id=170, 602.25pt x 401.5pt>
-File: figures/results/1-prelim/ts-gridplot.pdf Graphic file (type pdf)
-<use figures/results/1-prelim/ts-gridplot.pdf>
-Package pdftex.def Info: figures/results/1-prelim/ts-gridplot.pdf  used on input line 147.
-(pdftex.def)             Requested size: 399.29463pt x 266.20383pt.
+[4]
+
+./lab-notes.tex:172: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.172 \label{sec:desc-system}
+                             
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:172: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.172 \label{sec:desc-system}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:172: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.172 \label{sec:desc-system}
+                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 172--172
+[][]  
+ []
+
+./lab-notes.tex:172: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.172 \label{sec:desc-system}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:172: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.172 \label{sec:desc-system}
+                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:172: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.172 \label{sec:desc-system}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:172: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.172 \label{sec:desc-system}
+                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+./lab-notes.tex:175: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \label{subsec:artificial-chemistry}
+                                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:175: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.175 \label{subsec:artificial-chemistry}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:175: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.175 \label{subsec:artificial-chemistry}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 175--175
+[]\OT1/cmr/m/n/10.95 subsec:artificial-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 175--175
+[][]  
+ []
+
+./lab-notes.tex:175: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.175 \label{subsec:artificial-chemistry}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:175: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.175 \label{subsec:artificial-chemistry}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:175: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.175 \label{subsec:artificial-chemistry}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:175: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.175 \label{subsec:artificial-chemistry}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/system/abstraction-stage.pdf, id=177, 792.44255pt x 403.96321pt>
+File: figures/system/abstraction-stage.pdf Graphic file (type pdf)
+<use figures/system/abstraction-stage.pdf>
+Package pdftex.def Info: figures/system/abstraction-stage.pdf  used on input line 184.
+(pdftex.def)             Requested size: 387.00153pt x 197.27798pt.
+
+./lab-notes.tex:186: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.186   \label{fig:abstraction-stage}
+                                     
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:186: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.186   \label{fig:abstraction-stage}
+                                     
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:186: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.186   \label{fig:abstraction-stage}
+                                     
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 186--186
+[]\OT1/cmr/m/n/10.95 fig:abstraction-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 186--186
+[][]  
+ []
+
+./lab-notes.tex:186: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.186   \label{fig:abstraction-stage}
+                                     
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:186: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.186   \label{fig:abstraction-stage}
+                                     
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -783,48 +1054,1024 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [5
 
+ <./figures/system/abstraction-stage.pdf, page is rotated 90 degrees>]
+
+./lab-notes.tex:201: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.201 \label{tab:reactions}
+                           
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:201: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.201 \label{tab:reactions}
+                           
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:201: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.201 \label{tab:reactions}
+                           
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 201--201
+[][]  
+ []
+
+./lab-notes.tex:201: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.201 \label{tab:reactions}
+                           
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:201: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.201 \label{tab:reactions}
+                           
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+./lab-notes.tex:205: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.205 \label{subsec:system-of-reactors}
+                                       
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:205: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.205 \label{subsec:system-of-reactors}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:205: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.205 \label{subsec:system-of-reactors}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 205--205
+[]\OT1/cmr/m/n/10.95 subsec:system-of-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 205--205
+[][]  
+ []
+
+./lab-notes.tex:205: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.205 \label{subsec:system-of-reactors}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:205: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.205 \label{subsec:system-of-reactors}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:205: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.205 \label{subsec:system-of-reactors}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:205: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.205 \label{subsec:system-of-reactors}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/single-reactor.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/single-reactor.pdf, id=190, 341.01202pt x 424.67358pt>
+File: figures/system/single-reactor.pdf Graphic file (type pdf)
+<use figures/system/single-reactor.pdf>
+Package pdftex.def Info: figures/system/single-reactor.pdf  used on input line 212.
+(pdftex.def)             Requested size: 150.50424pt x 187.43365pt.
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/ensemble.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/ensemble.pdf, id=191, 313.58154pt x 298.95389pt>
+File: figures/system/ensemble.pdf Graphic file (type pdf)
+<use figures/system/ensemble.pdf>
+Package pdftex.def Info: figures/system/ensemble.pdf  used on input line 213.
+(pdftex.def)             Requested size: 171.99922pt x 163.97354pt.
+
+./lab-notes.tex:215: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.215   \label{fig:reactor-ensemble}
+                                    
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:215: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.215   \label{fig:reactor-ensemble}
+                                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:215: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.215   \label{fig:reactor-ensemble}
+                                    
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--215
+[]\OT1/cmr/m/n/10.95 fig:reactor-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 215--215
+[][]  
+ []
+
+./lab-notes.tex:215: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.215   \label{fig:reactor-ensemble}
+                                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:215: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.215   \label{fig:reactor-ensemble}
+                                    
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+./lab-notes.tex:219: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.219 \label{subsec:topologies}
+                               
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:219: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.219 \label{subsec:topologies}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:219: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.219 \label{subsec:topologies}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 219--219
+[][]  
+ []
+
+./lab-notes.tex:219: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.219 \label{subsec:topologies}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:219: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.219 \label{subsec:topologies}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:219: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.219 \label{subsec:topologies}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:219: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.219 \label{subsec:topologies}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-path.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/graph-path.pdf, id=197, 88.6753pt x 382.85034pt>
+File: figures/system/graph-path.pdf Graphic file (type pdf)
+<use figures/system/graph-path.pdf>
+Package pdftex.def Info: figures/system/graph-path.pdf  used on input line 226.
+(pdftex.def)             Requested size: 21.50154pt x 92.83232pt.
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-lattice.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/graph-lattice.pdf, id=198, 387.07312pt x 387.07312pt>
+File: figures/system/graph-lattice.pdf Graphic file (type pdf)
+<use figures/system/graph-lattice.pdf>
+Package pdftex.def Info: figures/system/graph-lattice.pdf  used on input line 228.
+(pdftex.def)             Requested size: 85.9996pt x 85.99503pt.
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-ER.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/graph-ER.pdf, id=199, 593.98009pt x 457.45003pt>
+File: figures/system/graph-ER.pdf Graphic file (type pdf)
+<use figures/system/graph-ER.pdf>
+Package pdftex.def Info: figures/system/graph-ER.pdf  used on input line 229.
+(pdftex.def)             Requested size: 107.50114pt x 82.79115pt.
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-regular.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/graph-regular.pdf, id=200, 420.8533pt x 419.44604pt>
+File: figures/system/graph-regular.pdf Graphic file (type pdf)
+<use figures/system/graph-regular.pdf>
+Package pdftex.def Info: figures/system/graph-regular.pdf  used on input line 231.
+(pdftex.def)             Requested size: 107.50114pt x 107.13972pt.
+
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/system/graph-BA.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/system/graph-BA.pdf, id=201, 574.96704pt x 551.30067pt>
+File: figures/system/graph-BA.pdf Graphic file (type pdf)
+<use figures/system/graph-BA.pdf>
+Package pdftex.def Info: figures/system/graph-BA.pdf  used on input line 233.
+(pdftex.def)             Requested size: 107.50114pt x 103.07419pt.
+
+./lab-notes.tex:235: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.235   \label{fig:topologies}
+                              
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:235: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.235   \label{fig:topologies}
+                              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:235: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.235   \label{fig:topologies}
+                              
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 235--235
+[][]  
+ []
+
+./lab-notes.tex:235: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.235   \label{fig:topologies}
+                              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:235: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.235   \label{fig:topologies}
+                              
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+./lab-notes.tex:239: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.239 \label{subsec:integer-chemistry}
+                                      
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:239: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.239 \label{subsec:integer-chemistry}
+                                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:239: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.239 \label{subsec:integer-chemistry}
+                                      
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--239
+[]\OT1/cmr/m/n/10.95 subsec:integer-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 239--239
+[][]  
+ []
+
+./lab-notes.tex:239: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.239 \label{subsec:integer-chemistry}
+                                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:239: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.239 \label{subsec:integer-chemistry}
+                                      
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:239: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.239 \label{subsec:integer-chemistry}
+                                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:239: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.239 \label{subsec:integer-chemistry}
+                                      
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/system/integers-assembly.pdf, id=203, 401.5pt x 301.125pt>
+File: figures/system/integers-assembly.pdf Graphic file (type pdf)
+<use figures/system/integers-assembly.pdf>
+Package pdftex.def Info: figures/system/integers-assembly.pdf  used on input line 246.
+(pdftex.def)             Requested size: 171.99922pt x 129.00336pt.
+
+./lab-notes.tex:248: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.248   \label{fig:integers-assembly}
+                                     
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:248: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.248   \label{fig:integers-assembly}
+                                     
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:248: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.248   \label{fig:integers-assembly}
+                                     
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+[]\OT1/cmr/m/n/10.95 fig:integers-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 248--248
+[][]  
+ []
+
+./lab-notes.tex:248: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.248   \label{fig:integers-assembly}
+                                     
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:248: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.248   \label{fig:integers-assembly}
+                                     
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[6]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[7 <./figures/system/single-reactor.pdf> <./figures/system/ensemble.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[8 <./figures/system/graph-path.pdf> <./figures/system/graph-lattice.pdf> <./figures/system/graph-ER.pdf> <./figures/system/graph-regular.pdf> <./figures/system/graph-BA.pdf> <./figures/system/integers-assembly.pdf>]
+
+./lab-notes.tex:254: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.254 \label{sec:experiments}
+                             
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:254: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.254 \label{sec:experiments}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:254: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.254 \label{sec:experiments}
+                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 254--254
+[][]  
+ []
+
+./lab-notes.tex:254: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.254 \label{sec:experiments}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:254: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.254 \label{sec:experiments}
+                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:254: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.254 \label{sec:experiments}
+                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:254: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.254 \label{sec:experiments}
+                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+./lab-notes.tex:257: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.257 \label{subsec:MS01}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:257: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.257 \label{subsec:MS01}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:257: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.257 \label{subsec:MS01}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 257--257
+[][]  
+ []
+
+./lab-notes.tex:257: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.257 \label{subsec:MS01}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:257: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.257 \label{subsec:MS01}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:257: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.257 \label{subsec:MS01}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:257: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.257 \label{subsec:MS01}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/1-prelim/ts-gridplot.pdf, id=268, 602.25pt x 401.5pt>
+File: figures/results/1-prelim/ts-gridplot.pdf Graphic file (type pdf)
+<use figures/results/1-prelim/ts-gridplot.pdf>
+Package pdftex.def Info: figures/results/1-prelim/ts-gridplot.pdf  used on input line 264.
+(pdftex.def)             Requested size: 322.50346pt x 215.01173pt.
+
+./lab-notes.tex:266: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.266   \label{fig:time-series}
+                               
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:266: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.266   \label{fig:time-series}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:266: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.266   \label{fig:time-series}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 266--266
+[][]  
+ []
+
+./lab-notes.tex:266: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.266   \label{fig:time-series}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:266: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.266   \label{fig:time-series}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[9
+
  <./figures/results/1-prelim/ts-gridplot.pdf>]
-<figures/results/1-prelim/mu-vs-kd.pdf, id=183, 401.5pt x 301.125pt>
+
+./lab-notes.tex:272: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.272 \label{subsec:MS02}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:272: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.272 \label{subsec:MS02}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:272: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.272 \label{subsec:MS02}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 272--272
+[][]  
+ []
+
+./lab-notes.tex:272: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.272 \label{subsec:MS02}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:272: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.272 \label{subsec:MS02}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:272: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.272 \label{subsec:MS02}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:272: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.272 \label{subsec:MS02}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/1-prelim/mu-vs-kd.pdf, id=277, 401.5pt x 301.125pt>
 File: figures/results/1-prelim/mu-vs-kd.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/mu-vs-kd.pdf>
-Package pdftex.def Info: figures/results/1-prelim/mu-vs-kd.pdf  used on input line 161.
-(pdftex.def)             Requested size: 211.38832pt x 158.54327pt.
-<figures/results/1-prelim/sd-vs-kd.pdf, id=184, 401.5pt x 301.125pt>
+Package pdftex.def Info: figures/results/1-prelim/mu-vs-kd.pdf  used on input line 282.
+(pdftex.def)             Requested size: 193.50076pt x 145.12648pt.
+<figures/results/1-prelim/sd-vs-kd.pdf, id=278, 401.5pt x 301.125pt>
 File: figures/results/1-prelim/sd-vs-kd.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/sd-vs-kd.pdf>
-Package pdftex.def Info: figures/results/1-prelim/sd-vs-kd.pdf  used on input line 162.
-(pdftex.def)             Requested size: 211.38832pt x 158.54327pt.
+Package pdftex.def Info: figures/results/1-prelim/sd-vs-kd.pdf  used on input line 283.
+(pdftex.def)             Requested size: 193.50076pt x 145.12648pt.
 
+./lab-notes.tex:285: LaTeX Error: Not in outer par mode.
 
-./lab-notes.tex:169: Package pgfkeys Error: I do not know the key '/tcb/enhanced' and I am going to ignore it. Perhaps you misspelled it.
-
-See the pgfkeys package documentation for explanation.
+See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.169 ...and other properties to suit your needs.}
-                                                  
-This error message was generated by an \errmessage
-command, so I can't give any explicit help.
-Pretend that you're Hercule Poirot: Examine all clues,
-and deduce the truth by order and method.
+l.285   \label{fig:prelim-diffusion}
+                                    
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:285: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.285   \label{fig:prelim-diffusion}
+                                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:285: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.285   \label{fig:prelim-diffusion}
+                                    
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
 
 
-./lab-notes.tex:169: Package pgfkeys Error: I do not know the key '/tcb/borderline west', to which you passed '{6pt}{0pt}{green}', and I am going to ignore it. Perhaps you misspelled it.
+Underfull \hbox (badness 10000) in paragraph at lines 285--285
+[]\OT1/cmr/m/n/10.95 fig:prelim-
+ []
 
-See the pgfkeys package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.169 ...and other properties to suit your needs.}
-                                                  
-(That was another \errmessage.)
 
-<figures/results/1-prelim/mass.pdf, id=186, 602.25pt x 401.5pt>
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 285--285
+[][]  
+ []
+
+./lab-notes.tex:285: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.285   \label{fig:prelim-diffusion}
+                                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:285: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.285   \label{fig:prelim-diffusion}
+                                    
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 288--289
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[10
+
+ <./figures/results/1-prelim/mu-vs-kd.pdf> <./figures/results/1-prelim/sd-vs-kd.pdf>]
+<figures/results/1-prelim/mass.pdf, id=289, 602.25pt x 401.5pt>
 File: figures/results/1-prelim/mass.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/mass.pdf>
-Package pdftex.def Info: figures/results/1-prelim/mass.pdf  used on input line 173.
-(pdftex.def)             Requested size: 211.38832pt x 140.92531pt.
+Package pdftex.def Info: figures/results/1-prelim/mass.pdf  used on input line 293.
+(pdftex.def)             Requested size: 193.50076pt x 129.00336pt.
+
+
+./lab-notes.tex:295: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.295   \label{fig:prelim-mass}
+                               
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:295: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.295   \label{fig:prelim-mass}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:295: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.295   \label{fig:prelim-mass}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 295--295
+[][]  
+ []
+
+./lab-notes.tex:295: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.295   \label{fig:prelim-mass}
+                               
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:295: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.295   \label{fig:prelim-mass}
+                               
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -832,29 +2079,318 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[6 <./figures/results/1-prelim/mu-vs-kd.pdf> <./figures/results/1-prelim/sd-vs-kd.pdf> <./figures/results/1-prelim/mass.pdf>]
+[11 <./figures/results/1-prelim/mass.pdf>]
+
+./lab-notes.tex:303: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.303 \label{subsec:MS03}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:303: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.303 \label{subsec:MS03}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:303: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.303 \label{subsec:MS03}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 303--303
+[][]  
+ []
+
+./lab-notes.tex:303: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.303 \label{subsec:MS03}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:303: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.303 \label{subsec:MS03}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:303: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.303 \label{subsec:MS03}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:303: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.303 \label{subsec:MS03}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/results/1-prelim/ensemble-distance.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/results/1-prelim/ensemble-distance.pdf, id=197, 373.00656pt x 352.89342pt>
+<figures/results/1-prelim/ensemble-distance.pdf, id=303, 373.00656pt x 352.89342pt>
 File: figures/results/1-prelim/ensemble-distance.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/ensemble-distance.pdf>
-Package pdftex.def Info: figures/results/1-prelim/ensemble-distance.pdf  used on input line 185.
-(pdftex.def)             Requested size: 155.02pt x 146.65804pt.
-<figures/results/1-prelim/AI-vs-D.pdf, id=198, 401.5pt x 301.125pt>
+Package pdftex.def Info: figures/results/1-prelim/ensemble-distance.pdf  used on input line 313.
+(pdftex.def)             Requested size: 141.9023pt x 134.25165pt.
+<figures/results/1-prelim/AI-vs-D.pdf, id=304, 401.5pt x 301.125pt>
 File: figures/results/1-prelim/AI-vs-D.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/AI-vs-D.pdf>
-Package pdftex.def Info: figures/results/1-prelim/AI-vs-D.pdf  used on input line 187.
-(pdftex.def)             Requested size: 187.89914pt x 140.92683pt.
-<figures/results/1-prelim/abundance-I.pdf, id=199, 602.25pt x 401.5pt>
+Package pdftex.def Info: figures/results/1-prelim/AI-vs-D.pdf  used on input line 315.
+(pdftex.def)             Requested size: 171.99922pt x 129.00336pt.
+
+./lab-notes.tex:317: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.317   \label{fig:prelim-distance}
+                                   
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:317: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.317   \label{fig:prelim-distance}
+                                   
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:317: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.317   \label{fig:prelim-distance}
+                                   
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--317
+[]\OT1/cmr/m/n/10.95 fig:prelim-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 317--317
+[][]  
+ []
+
+./lab-notes.tex:317: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.317   \label{fig:prelim-distance}
+                                   
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:317: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.317   \label{fig:prelim-distance}
+                                   
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[12
+
+ <./figures/results/1-prelim/ensemble-distance.pdf> <./figures/results/1-prelim/AI-vs-D.pdf>]
+
+./lab-notes.tex:323: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.323 \label{subsec:MS04}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:323: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.323 \label{subsec:MS04}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:323: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.323 \label{subsec:MS04}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 323--323
+[][]  
+ []
+
+./lab-notes.tex:323: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.323 \label{subsec:MS04}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:323: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.323 \label{subsec:MS04}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:323: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.323 \label{subsec:MS04}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:323: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.323 \label{subsec:MS04}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/1-prelim/abundance-I.pdf, id=319, 602.25pt x 401.5pt>
 File: figures/results/1-prelim/abundance-I.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/abundance-I.pdf>
-Package pdftex.def Info: figures/results/1-prelim/abundance-I.pdf  used on input line 203.
-(pdftex.def)             Requested size: 187.89914pt x 125.26627pt.
-<figures/results/1-prelim/abundance-A.pdf, id=200, 401.5pt x 301.125pt>
+Package pdftex.def Info: figures/results/1-prelim/abundance-I.pdf  used on input line 330.
+(pdftex.def)             Requested size: 171.99922pt x 114.6676pt.
+<figures/results/1-prelim/abundance-A.pdf, id=320, 401.5pt x 301.125pt>
 File: figures/results/1-prelim/abundance-A.pdf Graphic file (type pdf)
 <use figures/results/1-prelim/abundance-A.pdf>
-Package pdftex.def Info: figures/results/1-prelim/abundance-A.pdf  used on input line 205.
-(pdftex.def)             Requested size: 187.89914pt x 140.92683pt.
+Package pdftex.def Info: figures/results/1-prelim/abundance-A.pdf  used on input line 332.
+(pdftex.def)             Requested size: 171.99922pt x 129.00336pt.
+
+./lab-notes.tex:334: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.334   \label{fig:prelim-abundance}
+                                    
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:334: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.334   \label{fig:prelim-abundance}
+                                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:334: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.334   \label{fig:prelim-abundance}
+                                    
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 334--334
+[]\OT1/cmr/m/n/10.95 fig:prelim-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 334--334
+[][]  
+ []
+
+./lab-notes.tex:334: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.334   \label{fig:prelim-abundance}
+                                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:334: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.334   \label{fig:prelim-abundance}
+                                    
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -862,11 +2398,77 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[7 <./figures/results/1-prelim/ensemble-distance.pdf> <./figures/results/1-prelim/AI-vs-D.pdf> <./figures/results/1-prelim/abundance-I.pdf> <./figures/results/1-prelim/abundance-A.pdf>] (/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.bbl
+[13
 
-Package natbib Warning: Empty `thebibliography' environment on input line 21.
+ <./figures/results/1-prelim/abundance-I.pdf> <./figures/results/1-prelim/abundance-A.pdf>]
+<figures/results/1-prelim/assembly-cones.pdf, id=332, 543.02875pt x 511.9125pt>
+File: figures/results/1-prelim/assembly-cones.pdf Graphic file (type pdf)
+<use figures/results/1-prelim/assembly-cones.pdf>
+Package pdftex.def Info: figures/results/1-prelim/assembly-cones.pdf  used on input line 353.
+(pdftex.def)             Requested size: 258.00539pt x 243.23126pt.
 
-)
+
+./lab-notes.tex:355: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.355   \label{fig:assembly-cones}
+                                  
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:355: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.355   \label{fig:assembly-cones}
+                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:355: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.355   \label{fig:assembly-cones}
+                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--355
+[]\OT1/cmr/m/n/10.95 fig:assembly-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 355--355
+[][]  
+ []
+
+./lab-notes.tex:355: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.355   \label{fig:assembly-cones}
+                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:355: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.355   \label{fig:assembly-cones}
+                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -874,28 +2476,1861 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[8
+[14 <./figures/results/1-prelim/assembly-cones.pdf>]
 
-] (/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.aux)
+./lab-notes.tex:361: LaTeX Error: Not in outer par mode.
 
-LaTeX Warning: There were multiply-defined labels.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.361 \label{subsec:MS06}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
+./lab-notes.tex:361: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.361 \label{subsec:MS06}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:361: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.361 \label{subsec:MS06}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 361--361
+[][]  
+ []
+
+./lab-notes.tex:361: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.361 \label{subsec:MS06}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:361: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.361 \label{subsec:MS06}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:361: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.361 \label{subsec:MS06}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:361: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.361 \label{subsec:MS06}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--364
+
+ []
+
+
+Package natbib Warning: Citation `gillespie_approximate_2001' on page 15 undefined on input line 372.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--377
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 380--381
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 390--391
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[15
+
+]
+
+./lab-notes.tex:397: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.397 \label{subsec:MS08}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:397: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.397 \label{subsec:MS08}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:397: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.397 \label{subsec:MS08}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 397--397
+[][]  
+ []
+
+./lab-notes.tex:397: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.397 \label{subsec:MS08}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:397: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.397 \label{subsec:MS08}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:397: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.397 \label{subsec:MS08}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:397: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.397 \label{subsec:MS08}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 399--400
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 401--402
+
+ []
+
+<figures/results/MS08/08C_distance-from-source.pdf, id=357, 226.8475pt x 198.7425pt>
+File: figures/results/MS08/08C_distance-from-source.pdf Graphic file (type pdf)
+<use figures/results/MS08/08C_distance-from-source.pdf>
+Package pdftex.def Info: figures/results/MS08/08C_distance-from-source.pdf  used on input line 406.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+
+./lab-notes.tex:410: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.410   \label{fig:ms08}
+                        
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:410: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.410   \label{fig:ms08}
+                        
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:410: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.410   \label{fig:ms08}
+                        
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 410--410
+[][]  
+ []
+
+./lab-notes.tex:410: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.410   \label{fig:ms08}
+                        
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:410: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.410   \label{fig:ms08}
+                        
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[16
+
+ <./figures/results/MS08/08C_distance-from-source.pdf>]
+
+./lab-notes.tex:416: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.416 \label{subsec:MS09}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:416: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.416 \label{subsec:MS09}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:416: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.416 \label{subsec:MS09}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 416--416
+[][]  
+ []
+
+./lab-notes.tex:416: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.416 \label{subsec:MS09}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:416: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.416 \label{subsec:MS09}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:416: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.416 \label{subsec:MS09}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:416: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.416 \label{subsec:MS09}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS09/09C_mean-populations-across-kd.pdf, id=373, 226.8475pt x 198.7425pt>
+File: figures/results/MS09/09C_mean-populations-across-kd.pdf Graphic file (type pdf)
+<use figures/results/MS09/09C_mean-populations-across-kd.pdf>
+Package pdftex.def Info: figures/results/MS09/09C_mean-populations-across-kd.pdf  used on input line 422.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+<figures/results/MS09/09C_sd-populations-across-kd.pdf, id=374, 226.8475pt x 198.7425pt>
+File: figures/results/MS09/09C_sd-populations-across-kd.pdf Graphic file (type pdf)
+<use figures/results/MS09/09C_sd-populations-across-kd.pdf>
+Package pdftex.def Info: figures/results/MS09/09C_sd-populations-across-kd.pdf  used on input line 425.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+
+./lab-notes.tex:429: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.429   \label{fig:MS09-pop-std}
+                                
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:429: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.429   \label{fig:MS09-pop-std}
+                                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:429: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.429   \label{fig:MS09-pop-std}
+                                
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 429--429
+[][]  
+ []
+
+./lab-notes.tex:429: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.429   \label{fig:MS09-pop-std}
+                                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:429: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.429   \label{fig:MS09-pop-std}
+                                
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS09/09C_detection_thresholds_int.pdf, id=375, 226.8475pt x 198.7425pt>
+File: figures/results/MS09/09C_detection_thresholds_int.pdf Graphic file (type pdf)
+<use figures/results/MS09/09C_detection_thresholds_int.pdf>
+Package pdftex.def Info: figures/results/MS09/09C_detection_thresholds_int.pdf  used on input line 435.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+<figures/results/MS09/09C_detection_thresholds_AI.pdf, id=376, 226.8475pt x 198.7425pt>
+File: figures/results/MS09/09C_detection_thresholds_AI.pdf Graphic file (type pdf)
+<use figures/results/MS09/09C_detection_thresholds_AI.pdf>
+Package pdftex.def Info: figures/results/MS09/09C_detection_thresholds_AI.pdf  used on input line 438.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+
+./lab-notes.tex:442: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.442   \label{fig:MS09-detection-thresholds}
+                                             
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:442: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.442   \label{fig:MS09-detection-thresholds}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:442: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.442   \label{fig:MS09-detection-thresholds}
+                                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 442--442
+[]\OT1/cmr/m/n/10.95 fig:MS09-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 442--442
+\OT1/cmr/m/n/10.95 detection-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 442--442
+[][]  
+ []
+
+./lab-notes.tex:442: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.442   \label{fig:MS09-detection-thresholds}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:442: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.442   \label{fig:MS09-detection-thresholds}
+                                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[17
+
+ <./figures/results/MS09/09C_mean-populations-across-kd.pdf> <./figures/results/MS09/09C_sd-populations-across-kd.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[18 <./figures/results/MS09/09C_detection_thresholds_int.pdf> <./figures/results/MS09/09C_detection_thresholds_AI.pdf>]
+
+./lab-notes.tex:448: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.448 \label{subsec:MS12}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:448: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.448 \label{subsec:MS12}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:448: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.448 \label{subsec:MS12}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 448--448
+[][]  
+ []
+
+./lab-notes.tex:448: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.448 \label{subsec:MS12}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:448: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.448 \label{subsec:MS12}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:448: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.448 \label{subsec:MS12}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:448: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.448 \label{subsec:MS12}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS12/12_assembly-of-integers.pdf, id=421, 226.8475pt x 198.7425pt>
+File: figures/results/MS12/12_assembly-of-integers.pdf Graphic file (type pdf)
+<use figures/results/MS12/12_assembly-of-integers.pdf>
+Package pdftex.def Info: figures/results/MS12/12_assembly-of-integers.pdf  used on input line 454.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+
+./lab-notes.tex:458: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.458   \label{fig:MS12-integer-assembly}
+                                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:458: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.458   \label{fig:MS12-integer-assembly}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:458: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.458   \label{fig:MS12-integer-assembly}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 458--458
+[]\OT1/cmr/m/n/10.95 fig:MS12-integer-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 458--458
+[][]  
+ []
+
+./lab-notes.tex:458: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.458   \label{fig:MS12-integer-assembly}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:458: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.458   \label{fig:MS12-integer-assembly}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[19
+
+ <./figures/results/MS12/12_assembly-of-integers.pdf>]
+
+./lab-notes.tex:464: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.464 \label{subsec:MS13}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:464: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.464 \label{subsec:MS13}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:464: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.464 \label{subsec:MS13}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 464--464
+[][]  
+ []
+
+./lab-notes.tex:464: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.464 \label{subsec:MS13}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:464: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.464 \label{subsec:MS13}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:464: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.464 \label{subsec:MS13}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:464: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.464 \label{subsec:MS13}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS13/13_integers-histogram.pdf, id=434, 226.8475pt x 198.7425pt>
+File: figures/results/MS13/13_integers-histogram.pdf Graphic file (type pdf)
+<use figures/results/MS13/13_integers-histogram.pdf>
+Package pdftex.def Info: figures/results/MS13/13_integers-histogram.pdf  used on input line 470.
+(pdftex.def)             Requested size: 193.50076pt x 169.52933pt.
+
+./lab-notes.tex:474: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.474   \label{fig:MS13-integer-histogram}
+                                          
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:474: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.474   \label{fig:MS13-integer-histogram}
+                                          
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:474: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.474   \label{fig:MS13-integer-histogram}
+                                          
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 474--474
+[]\OT1/cmr/m/n/10.95 fig:MS13-integer-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 474--474
+[][]  
+ []
+
+./lab-notes.tex:474: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.474   \label{fig:MS13-integer-histogram}
+                                          
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:474: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.474   \label{fig:MS13-integer-histogram}
+                                          
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[20
+
+ <./figures/results/MS13/13_integers-histogram.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\times' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 479.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 479.
+
+
+./lab-notes.tex:480: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.480 \label{subsec:MS15-18}
+                            
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:480: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.480 \label{subsec:MS15-18}
+                            
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:480: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.480 \label{subsec:MS15-18}
+                            
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 480--480
+[][]  
+ []
+
+./lab-notes.tex:480: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.480 \label{subsec:MS15-18}
+                            
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:480: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.480 \label{subsec:MS15-18}
+                            
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:480: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.480 \label{subsec:MS15-18}
+                            
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:480: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.480 \label{subsec:MS15-18}
+                            
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS15/single-timeseries.pdf, id=446, 578.16pt x 578.16pt>
+File: figures/results/MS15/single-timeseries.pdf Graphic file (type pdf)
+<use figures/results/MS15/single-timeseries.pdf>
+Package pdftex.def Info: figures/results/MS15/single-timeseries.pdf  used on input line 487.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS17/single-timeseries.pdf, id=447, 578.16pt x 578.16pt>
+File: figures/results/MS17/single-timeseries.pdf Graphic file (type pdf)
+<use figures/results/MS17/single-timeseries.pdf>
+Package pdftex.def Info: figures/results/MS17/single-timeseries.pdf  used on input line 491.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS18/single-timeseries_62.pdf, id=448, 578.16pt x 578.16pt>
+File: figures/results/MS18/single-timeseries_62.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_62.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_62.pdf  used on input line 495.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS15/multipanel-timeseries.pdf, id=449, 578.16pt x 578.16pt>
+File: figures/results/MS15/multipanel-timeseries.pdf Graphic file (type pdf)
+<use figures/results/MS15/multipanel-timeseries.pdf>
+Package pdftex.def Info: figures/results/MS15/multipanel-timeseries.pdf  used on input line 499.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS17/multipanel-timeseries.pdf, id=450, 578.16pt x 578.16pt>
+File: figures/results/MS17/multipanel-timeseries.pdf Graphic file (type pdf)
+<use figures/results/MS17/multipanel-timeseries.pdf>
+Package pdftex.def Info: figures/results/MS17/multipanel-timeseries.pdf  used on input line 502.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS18/multipanel-timeseries.pdf, id=451, 578.16pt x 578.16pt>
+File: figures/results/MS18/multipanel-timeseries.pdf Graphic file (type pdf)
+<use figures/results/MS18/multipanel-timeseries.pdf>
+Package pdftex.def Info: figures/results/MS18/multipanel-timeseries.pdf  used on input line 505.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+
+./lab-notes.tex:509: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.509   \label{fig:MS15-18-time-series}
+                                       
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:509: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.509   \label{fig:MS15-18-time-series}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:509: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.509   \label{fig:MS15-18-time-series}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 509--509
+[]\OT1/cmr/m/n/10.95 fig:MS15-18-time-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 509--509
+[][]  
+ []
+
+./lab-notes.tex:509: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.509   \label{fig:MS15-18-time-series}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:509: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.509   \label{fig:MS15-18-time-series}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS15/multipanel-histograms.pdf, id=452, 578.16pt x 578.16pt>
+File: figures/results/MS15/multipanel-histograms.pdf Graphic file (type pdf)
+<use figures/results/MS15/multipanel-histograms.pdf>
+Package pdftex.def Info: figures/results/MS15/multipanel-histograms.pdf  used on input line 516.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS17/multipanel-histograms.pdf, id=453, 578.16pt x 578.16pt>
+File: figures/results/MS17/multipanel-histograms.pdf Graphic file (type pdf)
+<use figures/results/MS17/multipanel-histograms.pdf>
+Package pdftex.def Info: figures/results/MS17/multipanel-histograms.pdf  used on input line 520.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS18/multipanel-histograms.pdf, id=454, 578.16pt x 578.16pt>
+File: figures/results/MS18/multipanel-histograms.pdf Graphic file (type pdf)
+<use figures/results/MS18/multipanel-histograms.pdf>
+Package pdftex.def Info: figures/results/MS18/multipanel-histograms.pdf  used on input line 524.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS15/multipanel-histograms-AI.pdf, id=455, 578.16pt x 578.16pt>
+File: figures/results/MS15/multipanel-histograms-AI.pdf Graphic file (type pdf)
+<use figures/results/MS15/multipanel-histograms-AI.pdf>
+Package pdftex.def Info: figures/results/MS15/multipanel-histograms-AI.pdf  used on input line 528.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS17/multipanel-histograms-AI.pdf, id=456, 578.16pt x 578.16pt>
+File: figures/results/MS17/multipanel-histograms-AI.pdf Graphic file (type pdf)
+<use figures/results/MS17/multipanel-histograms-AI.pdf>
+Package pdftex.def Info: figures/results/MS17/multipanel-histograms-AI.pdf  used on input line 531.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS18/multipanel-histograms-AI.pdf, id=457, 578.16pt x 578.16pt>
+File: figures/results/MS18/multipanel-histograms-AI.pdf Graphic file (type pdf)
+<use figures/results/MS18/multipanel-histograms-AI.pdf>
+Package pdftex.def Info: figures/results/MS18/multipanel-histograms-AI.pdf  used on input line 534.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS15/multipanel-histograms-inflow-outflow.pdf, id=458, 578.16pt x 578.16pt>
+File: figures/results/MS15/multipanel-histograms-inflow-outflow.pdf Graphic file (type pdf)
+<use figures/results/MS15/multipanel-histograms-inflow-outflow.pdf>
+Package pdftex.def Info: figures/results/MS15/multipanel-histograms-inflow-outflow.pdf  used on input line 537.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS17/multipanel-histograms-inflow-outflow.pdf, id=459, 578.16pt x 578.16pt>
+File: figures/results/MS17/multipanel-histograms-inflow-outflow.pdf Graphic file (type pdf)
+<use figures/results/MS17/multipanel-histograms-inflow-outflow.pdf>
+Package pdftex.def Info: figures/results/MS17/multipanel-histograms-inflow-outflow.pdf  used on input line 540.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+<figures/results/MS18/multipanel-histograms-inflow-outflow.pdf, id=460, 578.16pt x 578.16pt>
+File: figures/results/MS18/multipanel-histograms-inflow-outflow.pdf Graphic file (type pdf)
+<use figures/results/MS18/multipanel-histograms-inflow-outflow.pdf>
+Package pdftex.def Info: figures/results/MS18/multipanel-histograms-inflow-outflow.pdf  used on input line 543.
+(pdftex.def)             Requested size: 141.9023pt x 141.90186pt.
+
+./lab-notes.tex:547: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.547   \label{fig:MS15-18-power-law-fit}
+                                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:547: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.547   \label{fig:MS15-18-power-law-fit}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:547: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.547   \label{fig:MS15-18-power-law-fit}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 547--547
+[]\OT1/cmr/m/n/10.95 fig:MS15-18-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 547--547
+[][]  
+ []
+
+./lab-notes.tex:547: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.547   \label{fig:MS15-18-power-law-fit}
+                                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:547: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.547   \label{fig:MS15-18-power-law-fit}
+                                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+LaTeX Warning: Float too large for page by 253.83917pt on input line 548.
+
+<figures/results/MS15/heatmap-exponents-linear.pdf, id=461, 578.16pt x 505.89pt>
+File: figures/results/MS15/heatmap-exponents-linear.pdf Graphic file (type pdf)
+<use figures/results/MS15/heatmap-exponents-linear.pdf>
+Package pdftex.def Info: figures/results/MS15/heatmap-exponents-linear.pdf  used on input line 554.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS17/heatmap-exponents-linear.pdf, id=462, 578.16pt x 505.89pt>
+File: figures/results/MS17/heatmap-exponents-linear.pdf Graphic file (type pdf)
+<use figures/results/MS17/heatmap-exponents-linear.pdf>
+Package pdftex.def Info: figures/results/MS17/heatmap-exponents-linear.pdf  used on input line 558.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS18/heatmap-exponents-linear.pdf, id=463, 578.16pt x 505.89pt>
+File: figures/results/MS18/heatmap-exponents-linear.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-linear.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-linear.pdf  used on input line 562.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS15/heatmap-avg-integer-log.pdf, id=464, 578.16pt x 505.89pt>
+File: figures/results/MS15/heatmap-avg-integer-log.pdf Graphic file (type pdf)
+<use figures/results/MS15/heatmap-avg-integer-log.pdf>
+Package pdftex.def Info: figures/results/MS15/heatmap-avg-integer-log.pdf  used on input line 566.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS17/heatmap-avg-integer-log.pdf, id=465, 578.16pt x 505.89pt>
+File: figures/results/MS17/heatmap-avg-integer-log.pdf Graphic file (type pdf)
+<use figures/results/MS17/heatmap-avg-integer-log.pdf>
+Package pdftex.def Info: figures/results/MS17/heatmap-avg-integer-log.pdf  used on input line 569.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS18/heatmap-avg-integer-log.pdf, id=466, 578.16pt x 505.89pt>
+File: figures/results/MS18/heatmap-avg-integer-log.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-avg-integer-log.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-avg-integer-log.pdf  used on input line 572.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS15/heatmap-total-mass-log.pdf, id=467, 578.16pt x 505.89pt>
+File: figures/results/MS15/heatmap-total-mass-log.pdf Graphic file (type pdf)
+<use figures/results/MS15/heatmap-total-mass-log.pdf>
+Package pdftex.def Info: figures/results/MS15/heatmap-total-mass-log.pdf  used on input line 575.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS17/heatmap-total-mass-log.pdf, id=468, 578.16pt x 505.89pt>
+File: figures/results/MS17/heatmap-total-mass-log.pdf Graphic file (type pdf)
+<use figures/results/MS17/heatmap-total-mass-log.pdf>
+Package pdftex.def Info: figures/results/MS17/heatmap-total-mass-log.pdf  used on input line 578.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS18/heatmap-total-mass-log.pdf, id=469, 578.16pt x 505.89pt>
+File: figures/results/MS18/heatmap-total-mass-log.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-total-mass-log.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-total-mass-log.pdf  used on input line 581.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+
+./lab-notes.tex:585: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.585   \label{fig:MS15-18-exponent-int-mass}
+                                             
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:585: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.585   \label{fig:MS15-18-exponent-int-mass}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:585: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.585   \label{fig:MS15-18-exponent-int-mass}
+                                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 585--585
+[]\OT1/cmr/m/n/10.95 fig:MS15-18-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 585--585
+\OT1/cmr/m/n/10.95 exponent-int-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 585--585
+[][]  
+ []
+
+./lab-notes.tex:585: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.585   \label{fig:MS15-18-exponent-int-mass}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:585: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.585   \label{fig:MS15-18-exponent-int-mass}
+                                             
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS18/heatmap-exponents-inflow.pdf, id=470, 578.16pt x 505.89pt>
+File: figures/results/MS18/heatmap-exponents-inflow.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-inflow.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-inflow.pdf  used on input line 591.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS18/heatmap-exponents-outflow.pdf, id=471, 578.16pt x 505.89pt>
+File: figures/results/MS18/heatmap-exponents-outflow.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-outflow.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-outflow.pdf  used on input line 594.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+<figures/results/MS18/heatmap-exponents-diff.pdf, id=472, 578.16pt x 505.89pt>
+File: figures/results/MS18/heatmap-exponents-diff.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-diff.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-diff.pdf  used on input line 597.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+
+./lab-notes.tex:601: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.601   \label{fig:MS15-18-exp-inflow-outflow}
+                                              
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:601: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.601   \label{fig:MS15-18-exp-inflow-outflow}
+                                              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:601: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.601   \label{fig:MS15-18-exp-inflow-outflow}
+                                              
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 601--601
+[]\OT1/cmr/m/n/10.95 fig:MS15-18-exp-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 601--601
+[][]  
+ []
+
+./lab-notes.tex:601: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.601   \label{fig:MS15-18-exp-inflow-outflow}
+                                              
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:601: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.601   \label{fig:MS15-18-exp-inflow-outflow}
+                                              
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+<figures/results/MS18/single-timeseries_1.pdf, id=473, 578.16pt x 578.16pt>
+File: figures/results/MS18/single-timeseries_1.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_1.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_1.pdf  used on input line 607.
+(pdftex.def)             Requested size: 193.50076pt x 193.49292pt.
+<figures/results/MS18/single-timeseries_10.pdf, id=474, 578.16pt x 578.16pt>
+File: figures/results/MS18/single-timeseries_10.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_10.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_10.pdf  used on input line 611.
+(pdftex.def)             Requested size: 193.50076pt x 193.49292pt.
+<figures/results/MS18/single-timeseries_91.pdf, id=475, 578.16pt x 578.16pt>
+File: figures/results/MS18/single-timeseries_91.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_91.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_91.pdf  used on input line 614.
+(pdftex.def)             Requested size: 193.50076pt x 193.49292pt.
+<figures/results/MS18/single-timeseries_100.pdf, id=476, 578.16pt x 578.16pt>
+File: figures/results/MS18/single-timeseries_100.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_100.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_100.pdf  used on input line 617.
+(pdftex.def)             Requested size: 193.50076pt x 193.49292pt.
+
+./lab-notes.tex:621: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.621   \label{fig:MS15-18-limit-cases}
+                                       
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:621: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.621   \label{fig:MS15-18-limit-cases}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:621: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.621   \label{fig:MS15-18-limit-cases}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 621--621
+[]\OT1/cmr/m/n/10.95 fig:MS15-18-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 621--621
+[][]  
+ []
+
+./lab-notes.tex:621: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.621   \label{fig:MS15-18-limit-cases}
+                                       
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:621: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.621   \label{fig:MS15-18-limit-cases}
+                                       
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[21
+
+]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[22 <./figures/results/MS15/single-timeseries.pdf> <./figures/results/MS17/single-timeseries.pdf> <./figures/results/MS18/single-timeseries_62.pdf> <./figures/results/MS15/multipanel-timeseries.pdf> <./figures/results/MS17/multipanel-timeseries.pdf> <./figures/results/MS18/multipanel-timeseries.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[23 <./figures/results/MS15/multipanel-histograms.pdf> <./figures/results/MS17/multipanel-histograms.pdf> <./figures/results/MS18/multipanel-histograms.pdf> <./figures/results/MS15/multipanel-histograms-AI.pdf> <./figures/results/MS17/multipanel-histograms-AI.pdf> <./figures/results/MS18/multipanel-histograms-AI.pdf> <./figures/results/MS15/multipanel-histograms-inflow-outflow.pdf> <./figures/results/MS17/multipanel-histograms-inflow-outflow.pdf> <./figures/results/MS18/multipanel-histograms-inflow-outflow.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[24 <./figures/results/MS15/heatmap-exponents-linear.pdf> <./figures/results/MS17/heatmap-exponents-linear.pdf> <./figures/results/MS18/heatmap-exponents-linear.pdf> <./figures/results/MS15/heatmap-avg-integer-log.pdf> <./figures/results/MS17/heatmap-avg-integer-log.pdf> <./figures/results/MS18/heatmap-avg-integer-log.pdf> <./figures/results/MS15/heatmap-total-mass-log.pdf> <./figures/results/MS17/heatmap-total-mass-log.pdf> <./figures/results/MS18/heatmap-total-mass-log.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[25 <./figures/results/MS18/heatmap-exponents-inflow.pdf> <./figures/results/MS18/heatmap-exponents-outflow.pdf> <./figures/results/MS18/heatmap-exponents-diff.pdf>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[26 <./figures/results/MS18/single-timeseries_1.pdf> <./figures/results/MS18/single-timeseries_10.pdf> <./figures/results/MS18/single-timeseries_91.pdf> <./figures/results/MS18/single-timeseries_100.pdf>]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 626.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 626.
+
+
+./lab-notes.tex:627: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.627 \label{subsec:MS16}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:627: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.627 \label{subsec:MS16}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:627: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.627 \label{subsec:MS16}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 627--627
+[][]  
+ []
+
+./lab-notes.tex:627: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.627 \label{subsec:MS16}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:627: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.627 \label{subsec:MS16}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:627: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.627 \label{subsec:MS16}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:627: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.627 \label{subsec:MS16}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[27
+
+]
+
+./lab-notes.tex:633: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:633: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:633: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 633--633
+[]\OT1/cmr/m/n/10.95 subsec:wrap-up-
+ []
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 633--633
+[][]  
+ []
+
+./lab-notes.tex:633: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:633: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:633: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:633: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.633 \label{subsec:wrap-up-15-18}
+                                  
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+File: figures/results/MS18/single-timeseries_1.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_1.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_1.pdf  used on input line 646.
+(pdftex.def)             Requested size: 105.3523pt x 105.35231pt.
+File: figures/results/MS18/single-timeseries_10.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_10.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_10.pdf  used on input line 650.
+(pdftex.def)             Requested size: 105.3523pt x 105.35231pt.
+File: figures/results/MS18/single-timeseries_91.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_91.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_91.pdf  used on input line 653.
+(pdftex.def)             Requested size: 105.3523pt x 105.35231pt.
+File: figures/results/MS18/single-timeseries_100.pdf Graphic file (type pdf)
+<use figures/results/MS18/single-timeseries_100.pdf>
+Package pdftex.def Info: figures/results/MS18/single-timeseries_100.pdf  used on input line 656.
+(pdftex.def)             Requested size: 105.3523pt x 105.35231pt.
+File: figures/results/MS18/multipanel-histograms-inflow-outflow.pdf Graphic file (type pdf)
+<use figures/results/MS18/multipanel-histograms-inflow-outflow.pdf>
+Package pdftex.def Info: figures/results/MS18/multipanel-histograms-inflow-outflow.pdf  used on input line 663.
+(pdftex.def)             Requested size: 208.59872pt x 208.59618pt.
+File: figures/results/MS18/heatmap-exponents-inflow.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-inflow.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-inflow.pdf  used on input line 670.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+File: figures/results/MS18/heatmap-exponents-outflow.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-outflow.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-outflow.pdf  used on input line 673.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+File: figures/results/MS18/heatmap-exponents-diff.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-exponents-diff.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-exponents-diff.pdf  used on input line 676.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+File: figures/results/MS18/heatmap-avg-integer-log.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-avg-integer-log.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-avg-integer-log.pdf  used on input line 681.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+File: figures/results/MS18/heatmap-total-mass-log.pdf Graphic file (type pdf)
+<use figures/results/MS18/heatmap-total-mass-log.pdf>
+Package pdftex.def Info: figures/results/MS18/heatmap-total-mass-log.pdf  used on input line 684.
+(pdftex.def)             Requested size: 137.60461pt x 120.39713pt.
+
+./lab-notes.tex:688: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.688   \label{fig:wrap-up-15-18}
+                                 
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:688: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.688   \label{fig:wrap-up-15-18}
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:688: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.688   \label{fig:wrap-up-15-18}
+                                 
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 688--688
+[][]  
+ []
+
+./lab-notes.tex:688: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.688   \label{fig:wrap-up-15-18}
+                                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:688: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.688   \label{fig:wrap-up-15-18}
+                                 
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+LaTeX Warning: Float too large for page by 23.2177pt on input line 689.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[28
+
+]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[29]
+
+./lab-notes.tex:694: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.694 \label{subsec:MS19}
+                         
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+./lab-notes.tex:694: Undefined control sequence.
+<argument> \@marbox 
+                    
+l.694 \label{subsec:MS19}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:694: Missing number, treated as zero.
+<to be read again> 
+                   \vbox 
+l.694 \label{subsec:MS19}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+Overfull \hbox (26.35826pt too wide) in paragraph at lines 694--694
+[][]  
+ []
+
+./lab-notes.tex:694: Undefined control sequence.
+\@ympar ...\@marbox {#1}\global \setbox \@currbox 
+                                                  \copy \@marbox \@xympar 
+l.694 \label{subsec:MS19}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:694: Missing number, treated as zero.
+<to be read again> 
+                   \copy 
+l.694 \label{subsec:MS19}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+./lab-notes.tex:694: Undefined control sequence.
+\@ympar ...lobal \setbox \@currbox \copy \@marbox 
+                                                  \@xympar 
+l.694 \label{subsec:MS19}
+                         
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./lab-notes.tex:694: Missing number, treated as zero.
+<to be read again> 
+                   \setbox 
+l.694 \label{subsec:MS19}
+                         
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+(/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.bbl)
+
+Package natbib Warning: There were undefined citations.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[30
+
+] (/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.aux)
 Package rerunfilecheck Info: File `lab-notes.out' has not changed.
-(rerunfilecheck)             Checksum: D978A5C80169BCC1AA7250D9238433AB;2259.
+(rerunfilecheck)             Checksum: B2924FEB55960D2FA742889C3A4841F6;5542.
  ) 
 Here is how much of TeX's memory you used:
- 23612 strings out of 478268
- 443472 string characters out of 5846348
- 808616 words of memory out of 5000000
- 41387 multiletter control sequences out of 15000+600000
- 475892 words of font info for 53 fonts, out of 8000000 for 9000
+ 26106 strings out of 478268
+ 494582 string characters out of 5846348
+ 849347 words of memory out of 5000000
+ 43761 multiletter control sequences out of 15000+600000
+ 484362 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 83i,20n,80p,774b,446s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "/Users/alexandre/Documents/academic/3-research/projects/2023 spatial-topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.pdf" (8 pages, 2319909 bytes).
+ 83i,20n,80p,873b,465s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
+Output written on "/Users/alexandre/Documents/work/3 - research/topology/flow-complexity/_research/lab-notes/.texpadtmp/lab-notes.pdf" (30 pages, 5911314 bytes).
 PDF statistics:
- 282 PDF objects out of 1000 (max. 8388607)
- 201 compressed objects within 3 object streams
- 34 named destinations out of 1000 (max. 500000)
- 202 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 862 PDF objects out of 1000 (max. 8388607)
+ 646 compressed objects within 7 object streams
+ 87 named destinations out of 1000 (max. 500000)
+ 517 words of extra memory for PDF output out of 10000 (max. 10000000)
 

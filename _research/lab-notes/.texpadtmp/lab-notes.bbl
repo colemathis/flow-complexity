@@ -17,5 +17,10 @@
   {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
   mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
 
+\bibitem[\protect\citeauthoryear{Sharma, Czegel, Lachmann, Kempes, Walker  \&
+  Cronin}{Sharma et~al.}{2023}]{sharma_assembly_2023}
+Sharma A.,  Czegel D.,  Lachmann M.,  Kempes C.~P.,  Walker S.~I.,   Cronin L.,
+   2023, \mn@doi [Nature] {10.1038/s41586-023-06600-9}, pp~1--8
+
 \makeatother
 \end{thebibliography}
