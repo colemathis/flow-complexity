@@ -1,14 +1,14 @@
 %!LW recipe=pdflatex-shellescape
-\documentclass[11pt]{book}
+\documentclass[11pt]{article}
 
 \usepackage{geometry}
-\geometry{margin=1in}
+\geometry{margin=1.25in}
 
 \usepackage[utf8]{inputenc}
 %\usepackage[english]{babel}
 
 \usepackage{graphicx}
-\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames,svgnames]{xcolor}
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage{natbib}
@@ -26,7 +26,16 @@
 \usepackage{lipsum}
 \usepackage{fancyheadings}
 \usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyvrb}         % better verbatim support
 
+\usepackage{showlabels}
+% ========== layout for the marginal notes ==========
+\renewcommand{\showlabelsetlabel}[1]{
+  \hspace{-15pt}
+  \parbox[t]{1.25in}{\raggedright\footnotesize\color{gray}#1}%
+}
+            
 \renewcommand{\subsectionmark}[1]{%
   \markright{\MakeUppercase{\thesubsection.\ #1}}}%
 
@@ -34,7 +43,7 @@
 \fancyhead[L]{}
 \fancyhead[R]{\nouppercase{\rightmark}}
 \fancyfoot[R]{\vspace{-5pt}\rule{\textwidth}{0.4pt}\\ \thepage}
-\fancyfoot[C]{\protect\color{gray}Compiled on \today}
+\fancyfoot[C]{\protect\color{gray}\today}
 
 \tcbset{textmarker/.style={%
         parbox=false,boxrule=0mm,boxsep=0mm,arc=0mm,
@@ -52,14 +61,22 @@
 \newcommand{\warning}[2]{\begin{hintBox} \textbf{#1} #2 \end{hintBox}}
 \newcommand{\important}[2]{\begin{importantBox} \textbf{#1} #2 \end{importantBox}}
 
+\title{\vspace{10em} \Huge Topology Project:\\ Research Notes\vspace{2em}}
+
+\author{\LARGE Alexandre Champagne-Ruel\vspace*{1em}}
+
 \begin{document}
 
+\maketitle
+\clearpage
+
 \tableofcontents
-%\clearpage
+\clearpage
 
-\chapter{Previous notes from Cole}
+\section{Previous notes from Cole}
+\label{sec:previous-notes}
 
-\section{May 12th, 2022}
+\subsection{May 12th, 2022}
 
 I'm starting a notebook because I keep forgetting what I'm working on. Hopefully this will complement the git logs.
 
@@ -67,7 +84,7 @@ Today I was able to update the \texttt{Ensemble} constructor function and write 
 
 I need to make sure to use \texttt{@quickactivate} with DrWatson; otherwise, saving does not work as expected.
 
-\section{June 24th, 2022}
+\subsection{June 24th, 2022}
 
 I should focus on this project a bit more. My goal today is to make a plan of attack. This should include a few different things, mostly issues on git to guide future development.\\
 
@@ -89,44 +106,48 @@ I should focus on this project a bit more. My goal today is to make a plan of at
 
 To do those we'll need a coherent data management system and an efficient analysis pipeline.
 
-\section{July 6th, 2022}
+\subsection{July 6th, 2022}
 
 Taking a look after a couple of days away. The Simulation class is implemented now. I think the main thing to do is convert the .bson files to a .csv (somewhat efficiently) and then write some R scripts to do the analysis we want.
 
 The save system is working; now it's time to write the analysis pipeline.
 
-\section{July 12th, 2022}
+\subsection{July 12th, 2022}
 
 Analysis pipeline mostly sorted out. There's likely some bugs lurking about, and I don't know what will happen at scale, but we'll see. The big problem now is mostly a problem for the future: once specific compounds are stabilized by different reactors, it will be difficult to keep track of all the information in coherent ways. The same problem exists for simulations with different rate constants in different reactors.
 
 Need to check the assumptions of the simulation.
 
-\section{July 13th, 2022}
+\subsection{July 13th, 2022}
 
 Lots of systems in place now. Just debugging the simulations before running the parameter sweep. Something disturbing is the degree to which the reactors without inflow seem to be completely static for all time. This strikes me as a serious bug. I can't seem to find the source.
 
-\section{September 9th, 2024 (Alex)}
+\subsection{September 9th, 2024 (Alex)}
 
 \begin{itemize}
     \item Seems like Cole has fixed the function call in \texttt{test\_timing.jl}. I have launched several simulations varying the parameter set, and it executes normally.
     \item I am now trying to get the parameter explorations to work (\texttt{test\_timing.jl} and \texttt{explore-test.jl}), ideally using multiple CPU cores. The original file coded by Cole (\texttt{explore-test.jl}) was still looping sequentially over the different parameters, which is why I have made a new version (\texttt{explore-test.jl}) that computes the different parameter permutations in advance and launches the simulations using these pre-computed parameters. It seems to use the full extent of the multiprocessing module, as observed from CPU usage in e.g., \texttt{htop}.
 \end{itemize}
 
-\section{September 11th, 2024  (Alex)}
+\subsection{September 11th, 2024  (Alex)}
 
 \begin{itemize}
     \item Did a bunch of tests in the past few days—\texttt{test\_timing.jl} and \texttt{explore-test.jl} are now working on Sol, the GCloud cluster, etc.
 \end{itemize}
 
-\section{September 12th, 2024  (Alex)}
+\subsection{September 12th, 2024  (Alex)}
 
 \begin{itemize}
     \item Started coding a minimal working example: plotting the population time series.
 \end{itemize}
 
-\chapter{Description of the system}
+\clearpage
 
-\section{Artificial chemistry}
+\section{Description of the system}
+\label{sec:desc-system}
+
+\subsection{Artificial chemistry}
+\label{subsec:artificial-chemistry}
 
 Basically, we want to use a system based on artificial chemistry to investigate the conditions promoting the formation of complex objects---where, by "complex objects", we refer to molecular complexity. Specifically, we will be focusing our analysis on investigating the spatial topology of the environment, to try to determine how it can program the emergence of complexity. We will utilize Assembly Theory to quantify the complexity formed therein, and in doing so this model will constitute a new test environment. Among other things, this could help refine our methods of calculation for the Assembly Index, and inform our knowledge on how the Assembly Index responds to various parameters and/or is correlated to life-like properties.
 
@@ -140,7 +161,7 @@ Artificial chemistry implementations can be categorized along two axis: how abst
   \label{fig:abstraction-stage}
 \end{figure}
 
-The underlying (artificial) chemistry is based on several transformations: formard reactions, backward reactions, diffusion (Table~\ref{tab:reactions}). These reactions are parametrized by rate coefficients ($k_f$, $k_b$, $k_d$). Several other parameters can be defined, such as simulations (temporal) length $\tau_{max}$, the number of reactors $N$, the number of inflows $n$, total mass $M$, etc.
+The underlying (artificial) chemistry is based on several transformations: formard reactions, backward reactions, diffusion (Table~\ref{tab:reactions}). These reactions are parametrized by rate coefficients ($k_f$, $k_b$, $k_d$). Several other parameters can be defined, such as simulations (temporal) length $\tau_{max}$, the number of reactors $N$, the number of inflows $n$, total mass $M$, etc.\\
 
 \begin{table}[h]
 \centering
@@ -155,7 +176,10 @@ The underlying (artificial) chemistry is based on several transformations: forma
 \label{tab:reactions}
 \end{table}
 
-\section{System of reactors}
+\note{Backward Reaction Rate.}{We have chosen to keep the backward reaction rate \textit{constant} with respect to molecule length (i.e., integer value). Both alternatives can be justified: larger molecules might break more easily due to having more bonds, or they might be harder to break because they are more stable. Here, we adopt the former assumption.}
+
+\subsection{System of reactors}
+\label{subsec:system-of-reactors}
 
 These transformations are applied on a population of integers. These integers form a well-mixed system, inside a reactor/chemostat (Fig.~\ref{fig:reactor-ensemble}a). The number of integers \#1 is fixed, which translates into a fixed in-flow in the first reactor (as these integers are used to form other, more complex integers, or diffuse to the next chemostats). The system as a whole consists of several of these reactors, coupled together via in- and out-flows (defined by the corresponding rates), in a specific topology. For example, one of the simplest topology is that of the regular lattice (Fig.~\ref{fig:reactor-ensemble}b). When diffusion is very high, the whole system becomes well-mixed.
 
@@ -168,7 +192,8 @@ These transformations are applied on a population of integers. These integers fo
   \label{fig:reactor-ensemble}
 \end{figure}
 
-\section{Topologies}
+\subsection{Topologies}
+\label{subsec:topologies}
 
 Several topologies can be used to connect the reactors together (Fig.~\ref{fig:topologies}). Examples include: path, lattice, Erdos-Renyi (random), regular (uniform node degree) or Barabasi-Albert (power-law degree distribution). This is especially relevant given that we’re studying living systems, whose networks have been shown to possess certain specific properties deriving from their topology (e.g., resilience from BA networks, etc.) Other topologies (e.g. lattice, random) can be used as control/neutral.
 
@@ -187,7 +212,8 @@ Several topologies can be used to connect the reactors together (Fig.~\ref{fig:t
   \label{fig:topologies}
 \end{figure}
 
-\section{Integer chemistry and Assembly Theory}
+\subsection{Integer chemistry and Assembly Theory}
+\label{subsec:integer-chemistry}
 
 We’ll be using Assembly Theory to quantify the complexity emerging from the mixture, therefore we’ll use the Assembly Index ($A$). Cole has calculated $A$ for integers $<10000$. The Assembly Index increases as the logarithm of integer values (Fig.~\ref{fig:integers-assembly}). We’ll however probably be using both, as some relationships are better illustrated using y-axis as integers, and others with the y-axis as the Assembly Index.
 
@@ -199,9 +225,13 @@ We’ll be using Assembly Theory to quantify the complexity emerging from the mi
   \label{fig:integers-assembly}
 \end{figure}
 
-\chapter{Experiments}
+\clearpage
 
-\section{MS01: time series}
+\section{Milestones}
+\label{sec:experiments}
+
+\subsection{MS01: time series}
+\label{subsec:MS01}
 
 A first result we can plot using this system is the time series of the populations (shown on Fig.~\ref{fig:time-series}). The layout of this figure follows the same structure as the one on Fig.~\ref{fig:reactor-ensemble}b: each panel shows the evolution of integers $I\in{1...10}$ through time. The blue curve shows ones, we can see the number of ones is fixed on the first panel (top left). Diffusion pushes molecules to the next chemostats that are connected to the first one (where the in-flow is) so we’re seeing initial transients/peaks at different times. The higher we increase diffusion, the faster these peaks happen, and the shorter is the initial transient.
 
@@ -215,7 +245,8 @@ A first result we can plot using this system is the time series of the populatio
 
 \clearpage
 
-\section{MS02: varying the diffusion rate}
+\subsection{MS02: varying the diffusion rate}
+\label{subsec:MS02}
 
 A first parameter we’re exploring is the diffusion rate. We’ve sampled simulations with diffusion rates $k_d\in[10^{-6},10^{2}$ and plot the first ten species (excluding ones) on Fig.~\ref{fig:prelim-abundance}. Panel A shows the average populations across reactors, i.e. taking all the chemostats together as one single population and calculating the average for species $S$ at the last iteration of the simulation $\tau_{max}$. We’ve done this calculation for 100 values of $k_d$ (without using statistical ensembles for now). The shaded area on Panel A represents the standard deviation across chemostats, and is also illustrated on Panel B. We’ve also added a vertical (dashed) line to indicade the forward rate $k_f$. 
 
@@ -245,7 +276,8 @@ Another thing we can calculate from these systems is the total mass, i.e. $I_i \
 
 \clearpage
 
-\section{MS03: measuring distance from source}
+\subsection{MS03: measuring distance from source}
+\label{subsec:MS03}
 
 One additional experiment we’ve done was to investigate how the mean assembly index (per reactor) varied with the distance from source $D$. For example, the distance $D$ between the source (in green) and the target chemostat (in red) shown on Fig.~\ref{fig:prelim-distance}a would be six. We’ve evaluated how the complexity varied with $D$ for three diffusion regimes: low diffusion ($k_d=10^{-4}$), intermediate diffusion ($k_d = 10^{-2}$) and high diffusion ($k_d=10$). Complex molecules remain in the chemostats that are located close to the source $D=1,2$ when diffusion is low (Fig.~\ref{fig:prelim-distance}, blue curve) or intermediary (red curve). When diffusion is increased (green curve), complexity spreads to the other reactors.
 
@@ -264,7 +296,8 @@ However, there remains a degeneracy when we examine the complexity contained in 
 
 \clearpage
 
-\section{MS04: measuring detection thresholds}
+\subsection{MS04: measuring detection thresholds}
+\label{subsec:MS04}
 
 Next, we want to relate these experiments to observational missions by evaluating thresholds in complexity that we could detect. We can therefore evaluate the abundance of the different species (i.e., populations as a fraction of total \# of molecules or total mass---here we chose the former) and determine the most complex molecule we could detect using an instrument capable of measuring concentrations of $10^{-5}$ (i.e. 1 molecule in a system having a total of $10^5$ molecules), then $10^{-4}$, and so on. Fig.~\ref{fig:prelim-abundance} how the complexity of detectable molecules varies as we change the diffusion coefficient.
 
@@ -301,15 +334,48 @@ Some things we are considering:
 
 \clearpage
 
-\section{MS06: implementing tau-leaping}
+\subsection{MS06: implementing tau-leaping}
+\label{subsec:MS06}
 
-{\color{blue}\lipsum}
+From the draft of the paper:\\
+
+\itshape
+
+Let $k_i$ denote one of the reaction rates. The propensity $a_i$ for a specific reaction to occur is determined by multiplying the reaction rate by the combinatorial possibilities for this reaction. For instance, for constructive reactions produced by pair-wise collisions, we can express it as:
+\begin{equation}
+a_f = k_f \cdot n(n-1).
+\end{equation}
+
+At $t=\tau$, we sample a reaction based on the relative propensities, and this process is repeated until $t = t_\text{max}$. Although the original SSA provides precise results, it becomes computationally unfeasible when dealing with a large number of reactions. Consequently, we have employed the ``$\tau$-leaping" method, wherein the number of reactions occurring during an interval $dt$ is approximated by a Poisson distribution with mean $a_i \cdot dt$ {\cite{gillespie_approximate_2001}}:
+\begin{equation}
+n_i \approx \mathcal{P}(a_i \cdot dt),
+\end{equation}
+resulting in faster calculation times, with speed-ups ranging from one to two orders of magnitude.\\
+
+\normalfont
+
+In the logfiles, I’ve included a report of skipped reactions. For example,\\
+
+\begin{tcolorbox}[colback=LightGray!20, colframe=gray!50, boxrule=0.5pt, arc=2pt, left=5pt, right=5pt, top=5pt, bottom=5pt]
+\begin{Verbatim}[fontsize=\small]
+Performed 10398531083 constructive reactions, skipped 0 (0.0 %)
+Performed 398587084 destructive reactions, skipped 0 (0.0 %)
+Performed 56930163 diffusion reactions, skipped 0 (0.0 %)
+\end{Verbatim}
+\end{tcolorbox}
+
+Having zero or next to zero skipped reactions is good. Having a high percentage---for example, more than 10\%---means that $dt$ is too large. Obviously the simulations at risk of having more skipped reactions are the ones where e.g. inflow or diffusion are highest.\\
+
+For now, I’ve mostly used $dt=10^{-3}$ and it seems to work pretty well. No skipped reactions even in high inflow/high diffusion regimes. Increasing to $dt=10^{-2}$ remains stable, but doesn’t provide much of a speed improvement (to be investigated later). However, increasing up to $dt=10^{-1}$ yields a dramatic increase in skipped reactions.
 
 \clearpage
 
-\section{MS08: distance from source (bis)}
+\subsection{MS08: distance from source (bis)}
+\label{subsec:MS08}
 
-{\color{blue}\lipsum}
+Reimplementation of the "distance from source" analysis, this time using the tau-leaping method and R to plot the figures. Nothing really new here, besides the inset which is slightly different from the one I was able to get with Julia. These are "density plots" though, so it implies a reconstruction of the (presumed) original distribution, which is why they might slightly differ between languages/implementations. Otherwise the fact that I’m able to reproduce the initial figure is a good thing, this validates not only my initial results but also the accuracy of the new (tau-leaping) implementation.\\
+
+In Figure~\ref{fig:ms08}, data points indicate the mean assembly index for each reactor, as a function of the distance from the source for that specific reactor. The three curves represent three diffusion regimes (low-, intermediate-, high-diffusion). The grey dashed box indicates that for several reactors of the same regime/distance from the source we can nonetheless get different mean assembly indices---prompting the question as to what determines this mean, besides the (topological property) of distance from the source.\\
 
 \begin{figure}[ht]
   \centering
@@ -317,15 +383,18 @@ Some things we are considering:
   \begin{overpic}[width=0.45\textwidth]{figures/results/MS08/08C_distance-from-source}
 %  	\put(-5,80){\textbf{(A)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Mean assembly index for each reactor as a function of its distance from the source. Each data point corresponds to a reactor, with curves representing three distinct diffusion regimes (low, intermediate, high). The grey dashed box highlights that reactors equidistant from the source within the same diffusion regime can exhibit differing mean assembly indices—raising the question of what additional factors, beyond topological distance, influence the mean assembly index.}
+  \label{fig:ms08}
 \end{figure}
 
 \clearpage
 
-\section{MS09: varying diffusion (bis)}
+\subsection{MS09: varying diffusion (bis)}
+\label{subsec:MS09}
 
-{\color{blue}\lipsum}
+Similar to the previous milestone: reimplementation of a previous analysis (MS02) that used the SSA algorithm, this time with the tau-leaping scheme and R to plot the figures. Figure \ref{fig:MS09-pop-std} below is to be compared to \ref{fig:prelim-diffusion}: panel A shows the average populations varying across diffusion rates while panel B reports their standard deviation. Integers 2--9 are shown.\\
+
+One notable difference between Figure \ref{fig:MS09-pop-std} shown here and the previous Figure \ref{fig:prelim-diffusion} is that for lower values of the diffusion rate population statistics differ significantly. These simulations were carried out some time ago as of the time I’m writing this, but to the best of my recollection we were confident that results in Fig. \ref{fig:prelim-diffusion} must have been partly wrong somehow. If we interpret the curves in Fig. \ref{fig:MS09-pop-std} as an indication of the three different regimes owing to the diffusion rate (fully mixed/heterogeneous/fully mixed again) the figure makes perfect sense.
 
 \begin{figure}[hbt]
   \centering
@@ -336,9 +405,13 @@ Some things we are considering:
   \begin{overpic}[width=0.45\textwidth]{figures/results/MS09/09C_sd-populations-across-kd}
   	\put(-5,80){\textbf{(B)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{\textbf{(A)} average populations for integers 2--9. \textbf{(B)} standard deviation.}
+  \label{fig:MS09-pop-std}
 \end{figure}
+
+\clearpage
+
+Following the same process, we have also carried out a reanalysis of the detection thresholds calculated previously. Again this is the same statistical ensemble of simulations, same parameters, etc. Figure \ref{fig:MS09-detection-thresholds} below is also quite identical to the one before (Figure \ref{fig:prelim-abundance}).
 
 \begin{figure}[hbt]
   \centering
@@ -349,15 +422,16 @@ Some things we are considering:
   \begin{overpic}[width=0.45\textwidth]{figures/results/MS09/09C_detection_thresholds_AI}
   	\put(-5,80){\textbf{(B)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Reanalysis of the detection thresholds. Both panels are almost identical as the ones resulting from the previous analysis.}
+  \label{fig:MS09-detection-thresholds}
 \end{figure}
 
 \clearpage
 
-\section{MS12: assembly of integers (bis)}
+\subsection{MS12: assembly of integers (bis)}
+\label{subsec:MS12}
 
-{\color{blue}\lipsum}
+Same reanalysis of the relationship between integer and assembly index than before. Both figures are identical.
 
 \begin{figure}[hbt]
   \centering
@@ -365,15 +439,16 @@ Some things we are considering:
   \begin{overpic}[width=0.45\textwidth]{figures/results/MS12/12_assembly-of-integers}
 %  	\put(-5,80){\textbf{(A)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Reanalysis of the relationship between integer and assembly index.}
+  \label{fig:MS12-integer-assembly}
 \end{figure}
 
 \clearpage
 
-\section{MS13: integers histogram}
+\subsection{MS13: integers histogram}
+\label{subsec:MS13}
 
-{\color{blue}\lipsum}
+Show below on Figure \ref{fig:MS13-integer-histogram} is the frequency distribution of molecules for a given simulation, at the final time step. The populations were taken over the whole system. The distribution is shown both as a function of integer value and assembly index. It’s also truncated at integers of 15, as it extends much farther than that.
 
 \begin{figure}[hbt]
   \centering
@@ -381,82 +456,127 @@ Some things we are considering:
   \begin{overpic}[width=0.45\textwidth]{figures/results/MS13/13_integers-histogram}
 %  	\put(-5,80){\textbf{(A)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Distribution of molecules at the final time step, over the whole system.}
+  \label{fig:MS13-integer-histogram}
 \end{figure}
 
 \clearpage
 
-\section{MS15-18: sweep on inflow $\times$ diffusion with $t_\text{max}=10^2, 10^3, 10^4$}
+\subsection{MS15-18: sweep on inflow $\times$ diffusion with $t_\text{max}=10^2, 10^3, 10^4$}
+\label{subsec:MS15-18}
 
-{\color{blue}\lipsum}
+Now we’re ready to carry out extensive parameter sweeps. \\
+
+\textbf{Preliminary remark \#1}: The system’s configuration is governed by several parameters: graph topology, number of inflows, reactor count, and the rates of destruction, construction, and diffusion. For the initial analysis we fix a square lattice with a single inflow and set the number of reactors to $25$. We also fix the destructive rate at $1$ to normalize the remaining reaction rates. This leaves three free parameters: the constructive rate, the diffusion coefficient, and the inflow rate. Because increasing the constructive rate predictably boosts molecular complexity, the present study concentrates on sweeping the inflow rate and the diffusion coefficient.\\
+
+\textbf{Preliminary remark \#2:} In this project we \textit{do not} map our dimensionless parameters onto specific geochemical quantities. The model represents an idealized nanoporous medium in which chemistry unfolds, and we deliberately avoid committing to any particular origin-of-life scenario or entering detailed debates with geochemists.\\
+
+Our initial exploration employed a Monte Carlo approach: we sampled the diffusion coefficient uniformly from $[10^{-3},10^{-1}]$ and the inflow rate from $[10^{3},10^{6}]$, executed $100$ simulations, and plotted the results in the corresponding two-dimensional parameter space, with point colours reflecting the average integer complexity. With only $100$ runs, the sampling was too sparse to reveal clear trends, and time-series plots exposed rich, non-trivial species dynamics. Consequently, I shifted to a more systematic study using the large multi-panel plots that proved successful in previous projects.\\
+
+\clearpage
+
+\subsubsection{Time series for a single simulation and for whole systems}
+
+Figure~\ref{fig:MS15-18-time-series} presents additional results. We ran an ensemble of $100$ simulations on a $5 \times 5$ lattice, with columns corresponding to three run times, $t_\text{max}={10^{2},10^{3},10^{4}}$ iterations. The time step was fixed at $dt = 10^{-3}$ to avoid skipped reactions; larger steps ($10^{-2}$ or $10^{-1}$) skipped anywhere from a few to several dozen percent of reactions while yielding only a modest 40–60 \% speed-up.
+
+The top row shows the time series from a representative simulation. Only the longest runs ($t_\text{max}=10^{4}$) visibly attain steady state.
+
+The second row plots the lattice-wide populations of the first few species. Panels are ordered from low to high diffusion (left to right) and from low to high inflow (bottom to top). As we will see, these traces offer limited additional insight.
 
 \begin{figure}[hbt]
   \centering
   {\LARGE Time series for a single simulation and for whole systems}\vspace{1em}\\
   \vspace{3em}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS15/single-timeseries}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS15/single-timeseries}
   \put(30,110){\huge $t_\text{max}=10^2$}
   	\put(-5,95){\textbf{(A)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS17/single-timeseries}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS17/single-timeseries}
     \put(30,110){\huge $t_\text{max}=10^4$}
   	\put(-5,95){\textbf{(B)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS18/single-timeseries_62}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/single-timeseries_62}
     \put(30,110){\huge $t_\text{max}=10^4$}
   	\put(-5,95){\textbf{(C)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS15/multipanel-timeseries}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS15/multipanel-timeseries}
   	\put(-5,95){\textbf{(D)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS17/multipanel-timeseries}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS17/multipanel-timeseries}
   	\put(-5,95){\textbf{(E)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS18/multipanel-timeseries}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/multipanel-timeseries}
   	\put(-5,95){\textbf{(F)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+\caption{Time-series diagnostics for the lattice ensemble. Each column corresponds to one of three simulation lengths, $t_{\text{max}}\in{10^{2},10^{3},10^{4}}$ iterations; all runs use a $5\times5$ lattice and a fixed step size $dt=10^{-3}$. \textbf{Top row:} Trajectories from a representative simulation illustrate that macroscopic steady state is achieved only in the longest runs ($t_{\text{max}}=10^{4}$). \textbf{Bottom row:} Lattice-averaged populations for the first few species, with panels ordered from low to high diffusion (left $\to$ right) and low to high inflow (bottom $\to$ top). These global averages reveal limited structure compared with the full spatially resolved data discussed later.}
+  \label{fig:MS15-18-time-series}
 \end{figure}
+
+\clearpage
+
+\subsubsection{Power law fit over the whole system (integer/AI) and inflow/outflow}
+
+Our next results are presented in Fig.~\ref{fig:MS15-18-power-law-fit}. We continue to work with the same dataset but now offer additional views.\\
+
+The first row displays probability–density functions for the first 50 chemical species at the final time step, plotted as scatter points in log–log space. The red line shows a power-law fit performed in log space. Agreement is good for these initial species, yet it degrades once we broaden the sample (e.g., to 200 + species), revealing an apparent heavy-tailed distribution that merits further scrutiny. The fitted law follows $A^{-k}$, and the dashed line indicates a slope of $k=1$—a slope below 1 would imply a distribution with an undefined mean.\\
+
+The second row repeats the analysis with the calculated assembly index replacing the integer species label. This panel remains provisional: the logarithmic binning may be sub-optimal, and the assembly-index calculation still needs validation. Because the assembly index scales roughly with the logarithm of the integer label, plotting it on a log axis effectively applies a double-log transformation, whose appropriateness we must evaluate.\\
+
+The third row is the most revealing. By separating the inflow and outflow reactors, it lets us quantify the topological influence between them. A clear trend emerges: the outflow reactor (orange points, red fit) has a noticeably shallower slope than the inflow reactor (green points, blue fit), suggesting the downstream formation of more complex molecules. Before drawing firm conclusions, however, we must first normalise the PDFs—a task we will revisit.\\
+
+\clearpage
 
 \begin{figure}[hbt]
   \centering
   {\LARGE Power law fit over the whole system (integer/AI) and inflow/outflow}\vspace{1em}\\
   \vspace{3em}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS15/multipanel-histograms}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS15/multipanel-histograms}
     \put(30,110){\huge $t_\text{max}=10^2$}
   	\put(-5,95){\textbf{(A)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS17/multipanel-histograms}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS17/multipanel-histograms}
     \put(30,110){\huge $t_\text{max}=10^3$}
   	\put(-5,95){\textbf{(B)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS18/multipanel-histograms}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/multipanel-histograms}
     \put(30,110){\huge $t_\text{max}=10^4$}
   	\put(-5,95){\textbf{(C)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS15/multipanel-histograms-AI}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS15/multipanel-histograms-AI}
   	\put(-5,95){\textbf{(D)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS17/multipanel-histograms-AI}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS17/multipanel-histograms-AI}
   	\put(-5,95){\textbf{(E)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS18/multipanel-histograms-AI}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/multipanel-histograms-AI}
   	\put(-5,95){\textbf{(F)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS15/multipanel-histograms-inflow-outflow}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS15/multipanel-histograms-inflow-outflow}
   	\put(-5,95){\textbf{(G)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS17/multipanel-histograms-inflow-outflow}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS17/multipanel-histograms-inflow-outflow}
   	\put(-5,95){\textbf{(H)}}
   \end{overpic}
-  \begin{overpic}[width=0.33\textwidth]{figures/results/MS18/multipanel-histograms-inflow-outflow}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/multipanel-histograms-inflow-outflow}
   	\put(-5,95){\textbf{(I)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{\textbf{Top}: PDFs of the first 50 species in log–log space; red line is the power-law fit, dashed black denotes slope $k=1$. \textbf{Middle}: Same data plotted against assembly index (AI); binning and double-log scaling still under review. \textbf{Bottom}: Inflow (green, blue fit) vs.\ outflow (orange, red fit) reactors—shallower outflow slope hints at greater downstream complexity. Normalisation of PDFs is pending.}
+  \label{fig:MS15-18-power-law-fit}
 \end{figure}
+
+\clearpage
+
+\subsubsection{Exponent of power law fit, average integer and total mass}
+
+Figure \ref{fig:MS15-18-exponent-int-mass} shows a series of heatmaps built from the same dataset.\
+
+First row — power-law exponent.  In the third column, where simulations have reached steady state, diffusion (horizontal axis) exerts almost no influence, whereas inflow (vertical axis) strongly shapes molecular complexity. Higher inflow raises the exponent, steepening the slope and reducing the abundance of complex species. Note, however, that this map uses the exponent fitted over the entire system; later fits partitioned by inflow/outflow are more informative.\\
+
+Second row — average integer.  Averaged across the system, diffusion again has negligible effect, while greater inflow monotonically increases the mean integer value.\\
+
+Third row — total mass.  The total mass pattern closely mirrors that of the average integer, reinforcing the dominant role of inflow over diffusion in these simulations.\\
+
+\clearpage
 
 \begin{figure}[hbt]
   \centering
@@ -492,9 +612,21 @@ Some things we are considering:
   \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/heatmap-total-mass-log}
   	\put(-5,85){\textbf{(I)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Heatmaps across diffusion rate $k_d$ (horizontal axis) and inflow $I$ (vertical axis). Row 1: power-law exponent of the species-abundance distribution—larger $I$ steepens the slope, whereas $k_d$ has little effect. Row 2: mean integer index, rising with $I$ and insensitive to $k_d$. Row 3: total molecular mass, mirroring the mean-integer trend. All panels derive from the same dataset; steady-state results appear in the third column.}
+  \label{fig:MS15-18-exponent-int-mass}
 \end{figure}
+
+\clearpage
+
+\subsubsection{Exponents of power law fit at inflow/outflow/diff}
+
+Figure \ref{fig:MS15-18-exp-inflow-outflow} displays three heatmaps of the power-law exponents for the inflow and outflow reactors, using an adjusted color scale to accentuate subtle simulation-to-simulation differences. Panel A plots the inflow exponent $k_\text{inflow}$, Panel B the outflow exponent $k_\text{outflow}$, and Panel C their difference $k_\text{outflow}-k_\text{inflow}$.\\
+
+In Panel A, diffusion again exerts virtually no influence, whereas inflow dominates: the exponent is lowest at small inflow, rises sharply with increasing inflow, then settles to an intermediate plateau.\\
+
+Panel B shows a similar absence of diffusion effects, but the inflow dependence is muted—$k_\text{outflow}$ decreases only slightly as inflow grows.\\
+
+Consequently, the difference map in Panel C largely mirrors the inflow pattern of Panel A; the contrast arises almost entirely from changes at the inflow reactor.\\
 
 \begin{figure}[hbt]
   \centering
@@ -508,39 +640,55 @@ Some things we are considering:
   \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/heatmap-exponents-diff}
   	\put(-5,85){\textbf{(C)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{\textbf{Power‐law exponents at inflow and outflow.}  Heatmaps plot the exponent of the power‐law fit for each reactor as a function of diffusion ($x$‐axis) and inflow rate ($y$‐axis).  \textbf{A)} Inflow exponent $k_\text{inflow}$: diffusion has negligible influence, while increasing inflow first raises the exponent sharply and then levels it off.  \textbf{B)} Outflow exponent $k_\text{outflow}$: diffusion again has no discernible effect, and the inflow dependence is modest, with a slight decrease at higher inflow.  \textbf{C)} Difference $k_\text{outflow}-k_\text{inflow}$: the pattern closely tracks panel A, confirming that variations at the inflow reactor drive the contrast between reactors.}
+  \label{fig:MS15-18-exp-inflow-outflow}
 \end{figure}
+
+\clearpage
+
+\subsubsection{Time series for limit cases}
+
+Figure \ref{fig:MS15-18-limit-cases} displays the complete time-series traces for all reactors in the four “limit-case” simulations—those using the extreme combinations of diffusion and inflow parameters:
+
+\begin{enumerate}[label=(\Alph*)]
+\item $\log k_d = -3$, $\log I = 6$
+\item $\log k_d = -1$, $\log I = 6$
+\item $\log k_d = -3$, $\log I = 3$
+\item $\log k_d = -1$, $\log I = 3$
+\end{enumerate}
+
+Beyond illustrating that each system has effectively reached steady state, the plots reveal no further noteworthy differences.
 
 \begin{figure}[hbt]
   \centering
   {\LARGE Time series for limit cases ($t_\text{max}=10^4$)}\vspace{1em}\\
-  \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_1}
+  \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_91}
     \put(80,110){\huge }
   	\put(-5,95){\textbf{(A)}}
   \end{overpic}
-   \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_10}
+   \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_100}
   	\put(-5,95){\textbf{(B)}}
   \end{overpic}
-   \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_91}
+   \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_1}
   	\put(-5,95){\textbf{(C)}}
   \end{overpic}
-   \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_100}
+   \begin{overpic}[width=0.45\textwidth]{figures/results/MS18/single-timeseries_10}
   	\put(-5,95){\textbf{(D)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Time‐series profiles for every reactor in the four “limit‐case” simulations, defined by the extreme combinations of diffusion ($\log k_d$) and inflow ($\log I$) parameters. All traces level off, indicating that each system has effectively reached steady state.}
+  \label{fig:MS15-18-limit-cases}
 \end{figure}
 
 \clearpage
 
-\section{MS16: numerical stability test aka testing $dt$}
+\subsubsection{Wrapping up MS15-18}
+\label{subsubsec:wrap-up-15-18}
 
-{\color{blue}\lipsum}
+We have produced numerous figures, not all equally informative. It is therefore time to consolidate our results and retain only those that best support our analysis. Figure \ref{fig:wrap-up-15-18} presents the key panels identified so far: the limit-case simulations, the power-law fits for inflow and outflow reactors, heatmaps of the corresponding exponents, and the plots of average integer and total mass.\\
+
+In the next section, we will compare these findings across alternative topologies to assess how network structure influences the emergence of complex molecules.\\
 
 \clearpage
-
-\section{Wrapping up MS15-18}
 
 %- time series chemostats (limit cases)
 %- histograms exp fits inflow/outflow
@@ -548,64 +696,22 @@ Some things we are considering:
 %- heatmaps avg integer (log scale)
 %- heatmaps mass (log scale)
 
-%\begin{figure}[hbt]
-%  \centering
-%  {\LARGE Time series for limit cases}\vspace{1em}\\
-%  \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/single-timeseries_1}
-%    \put(80,110){\huge }
-%  	\put(-5,95){\textbf{(A)}}
-%  \end{overpic}
-%   \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/single-timeseries_10}
-%  	\put(-5,95){\textbf{(B)}}
-%  \end{overpic}
-%   \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/single-timeseries_91}
-%  	\put(-5,95){\textbf{(C)}}
-%  \end{overpic}
-%   \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/single-timeseries_100}
-%  	\put(-5,95){\textbf{(D)}}
-%  \end{overpic}
-%  \vskip1em
-%  {\LARGE Power law fit and exponents at inflow/outflow/diff}\vspace{0em}\\
-%  \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/multipanel-histograms-inflow-outflow}
-%  	\put(-5,95){\textbf{(E)}}
-%  \end{overpic}
-%  \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/heatmap-exponents-inflow}
-%  	\put(-5,85){\textbf{(F)}}
-%  \end{overpic}
-%  \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/heatmap-exponents-outflow}
-%  	\put(-5,85){\textbf{(G)}}
-%  \end{overpic}
-%  \begin{overpic}[width=0.24\textwidth]{figures/results/MS18/heatmap-exponents-diff}
-%  	\put(-5,85){\textbf{(H)}}
-%  \end{overpic}
-%  \vskip1em
-%  {\LARGE Average integer and total mass}\vspace{1em}\\
-%  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/heatmap-avg-integer-log}
-%  	\put(-5,85){\textbf{(I)}}
-%  \end{overpic}
-%  \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/heatmap-total-mass-log}
-%  	\put(-5,85){\textbf{(J)}}
-%  \end{overpic}
-%  \caption{\textbf{(A)} ...}
-%  \label{fig:}
-%\end{figure}
-
 \begin{figure}[hbt]
   \centering
 \begin{minipage}{0.5\linewidth}
 \centering
 {\LARGE Time series for limit cases}\vspace{1em}\\
-  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_1}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_91}
     \put(80,110){\huge }
     \put(-5,95){\textbf{(A)}}
   \end{overpic}
-  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_10}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_100}
     \put(-5,95){\textbf{(B)}}
   \end{overpic}
-  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_91}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_1}
     \put(-5,95){\textbf{(C)}}
   \end{overpic}
-  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_100}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS18/single-timeseries_10}
     \put(-5,95){\textbf{(D)}}
   \end{overpic}
 \end{minipage}
@@ -636,15 +742,103 @@ Some things we are considering:
   \begin{overpic}[width=0.32\textwidth]{figures/results/MS18/heatmap-total-mass-log}
   	\put(-5,85){\textbf{(J)}}
   \end{overpic}
-  \caption{\textbf{(A)} ...}
-  \label{fig:}
+  \caption{Key outputs: limit cases, power law fits and exponents, average integer and total mass.}
+  \label{fig:wrap-up-15-18}
 \end{figure}
 
 \clearpage
 
-\section{MS19: varying the topology}
+\subsection{MS19: randomizing edges of the lattice topology}
+\label{subsec:MS19}
 
-%\chapter{References}
+Next we’ll be repeating the previous analysis, this time using a lattice where we randomized edges. We use a directed edge-swapping algorithm to randomize the topology of a graph while preserving each node's in-degree and out-degree. The procedure is as follows:
+\begin{enumerate}
+    \item Randomly select two directed edges, $(u_1 \rightarrow v_1)$ and $(u_2 \rightarrow v_2)$, such that all four nodes are distinct.
+    \item Propose swapping the target nodes to form new edges $(u_1 \rightarrow v_2)$ and $(u_2 \rightarrow v_1)$.
+    \item Check that the new edges do not introduce self-loops or duplicate edges.
+    \item If valid, perform the swap by deleting the original edges and adding the new ones.
+    \item Repeat for a fixed number of swaps, typically $10$ times the total number of edges, to sufficiently randomize the network structure.
+\end{enumerate}
+
+This process produces a randomized null model of the original network that preserves the full in-degree and out-degree sequence. For each simulation of the current milestone, we will apply this algorithm to the lattice topology, creating a new randomized version (i.e., 100 different randomized graphs for the 100 simulations of the ensemble).\\
+
+\important{Oops.}{This analysis is on hold as there was a bug in the randomization of the network. Pending discussion with Cole on this.}
+
+\clearpage
+
+\begin{figure}[hbt]
+  \centering
+\begin{minipage}{0.5\linewidth}
+\centering
+{\LARGE Time series for limit cases}\vspace{1em}\\
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS19/single-timeseries_1}
+    \put(80,110){\huge }
+    \put(-5,95){\textbf{(A)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS19/single-timeseries_10}
+    \put(-5,95){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS19/single-timeseries_91}
+    \put(-5,95){\textbf{(C)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS19/single-timeseries_100}
+    \put(-5,95){\textbf{(D)}}
+  \end{overpic}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}	
+\centering
+{\Large Power law fits over inflow/outflow}\vspace{1em}\\
+  \begin{overpic}[width=0.99\textwidth]{figures/results/MS19/multipanel-histograms-inflow-outflow}
+  	\put(-0,95){\textbf{(E)}}
+  \end{overpic}
+\end{minipage}
+
+  \vskip1em
+  {\LARGE Exponents of power law fits at inflow/outflow/diff}\vspace{1em}\\
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS19/heatmap-exponents-inflow}
+  	\put(-5,85){\textbf{(F)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS19/heatmap-exponents-outflow}
+  	\put(-5,85){\textbf{(G)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS19/heatmap-exponents-diff}
+  	\put(-5,85){\textbf{(H)}}
+  \end{overpic}
+  \vskip1em
+  {\LARGE Average integer and total mass}\vspace{1em}\\
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS19/heatmap-avg-integer-log}
+  	\put(-5,85){\textbf{(I)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/MS19/heatmap-total-mass-log}
+  	\put(-5,85){\textbf{(J)}}
+  \end{overpic}
+  \caption{Key outputs for the randomized version of the lattice: limit cases, power law fits and exponents, average integer and total mass.}
+  \label{fig:wrap-up-15-18}
+\end{figure}
+
+\clearpage
+
+\subsubsection{Comparing lattice vs randomized topologies}
+
+Since the heatmap for the outflow reactor provides the most informative view of the data, we now compare this heatmap for the lattice topology with that of its randomized counterpart.\\
+
+\important{Oops.}{This analysis is on hold as there was a bug in the randomization of the network. Pending discussion with Cole on this.}
+
+\begin{figure}[hbt]
+\centering
+  {\LARGE Comparing exponent at outflows --- lattice vs randomized\\ (color scale adjusted)}\vspace{1em}\\
+  \begin{overpic}[width=0.45\textwidth]{figures/results/MS20/MS18-heatmap-exponents-outflow}
+  	\put(-5,85){\textbf{(A)}}
+  \end{overpic}
+  \begin{overpic}[width=0.45\textwidth]{figures/results/MS20/MS19-heatmap-exponents-outflow}
+  	\put(-5,85){\textbf{(B)}}
+  \end{overpic}
+  \caption{\textbf{(A)} ...}
+  \label{fig:ms20}
+\end{figure}
+
+\clearpage
+
 %\bibliographystyle{apalike}
 \footnotesize
 \setlength{\bibsep}{0.0pt}

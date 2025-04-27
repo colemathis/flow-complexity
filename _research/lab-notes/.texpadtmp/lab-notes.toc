@@ -1,13 +1,29 @@
-\contentsline {section}{\numberline {1}Description of the system}{2}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Artificial chemistry}{2}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}System of reactors}{2}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Topologies}{3}{subsection.1.3}%
-\contentsline {subsection}{\numberline {1.4}Integer chemistry and Assembly Theory}{3}{subsection.1.4}%
-\contentsline {section}{\numberline {2}Experiments}{5}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Preliminary experiments (Sep-Oct 2024)}{5}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}Varying the diffusion rate}{5}{subsubsection.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.2}Measuring distance from source}{6}{subsubsection.2.1.2}%
-\contentsline {subsubsection}{\numberline {2.1.3}Measuring detection thresholds}{7}{subsubsection.2.1.3}%
-\contentsline {subsubsection}{\numberline {2.1.4}Upcoming experiments}{7}{subsubsection.2.1.4}%
-\contentsline {subsection}{\numberline {2.2}Title (date)}{8}{subsection.2.2}%
-\contentsline {section}{\numberline {3}References}{8}{section.3}%
+\contentsline {section}{\numberline {1}Previous notes from Cole}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}May 12th, 2022}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}June 24th, 2022}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}July 6th, 2022}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}July 12th, 2022}{4}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}July 13th, 2022}{4}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}September 9th, 2024 (Alex)}{4}{subsection.1.6}%
+\contentsline {subsection}{\numberline {1.7}September 11th, 2024 (Alex)}{4}{subsection.1.7}%
+\contentsline {subsection}{\numberline {1.8}September 12th, 2024 (Alex)}{4}{subsection.1.8}%
+\contentsline {section}{\numberline {2}Description of the system}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Artificial chemistry}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}System of reactors}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Topologies}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Integer chemistry and Assembly Theory}{6}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Experiments}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}MS01: time series}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}MS02: varying the diffusion rate}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}MS03: measuring distance from source}{12}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}MS04: measuring detection thresholds}{13}{subsection.3.4}%
+\contentsline {paragraph}{Upcoming experiments}{14}{section*.12}%
+\contentsline {subsection}{\numberline {3.5}MS06: implementing tau-leaping}{15}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}MS08: distance from source (bis)}{16}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}MS09: varying diffusion (bis)}{17}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.8}MS12: assembly of integers (bis)}{19}{subsection.3.8}%
+\contentsline {subsection}{\numberline {3.9}MS13: integers histogram}{20}{subsection.3.9}%
+\contentsline {subsection}{\numberline {3.10}MS15-18: sweep on inflow $\times $ diffusion with $t_\text {max}=10^2, 10^3, 10^4$}{21}{subsection.3.10}%
+\contentsline {subsection}{\numberline {3.11}MS16: numerical stability test aka testing $dt$}{27}{subsection.3.11}%
+\contentsline {subsection}{\numberline {3.12}Wrapping up MS15-18}{28}{subsection.3.12}%
+\contentsline {subsection}{\numberline {3.13}MS19: randomizing edges of the lattice topology}{30}{subsection.3.13}%
