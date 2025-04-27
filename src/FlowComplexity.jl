@@ -17,7 +17,7 @@ function launch(sim_number)
 end
 
 function extract()
-    extract_sims()
+    extract_sims2()
 end
 
 function print_help()

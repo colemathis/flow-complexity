@@ -163,8 +163,29 @@ function save_data(sim)
     sim_number = sim.params[:sim_number]
     sim_number_str = sim_number_string(sim_number)
     # fn = joinpath(sim.params[:save_name], "simulation.jld2")
-    fn = joinpath(sim.params[:save_name], "$sim_number_str.jld2")
-    save(fn, Dict("sim" => sim))
+    # fn = joinpath(sim.params[:save_name], "$sim_number_str.jld2")
+    # save(fn, Dict("sim" => sim))
+
+    # save sim.output[:timeseries] as a CSV file
+    # fn = joinpath(sim.params[:save_name], "timeseries.csv")
+    sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
+    mkpath(sim_dir)
+    fn = joinpath(sim_dir, "timeseries.csv")
+    CSV.write(fn, sim.output[:timeseries])
+
+    io_nodes = DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
+    g = sim.ensemble.ensemble_graph
+    for e in edges(g)
+        push!(io_nodes, (
+            sim_number = sim_number,
+            chemostat_in = src(e),
+            chemostat_out = dst(e)
+        ))
+    end
+    sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
+    mkpath(sim_dir)
+    fn = joinpath(sim_dir, "graph.csv")
+    CSV.write(fn, io_nodes)
 
     rel = relpath(fn, pwd())
     println("Data saved in $rel")
@@ -228,4 +249,3 @@ function calculate_time_series(sim)
     return ts
     
 end
-
