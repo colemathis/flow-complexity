@@ -1,5 +1,6 @@
 using JLD2
 using CSV
+using Pkg
 
 #==============================================================================#
 # FUNCTIONS
@@ -8,7 +9,7 @@ using CSV
 function get_relative_path()
 
     current_dir = pwd()
-    milestones_dir = joinpath(projectdir(), "milestones")
+    milestones_dir = joinpath(dirname(Pkg.project().path), "milestones")
     relative_path = relpath(current_dir, milestones_dir)
     
     return relative_path
@@ -29,7 +30,7 @@ end
 
 #==============================================================================#
 
-function extract()
+function extract_sims()
 
     directory = "./data/sims"
     # nsim = count(isdir, readdir(directory, join=true))

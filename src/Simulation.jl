@@ -6,6 +6,7 @@ include("EvolveTauleaping.jl")
 include("Analysis.jl")
 
 using CSV, DataFrames
+using Pkg
 
 # Set the backward rate to a constant
 const backward_rate = 1.0
@@ -108,7 +109,8 @@ function RunSimulation(sim; dry_run=false)
 
     # sim_number_string = lpad(sim_number,6,"0")
     # sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims", sim_number_string)
-    sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims")
+    # sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims")
+    sim.params[:save_name] = joinpath(dirname(Pkg.project().path), "milestones", sim.params[:save_name], "data", "sims")
     
     sim.output[:timestamps] = []
     sim.output[:populations] = []
