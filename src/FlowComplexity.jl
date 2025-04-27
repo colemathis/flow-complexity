@@ -2,48 +2,17 @@ module FlowComplexity
 
 include("Simulation.jl")
 
-function parse_args()
-    if length(ARGS) == 0
-        print_help()
-        return
-    end
-
-    cmd = ARGS[1]
-    if cmd == "queue"
-        println("Julia CWD: ", pwd())
-        queue()
-    elseif cmd == "dry"
-        if length(ARGS) < 2
-            println("Usage: flow dry <sim_number>")
-            return
-        end
-        sim_number = ARGS[2]
-        dry(sim_number)
-    elseif cmd == "launch"
-        if length(ARGS) < 2
-            println("Usage: flow launch <sim_number>")
-            return
-        end
-        sim_number = ARGS[2]
-        launch(sim_number)
-    elseif cmd == "extract"
-        extract()
-    else
-        print_help()
-    end
-end
-
 function queue()
     include(joinpath(pwd(), "params.jl"))
     mkpath("data")
     write_params_file(params_array)
 end
 
-function dry(sim_number::String)
+function dry(sim_number)
     launch_simulation(sim_number, dry_run=true)
 end
 
-function launch(sim_number::String)
+function launch(sim_number)
     launch_simulation(sim_number)
 end
 
@@ -68,6 +37,28 @@ Examples:
 """)
 end
 
-parse_args()
+# --- Command dispatcher ---
+function main()
+    if isempty(ARGS)
+        print_help()
+        return
+    end
+
+    cmd, rest = ARGS[1], ARGS[2:end]
+    commands = Dict(
+        "queue"   => ()      -> queue(),
+        "dry"     => (a...)  -> length(a) == 1 ? dry(a[1]) : print_help(),
+        "launch"  => (a...)  -> length(a) == 1 ? launch(a[1]) : print_help(),
+        "extract" => ()      -> extract()
+    )
+
+    if haskey(commands, cmd)
+        commands[cmd](rest...)
+    else
+        print_help()
+    end
+end
+
+main()
 
 end
