@@ -343,16 +343,27 @@ function randomize_directed_preserving_degree!(g::SimpleDiGraph, nswap::Int)
             continue
         end
 
-        # Proposed new edges: (u1→v2), (u2→v1)
-        if has_edge(g, u1, v2) || has_edge(g, u2, v1) || u1 == v2 || u2 == v1
+        # Check that mirrored edges exist
+        if !(has_edge(g, v1, u1) && has_edge(g, v2, u2))
+            error("Mirrored edges missing: cannot swap ($u1->$v1) and ($u2->$v2) without ($v1->$u1) and ($v2->$u2)")
+        end
+
+        # Proposed new edges: (u1→v2) and (u2→v1) and their mirrors (v2→u1) and (v1→u2)
+        if has_edge(g, u1, v2) || has_edge(g, u2, v1) || has_edge(g, v2, u1) || has_edge(g, v1, u2) ||
+           u1 == v2 || u2 == v1 || v2 == u1 || v1 == u2
             continue
         end
 
-        # Perform the swap
+        # Perform the swap for both edges and their mirrors
         rem_edge!(g, u1, v1)
+        rem_edge!(g, v1, u1)
         rem_edge!(g, u2, v2)
+        rem_edge!(g, v2, u2)
+
         add_edge!(g, u1, v2)
+        add_edge!(g, v2, u1)
         add_edge!(g, u2, v1)
+        add_edge!(g, v1, u2)
 
         # Update edge list and count
         edges = collect(Graphs.edges(g))
