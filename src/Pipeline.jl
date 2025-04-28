@@ -186,6 +186,8 @@ function launch_simulation(sim; dry_run=false)
     
     simulation = FlowComplexity.Simulation(; user_params = params_dict)
     RunSimulation(simulation, dry_run=dry_run)
+
+    return simulation
     
 end
 

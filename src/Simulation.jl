@@ -52,12 +52,14 @@ function apply_params_default_values()
         :outflow_rate       => 0.0,
         :total_time         => 100,
         :output_time        => 1.0,
+        :inflow_mols        => 1e3,
         :N_inflow           => 1,
         :sim_number         => 1,
         :method             => "exact",
         :method             => "tau-leaping",
         :save_name          => get_relative_path(),
         :random_seed        => 1,
+        :dt                 => 1e-3,
     )
     
     return default_values
