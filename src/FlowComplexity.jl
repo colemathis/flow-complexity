@@ -12,6 +12,10 @@ function queue()
     write_params_file(params_template, nrepeat)
 end
 
+function slurm()
+    create_slurm_file()
+end
+
 function dry(sim_number)
     launch_simulation(sim_number, dry_run=true)
 end
@@ -32,6 +36,7 @@ Usage: flow <command> [options]
 Commands:
   params                 Create params.jl in the current folder
   queue                  Create a queue of jobs to be run in data/params.csv
+  slurm                  Create a slurm script to run the simulations
   dry <sim_number>       Run the first 10% iterations of simulation sim_number
                          and prints calculation time estimates
   launch <sim_number>    Launch simulation sim_number
@@ -51,6 +56,7 @@ function main()
     commands = Dict(
         "params"  => ()      -> params(),
         "queue"   => ()      -> queue(),
+        "slurm"   => ()      -> slurm(),
         "dry"     => (a...)  -> length(a) == 1 ? dry(a[1]) : print_help(),
         "launch"  => (a...)  -> length(a) == 1 ? launch(a[1]) : print_help(),
         "extract" => ()      -> extract()
