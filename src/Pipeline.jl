@@ -19,10 +19,25 @@ end
 
 #==============================================================================#
 
-function write_params_file(params_array)
+function write_params_file(params_template, nrepeat)
 
     array_fn = "./data/params.csv"
     println("Writing parameters for simulation array in $array_fn")
+    # Generate all combinations of parameters
+    param_keys = collect(keys(params_template))
+    values_list = [ isa(params_template[k], AbstractVector) ? params_template[k] : [params_template[k]] for k in param_keys ]
+    param_tuples = Iterators.product(values_list...)
+    params_array = [ Dict(zip(param_keys, t)) for t in param_tuples ]
+
+    # Duplicate each parameter set nrepeat times so they can be edited independently
+    if nrepeat > 1
+        params_array = [deepcopy(d) for d in params_array for _ in 1:nrepeat]
+    end
+
+    for i in eachindex(params_array)
+        params_array[i][:sim_number] = i
+    end
+
     CSV.write(array_fn, params_array)
     println("Done.")
     println("")

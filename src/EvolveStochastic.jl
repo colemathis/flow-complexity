@@ -57,7 +57,7 @@ function evolve_distributed_exact(sim)
 
         if tau > checkpoint
             save_checkpoint(sim, tau)
-            checkpoint += sim.output_time
+            checkpoint += sim.params[:save_interval]
         end
 
     end

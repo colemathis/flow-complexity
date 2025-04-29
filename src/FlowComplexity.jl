@@ -5,7 +5,7 @@ include("Simulation.jl")
 function queue()
     include(joinpath(pwd(), "params.jl"))
     mkpath("data")
-    write_params_file(params_array)
+    write_params_file(params_template, nrepeat)
 end
 
 function dry(sim_number)

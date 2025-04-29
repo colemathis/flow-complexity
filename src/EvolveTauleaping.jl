@@ -76,7 +76,7 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
             
         end                
 
-        if sim.params[:mass] > 0
+        if sim.params[:initial_mass] > 0
             keep_ones_fixed(Ensemble)
         end
 
@@ -92,7 +92,7 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
 
         if tau >= checkpoint
             save_checkpoint(sim, tau)
-            checkpoint += sim.params[:output_time]
+            checkpoint += sim.params[:save_interval]
         end
 
         tau += dt
