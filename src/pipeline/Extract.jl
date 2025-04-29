@@ -38,11 +38,11 @@ function extract_sims()
         end
     end
     
-    CSV.write("data/timeseries.csv", all_timeseries)
+    # CSV.write("data/timeseries.csv", all_timeseries)
     CSV.write("data/graphs.csv", all_graphs)
 
     Arrow.write("data/timeseries.arrow", all_timeseries; compress=:lz4)
-    Arrow.write("data/graphs.arrow", all_graphs; compress=:lz4)
+    # Arrow.write("data/graphs.arrow", all_graphs; compress=:lz4)
     
     println("Merged timeseries and graphs saved to ./data/")
 
