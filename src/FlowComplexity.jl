@@ -1,74 +1,26 @@
 module FlowComplexity
 
-include("Simulation.jl")
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
 
-function params()
-    create_params_file()
-end
+include("ArgParse.jl")
+include("pipeline/Params.jl")
+include("pipeline/SLURM.jl")
+include("core/Chemostats.jl")
+include("core/Ensemble.jl")
+include("core/Simulation.jl")
+include("core/EvolveStochastic.jl")
+include("core/EvolveTauleaping.jl")
+include("pipeline/Extract.jl")
+include("pipeline/Analysis.jl")
+include("Helper.jl")
+# (order matters!)
 
-function queue()
-    include(joinpath(pwd(), "params.jl"))
-    mkpath("data")
-    write_params_file(params_template, nrepeat)
-end
-
-function slurm()
-    create_slurm_file()
-end
-
-function dry(sim_number)
-    launch_simulation(sim_number, dry_run=true)
-end
-
-function launch(sim_number)
-    launch_simulation(sim_number)
-end
-
-function extract()
-    extract_sims2()
-end
-
-function print_help()
-    println("""
-
-Usage: flow <command> [options]
-
-Commands:
-  params                 Create params.jl in the current folder
-  queue                  Create a queue of jobs to be run in data/params.csv
-  slurm                  Create a slurm script to run the simulations
-  dry <sim_number>       Run the first 10% iterations of simulation sim_number
-                         and prints calculation time estimates
-  launch <sim_number>    Launch simulation sim_number
-  extract                Extract data in data/sims
-
-""")
-end
-
-# --- Command dispatcher ---
-function main()
-    if isempty(ARGS)
-        print_help()
-        return
-    end
-
-    cmd, rest = ARGS[1], ARGS[2:end]
-    commands = Dict(
-        "params"  => ()      -> params(),
-        "queue"   => ()      -> queue(),
-        "slurm"   => ()      -> slurm(),
-        "dry"     => (a...)  -> length(a) == 1 ? dry(a[1]) : print_help(),
-        "launch"  => (a...)  -> length(a) == 1 ? launch(a[1]) : print_help(),
-        "extract" => ()      -> extract()
-    )
-
-    if haskey(commands, cmd)
-        commands[cmd](rest...)
-    else
-        print_help()
-    end
-end
-
-main()
+parse_arguments()
 
 end
+
+#==============================================================================#
+# END OF FILE
+#==============================================================================#

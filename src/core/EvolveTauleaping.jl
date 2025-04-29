@@ -1,5 +1,8 @@
-using StatsBase
-using Dates
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
+
+import Distributions
 
 #==============================================================================#
 # FUNCTION
@@ -44,8 +47,8 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
             A_b = this_chemostat_propensities[2]
 
             # Calculate the number of reactions in the time interval tau
-            n_f = rand(Poisson(A_f * dt))
-            n_b = rand(Poisson(A_b * dt))
+            n_f = rand(Distributions.Poisson(A_f * dt))
+            n_b = rand(Distributions.Poisson(A_b * dt))
 
             total_constructive_rxn += n_f
             total_destructive_rxn += n_b
@@ -67,7 +70,7 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
             A_d = this_chemostat_propensities[3]
             
             # Calculate the number of reactions in the time interval tau
-            n_d = rand(Poisson(A_d * dt))
+            n_d = rand(Distributions.Poisson(A_d * dt))
 
             total_diffusion_rxn += n_d
 
@@ -243,3 +246,6 @@ function apply_tauleap_diffusion_rxn(Ensemble, this_chemostat, tau, n_d)
     
 end
 
+#==============================================================================#
+# END OF FILE
+#==============================================================================#

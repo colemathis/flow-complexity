@@ -1,4 +1,7 @@
-using StatsBase
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
+
 
 #==============================================================================#
 # FUNCTIONS
@@ -30,11 +33,12 @@ function evolve_distributed_exact(sim)
             this_chemostat = destructive_rxn(this_chemostat)
         elseif rxn == "outflow"
             this_chemostat, outflow_direction = outflow_rxn(this_chemostat)
+
             if collect(keys(outflow_direction)) != []
                 outflow_target = collect(keys(outflow_direction))[1]
                 outflow_molecule = outflow_direction[outflow_target]
                 push!(Ensemble.reactors[outflow_target].molecules, outflow_molecule)
-                #println(Ensemble.reactors[outflow_target].molecules)
+                
                 # Update propensitie for outflow target based on diffusion
                 all_propensities[outflow_target] = calc_propensities(Ensemble.reactors[outflow_target])
                 next_taus = [nt for nt in next_taus if nt[2] != outflow_target]
@@ -49,7 +53,7 @@ function evolve_distributed_exact(sim)
         all_propensities[next_reactor] = calc_propensities(Ensemble.reactors[next_reactor])
         this_chemostat_total_p = sum(all_propensities[next_reactor])
         chemostat_next_tau = tau - log(rand()) / this_chemostat_total_p
-        # println(-log(rand()) / this_chemostat_total_p)
+
         push!(next_taus, (chemostat_next_tau, next_reactor))
         sort!(next_taus, by=x -> x[1])
 
@@ -172,4 +176,5 @@ function outflow_rxn(chemostat)
 end
 
 #==============================================================================#
-
+# END OF FILE
+#==============================================================================#

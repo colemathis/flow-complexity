@@ -1,19 +1,18 @@
-include("Pipeline.jl")
-include("Chemostats.jl")
-include("Ensemble.jl")
-include("EvolveStochastic.jl")
-include("EvolveTauleaping.jl")
-include("Analysis.jl")
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
 
-using CSV, DataFrames
-using Pkg
-using Random
+import DataFrames
+import Random
+import Graphs
+
+#==============================================================================#
+# DATA TYPES
+#==============================================================================#
 
 # Set the backward rate to a constant
 const backward_rate = 1.0
 
-#==============================================================================#
-# DATA TYPES
 #==============================================================================#
 
 mutable struct Simulation
@@ -40,6 +39,47 @@ end
 
 #==============================================================================#
 # FUNCTIONS
+#==============================================================================#
+
+function launch_simulation(sim; dry_run=false)
+
+    array_fn = "./data/params.csv"
+    
+    if typeof(sim) == String
+        sim = parse(Int, sim)
+    end
+    
+    println("Loading parameters for simulation $sim from file $array_fn")
+
+    df = DataFrames.DataFrame(CSV.File(array_fn))
+
+    params_dict_array = []
+    for row in eachrow(df)
+        d = Dict()
+        for (name, value) in pairs(row)
+            if (typeof(value) == CSV.String7) | (typeof(value) == CSV.String15)
+                value = convert(String, value)
+            end
+            merge!(d,Dict(name => value))
+        end
+        push!(params_dict_array,d)
+    end
+
+    params_dict = params_dict_array[sim]
+    println("Parameters loaded.\n")
+
+    for (k, v) in params_dict
+    	println("   $k = $v")
+    end
+    println("")
+    
+    simulation = FlowComplexity.Simulation(; user_params = params_dict)
+    RunSimulation(simulation, dry_run=dry_run)
+
+    return simulation
+    
+end
+
 #==============================================================================#
 
 function apply_params_default_values()
@@ -129,11 +169,7 @@ function RunSimulation(sim; dry_run=false)
 
     sim_number = sim.params[:sim_number]
 
-    # sim_number_string = lpad(sim_number,6,"0")
-    # sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims", sim_number_string)
-    # sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims")
     sim.params[:save_name] = joinpath(dirname(Pkg.project().path), "milestones", sim.params[:save_name], "data", "sims")
-    
     sim.output[:timestamps] = []
     sim.output[:populations] = []
 
@@ -169,39 +205,22 @@ end
 
 #==============================================================================#
 
-function sim_number_string(sim_number)
-
-    sim_number_string = lpad(sim_number, 6, "0")
-
-    return sim_number_string
-
-end
-
-#==============================================================================#
-
 function save_data(sim)
 
-    # sim_number = string(sim.params[:sim_number])
     sim_number = sim.params[:sim_number]
     sim_number_str = sim_number_string(sim_number)
-    # fn = joinpath(sim.params[:save_name], "simulation.jld2")
-    # fn = joinpath(sim.params[:save_name], "$sim_number_str.jld2")
-    # save(fn, Dict("sim" => sim))
-
-    # save sim.output[:timeseries] as a CSV file
-    # fn = joinpath(sim.params[:save_name], "timeseries.csv")
     sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
     mkpath(sim_dir)
     fn = joinpath(sim_dir, "timeseries.csv")
     CSV.write(fn, sim.output[:timeseries])
 
-    io_nodes = DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
+    io_nodes = DataFrames.DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
     g = sim.ensemble.ensemble_graph
-    for e in edges(g)
+    for e in Graphs.edges(g)
         push!(io_nodes, (
             sim_number = sim_number,
-            chemostat_in = src(e),
-            chemostat_out = dst(e)
+            chemostat_in = Graphs.src(e),
+            chemostat_out = Graphs.dst(e)
         ))
     end
     sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
@@ -246,7 +265,7 @@ end
 
 function calculate_time_series(sim)
 
-    ts = DataFrame()
+    ts = DataFrames.DataFrame()
 
     sim_number = sim.params[:sim_number]
     nt = length(sim.output[:timestamps])
@@ -271,3 +290,8 @@ function calculate_time_series(sim)
     return ts
     
 end
+
+#==============================================================================#
+# END OF FILE
+#==============================================================================#
+
