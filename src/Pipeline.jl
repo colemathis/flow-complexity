@@ -19,13 +19,13 @@ function create_params_file()
 
     params_template = Dict(
         # simulation parameters
-        :save_interval    	=> 200,
+        :save_interval    	=> 1,
         :method         	=> "tau-leaping",
         :dt             	=> 1e-3,
         :random_seed    	=> "random",
 
         # physical parameters
-        :total_time     	=> 20000,
+        :total_time     	=> 100,
         :initial_mass       => 0,
 
         # topological parameters
@@ -236,19 +236,6 @@ end
 
 #==============================================================================#
 
-# obsolete ?
-
-# function load_simulation_array()
-
-#     file_path = joinpath("./data", "data.jld2")
-#     @load file_path sim_array
-
-#     return sim_array
-
-# end
-
-#==============================================================================#
-
 function launch_simulation(sim; dry_run=false)
 
     array_fn = "./data/params.csv"
@@ -292,3 +279,14 @@ function launch_simulation(sim; dry_run=false)
 end
 
 #==============================================================================#
+
+# obsolete ?
+
+# function load_simulation_array()
+
+#     file_path = joinpath("./data", "data.jld2")
+#     @load file_path sim_array
+
+#     return sim_array
+
+# end
