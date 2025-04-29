@@ -45,23 +45,33 @@ end
 function apply_params_default_values()
 
     default_values = Dict(
-        :initial_mass       => 1000,
-        :graph_type         => "line",
+        # simulation parameters
+        :save_interval    	=> 1,
+        :method         	=> "tau-leaping",
+        :dt             	=> 1e-3,
+        :random_seed    	=> "random",
+    
+        # physical parameters
+        :total_time     	=> 100,
+        :initial_mass       => 0,
+    
+        # topological parameters
+        :graph_type         => "lattice-2way",
         :randomize_edges    => false,
-        :N_reactors         => 1,
-        :forward_rate       => 1e-3,
-        :diffusion_rate     => 0.0,
-        :total_time         => 100,
-        :save_interval      => 1.0,
-        :inflow_mols        => 1e3,
+        :N_reactors     	=> 25,
+    
+        # reaction rates
+        :inflow_mols        => 0,
+        :forward_rate   	=> 1e-3,
+        :diffusion_rate   	=> 1e-3,
+
+        # hidden parameters - either unused or should not be customizable
+        # fix eventually
         :N_inflow           => 1,
         :sim_number         => 1,
-        :method             => "exact",
-        :method             => "tau-leaping",
-        :save_name          => get_relative_path(),
-        :random_seed        => 1,
-        :dt                 => 1e-3,
+        :save_name          => get_relative_path()
     )
+    
     
     return default_values
 
