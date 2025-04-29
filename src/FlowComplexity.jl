@@ -2,6 +2,10 @@ module FlowComplexity
 
 include("Simulation.jl")
 
+function params()
+    create_params_file()
+end
+
 function queue()
     include(joinpath(pwd(), "params.jl"))
     mkpath("data")
@@ -22,18 +26,17 @@ end
 
 function print_help()
     println("""
+
 Usage: flow <command> [options]
+
 Commands:
+  params                 Create params.jl in the current folder
   queue                  Create a queue of jobs to be run in data/params.csv
   dry <sim_number>       Run the first 10% iterations of simulation sim_number
                          and prints calculation time estimates
   launch <sim_number>    Launch simulation sim_number
-  extract                Extract data in data/sims and save it in data/sim_array.jld2
-Examples:
-  flow queue
-  flow dry 99
-  flow launch 99
-  flow extract
+  extract                Extract data in data/sims
+
 """)
 end
 
@@ -46,6 +49,7 @@ function main()
 
     cmd, rest = ARGS[1], ARGS[2:end]
     commands = Dict(
+        "params"  => ()      -> params(),
         "queue"   => ()      -> queue(),
         "dry"     => (a...)  -> length(a) == 1 ? dry(a[1]) : print_help(),
         "launch"  => (a...)  -> length(a) == 1 ? launch(a[1]) : print_help(),

@@ -7,6 +7,49 @@ using Arrow
 # FUNCTIONS
 #==============================================================================#
 
+function create_params_file()
+
+    if isfile("params.jl")
+        println("params.jl already exists. Aborting to avoid overwrite.")
+        exit(1)
+    end
+
+    params_text = """
+    nrepeat = 1
+
+    params_template = Dict(
+        # simulation parameters
+        :save_interval    	=> 200,
+        :method         	=> "tau-leaping",
+        :dt             	=> 1e-3,
+        :random_seed    	=> "random",
+
+        # physical parameters
+        :total_time     	=> 20000,
+        :initial_mass       => 0,
+
+        # topological parameters
+        :graph_type         => "lattice-2way",
+        :randomize_edges    => false,
+        :N_reactors     	=> 25,
+
+        # reaction rates
+        :inflow_mols        => 0,
+        :forward_rate   	=> 1e-3,
+        :diffusion_rate   	=> 1e-3,
+    )
+    """
+
+    open("params.jl", "w") do io
+        write(io, params_text)
+    end
+
+    println("Wrote params.jl in ", pwd())
+
+end
+
+#==============================================================================#
+
 function get_relative_path()
 
     current_dir = pwd()
