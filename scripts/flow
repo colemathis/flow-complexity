@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-
-# This script is used to run the FlowComplexity.jl package in a Julia environment.
-julia --project -e '
-    using Pkg
-    projfile = Pkg.project().path
-    projdir = dirname(projfile)
-    include(joinpath(projdir, "src", "FlowComplexity.jl"))
-' -- "$@"
