@@ -3,6 +3,7 @@
 #==============================================================================#
 
 import Distributions
+import StatsBase
 
 #==============================================================================#
 # FUNCTION
@@ -191,7 +192,7 @@ function apply_tauleap_destructive_rxn(this_chemostat, tau, n_b)
         a = popat!(this_chemostat.molecules, mol_idx)
         
         # split it
-        b = sample(1:(a-1)) # sample.(UnitRange.(1, (new_mols[(end-n_b):end] .-1)))
+        b = StatsBase.sample(1:(a-1)) # sample.(UnitRange.(1, (new_mols[(end-n_b):end] .-1)))
         c = a - b
 
         # add them back to the list
@@ -236,7 +237,7 @@ function apply_tauleap_diffusion_rxn(Ensemble, this_chemostat, tau, n_d)
         neighbor_weights = this_chemostat.neighbor_flows
     
         if neighbors != []
-            neighbor = sample(neighbors, Weights(neighbor_weights))
+            neighbor = StatsBase.sample(neighbors, StatsBase.Weights(neighbor_weights))
             insert_molecule_at_random(Ensemble.reactors[neighbor].molecules, a)
         end
 
