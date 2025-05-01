@@ -74,6 +74,12 @@ function create_params_csv_file()
         params_array[i][:sim_number] = i
     end
 
+    for i in eachindex(params_array)
+        if params_array[i][:outflow_rate] == "equal-to-diffusion-rate"
+            params_array[i][:outflow_rate] = params_array[i][:diffusion_rate]
+        end
+    end
+
     array_fn = "./data/params.csv"
     println("Writing parameters for simulation array in $array_fn")
     mkpath("data")
