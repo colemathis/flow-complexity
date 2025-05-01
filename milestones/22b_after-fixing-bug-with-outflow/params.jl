@@ -20,4 +20,5 @@ params_template = Dict(
     :inflow_mols        => 1e3,
     :forward_rate   	=> 1e-3,
     :diffusion_rate   	=> 1e-1,
+    :outflow_rate       => 1e0,
 )

@@ -13,6 +13,7 @@ library(arrow)
 ############################
 
 selected_sim <- 1
+USE_CACHE   <- FALSE
 
 DATA_DIR  <- "data"            # raw & processed data
 CACHE_DIR <- "cache"           # cached CSVs created by this script
@@ -28,7 +29,7 @@ PARAMS_CSV       <- file.path(DATA_DIR, "params.csv")
 load_processed_data <- function(sim_id) {
     cache_path <- file.path(CACHE_DIR, sprintf("single_%d.csv", sim_id))
 
-    if (file.exists(cache_path)) {
+    if (file.exists(cache_path) && USE_CACHE) {
         read_csv(cache_path, show_col_types = FALSE)
     } else {
         data <- open_dataset(TIMESERIES_ARROW, format = "arrow") %>%
