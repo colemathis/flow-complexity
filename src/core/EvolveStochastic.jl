@@ -9,6 +9,8 @@
 
 function evolve_distributed_exact(sim)
 
+    error("not implemented")
+
     Ensemble = sim.ensemble
 
     tau = 0.0
