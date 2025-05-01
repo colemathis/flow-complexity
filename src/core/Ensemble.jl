@@ -15,6 +15,7 @@ mutable struct Ensemble
     reactors        ::Array{Chemostat,1}
     ensemble_graph  ::Graphs.DiGraph
     inflow_ids      ::Array{Int64,1}
+    outflow_ids     ::Array{Int64,1}
 
 end
 
@@ -32,12 +33,16 @@ function Ensemble(N_reactors        ::Int64,
 
     if graph_type == "ER"
 
+        error("not implemented")
+
         ensemble_graph = Graphs.erdos_renyi(N_reactors, 4*N_reactors, is_directed =true)
         inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
         chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
     elseif graph_type == "BA"
+
+        error("not implemented")
 
         ensemble_graph = Graphs.barabasi_albert(N_reactors, 2, is_directed=true) # Check why is this 2?
         inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
@@ -46,12 +51,16 @@ function Ensemble(N_reactors        ::Int64,
 
     elseif graph_type == "regular"
 
+        error("not implemented")
+
         ensemble_graph = Graphs.random_regular_digraph(N_reactors, 4)
         inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
         chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     
     elseif graph_type == "lattice"
+
+        error("not implemented")
 
         (round(sqrt(N_reactors)))^2 == N_reactors || error("lattice graph requires N_reactors to be a perfect square")
 
@@ -70,10 +79,14 @@ function Ensemble(N_reactors        ::Int64,
 
         # inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
         inflow_ids = [1]
+        outflow_ids = [N_reactors]
         chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
     elseif graph_type == "line"
+
+        error("not implemented")
+        
         # enforce a single source for a line graph
         N_sources == 1 || error("line graph requires exactly one source node")
 
@@ -89,6 +102,7 @@ function Ensemble(N_reactors        ::Int64,
                     chemostats,
                     ensemble_graph,
                     inflow_ids,
+                    outflow_ids
                     )
 
 end
@@ -262,11 +276,12 @@ end
 function gen_chemostat_spec_list(N_chemostats   ::Int64,
                                  forward_rate   ::Float64,
                                  backward_rate  ::Float64,
-                                 outflow        ::Float64
+                                 diffusion_rate ::Float64,
+                                 outflow_rate   ::Float64
                                  )
 
     # dictionary template for chemostat specs
-    single_dict = Dict("reaction_rate_constants" => [forward_rate, backward_rate, outflow])
+    single_dict = Dict("reaction_rate_constants" => [forward_rate, backward_rate, diffusion_rate, outflow_rate])
 
     # create the array of chemostat specs
     spec_list = [single_dict]

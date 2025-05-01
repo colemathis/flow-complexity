@@ -20,8 +20,8 @@ Commands:
   launch <sim_number>    Launch simulation sim_number
   extract                Extract data in data/sims
 
-  test                   Run commands "params", "queue", "launch" and "extract" in sequence
-                         for testing purposes
+  test-params            Run commands "params", "queue", "launch 1" and "extract"
+  test-queue             Run commands "queue", "launch 1" and "extract"
 
 """)
 end
@@ -36,18 +36,23 @@ function parse_arguments()
 
     cmd, rest = ARGS[1], ARGS[2:end]
     commands = Dict(
-        "params"  => ()      -> create_params_jl_file(),
-        "queue"   => ()      -> create_params_csv_file(),
-        "slurm"   => ()      -> create_slurm_file(),
-        "dry"     => (a...)  -> length(a) == 1 ? launch_simulation(a[1], dry_run=true) : print_help(),
-        "launch"  => (a...)  -> length(a) == 1 ? launch_simulation(a[1]) : print_help(),
-        "extract" => ()      -> extract_sims(),
-        "test"    => ()      -> begin
+        "params"         => ()      -> create_params_jl_file(),
+        "queue"          => ()      -> create_params_csv_file(),
+        "slurm"          => ()      -> create_slurm_file(),
+        "dry"            => (a...)  -> length(a) == 1 ? launch_simulation(a[1], dry_run=true) : print_help(),
+        "launch"         => (a...)  -> length(a) == 1 ? launch_simulation(a[1]) : print_help(),
+        "extract"        => ()      -> extract_sims(),
+        "test-params"    => ()      -> begin
             create_params_jl_file()
             create_params_csv_file()
             launch_simulation("1")
             extract_sims()
         end,
+        "test-queue"    => ()      -> begin
+        create_params_csv_file()
+        launch_simulation("1")
+        extract_sims()
+    end,
     )
 
     if haskey(commands, cmd)

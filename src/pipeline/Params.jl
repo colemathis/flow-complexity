@@ -41,6 +41,7 @@ function create_params_jl_file()
         :inflow_mols        => 1e3,
         :forward_rate   	=> 1e-3,
         :diffusion_rate   	=> 1e-3,
+        :outflow_rate       => 1e-3,
     )
     """
 

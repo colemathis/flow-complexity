@@ -104,6 +104,7 @@ function apply_params_default_values()
         :inflow_mols        => 0,
         :forward_rate   	=> 1e-3,
         :diffusion_rate   	=> 1e-3,
+        :outflow_rate       => 1e-3,
 
         # hidden parameters - either unused or should not be customizable
         # fix eventually
@@ -140,7 +141,8 @@ function generate_ensemble_from_specs(params)
     chemostat_list = gen_chemostat_spec_list(params[:N_reactors],
                                              params[:forward_rate],
                                              backward_rate,
-                                             params[:diffusion_rate])
+                                             params[:diffusion_rate],
+                                             params[:outflow_rate])
 
     # create an ensemble of chemostats with the list of specifications
     ensemble = Ensemble(params[:N_reactors],
