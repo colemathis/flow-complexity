@@ -35,6 +35,9 @@ function create_slurm_file()
     # SCRIPT BEGINS
     #################################
 
+    # The following line allows launching the job from another job (e.g., vscode)
+    unset \$(printenv | grep SLURM_CPU_BIND | sed -E 's/(.*)=.*/\\1/' | xargs)
+
     module load julia
     mkdir -p ./data/logs
     srun flow launch \${SLURM_ARRAY_TASK_ID}
