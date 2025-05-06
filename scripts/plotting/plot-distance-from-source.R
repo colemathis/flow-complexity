@@ -13,19 +13,20 @@ library(igraph)      # for graph‑based distance calculations
 # PARAMETERS
 ############################
 
+TITLE        <- "Distance from source"
+ID           <- "distance-from-source"
 USE_CACHE   <- FALSE
 
-DATA_DIR  <- "data"            # raw & processed data
-CACHE_DIR <- "cache"           # cached CSVs created by this script
-FIGS_DIR  <- "figs"            # output figures
+DATA_DIR  <- "data"
+CACHE_DIR <- paste0("cache/", ID)
+FIGS_FILE <- ID
+FIGS_DIR  <- paste0("figs")
 
 TIMESERIES_ARROW <- file.path(DATA_DIR, "timeseries.arrow")
 PARAMS_CSV       <- file.path(DATA_DIR, "params.csv")
 GRAPHS_CSV       <- file.path(DATA_DIR, "graphs.csv")
 
 ASSEMBLY_CSV <- "Assembly-10000.csv"
-
-OUTPUT_FIG   <- "figs/distance-from-source.pdf"
 
 ############################
 # FUNCTIONS
@@ -38,8 +39,9 @@ load_processed_data <- function() {
         read_csv(cache_path, show_col_types = FALSE)
     } else {
         data <- open_dataset(TIMESERIES_ARROW, format = "arrow") %>%
-            filter(time == 100, sim_number %in% c(30, 60, 100)) %>%
-            collect()
+            filter(sim_number %in% c(30, 60, 100)) %>%
+            collect() %>%
+            filter(time == max(time))
 
         dir.create(dirname(cache_path), recursive = TRUE, showWarnings = FALSE)
         write_csv(data, cache_path)
@@ -193,4 +195,5 @@ p_inset <- create_inset_plot(ts_inset)
 # Combine plots into a final output plot
 combined_plot <- combine_plots(p_main, p_inset)
 
-ggsave(filename = OUTPUT_FIG, plot = combined_plot, width = 80, height = 70, units = "mm", create.dir = TRUE)
+out_file <- file.path(FIGS_DIR, sprintf("%s.pdf", FIGS_FILE))
+ggsave(filename = out_file, plot = combined_plot, width = 80, height = 70, units = "mm", create.dir = TRUE)
