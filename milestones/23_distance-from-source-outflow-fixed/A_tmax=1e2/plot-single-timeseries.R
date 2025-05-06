@@ -12,12 +12,15 @@ library(arrow)
 # PARAMETERS
 ############################
 
-selected_sim <- 66
-USE_CACHE   <- FALSE
+TITLE        <- "First ten populations."
+ID           <- "single-timeseries"
+selected_sim <- 100
+USE_CACHE    <- FALSE
 
-DATA_DIR  <- "data"            # raw & processed data
-CACHE_DIR <- "cache"           # cached CSVs created by this script
-FIGS_DIR  <- "figs"            # output figures
+DATA_DIR  <- "data"
+CACHE_DIR <- paste0("cache/", ID)
+FIGS_FILE <- paste0(ID, "_")
+FIGS_DIR  <- paste0("figs")
 
 TIMESERIES_ARROW <- file.path(DATA_DIR, "timeseries.arrow")
 PARAMS_CSV       <- file.path(DATA_DIR, "params.csv")
@@ -27,7 +30,7 @@ PARAMS_CSV       <- file.path(DATA_DIR, "params.csv")
 ############################
 
 load_processed_data <- function(sim_id) {
-    cache_path <- file.path(CACHE_DIR, sprintf("single_%d.csv", sim_id))
+    cache_path <- file.path(CACHE_DIR, sprintf("sim_%d.csv", sim_id))
 
     if (file.exists(cache_path) && USE_CACHE) {
         read_csv(cache_path, show_col_types = FALSE)
@@ -73,7 +76,8 @@ plot_timeseries <- function(data, grid_size, sim_params, sim_id) {
         ) +
         ggtitle(
             TeX(sprintf(
-                "Simulation %d: $log_{10}(I)=%.2f$, $log_{10}(k_d)=%.2f$",
+                "%s Simulation %d: $log_{10}(I)=%.2f$, $log_{10}(k_d)=%.2f$",
+                TITLE,
                 sim_id,
                 log10(sim_params$inflow_mols),
                 log10(sim_params$diffusion_rate)
@@ -97,5 +101,5 @@ processed_data <- add_blind_data(processed_data, selected_sim, grid_size)
 
 plot <- plot_timeseries(processed_data, grid_size, sim_params, selected_sim)
 
-out_file <- file.path(FIGS_DIR, sprintf("single-timeseries_%d.pdf", selected_sim))
+out_file <- file.path(FIGS_DIR, sprintf("%s%d.pdf", FIGS_FILE, selected_sim))
 ggsave(out_file, plot = plot, width = 8, height = 8, create.dir = TRUE)

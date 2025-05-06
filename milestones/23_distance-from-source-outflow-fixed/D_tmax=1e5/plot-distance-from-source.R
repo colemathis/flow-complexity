@@ -15,7 +15,7 @@ library(igraph)      # for graph‑based distance calculations
 
 TITLE        <- "Distance from source"
 ID           <- "distance-from-source"
-USE_CACHE   <- FALSE
+USE_CACHE   <- TRUE
 
 DATA_DIR  <- "data"
 CACHE_DIR <- paste0("cache/", ID)
@@ -116,14 +116,14 @@ create_main_plot <- function(ts) {
       y = "Mean Assembly Index",
       color = "sim_number"
     ) +
-    annotate("rect", xmin = 1.5, xmax = 2.5, ymin = 1.0, ymax = 2.5,
+    annotate("rect", xmin = 3.5, xmax = 4.5, ymin = 6.0, ymax = 8.5,
              color = "grey", fill = NA, linetype = "dashed") +
-    annotate("text", x = 3, y = 5, label = TeX("$k_d = 10^{-4}$"),
-             size = 3, color = scales::hue_pal()(3)[1]) +
-    annotate("text", x = 5, y = 5, label = TeX("$k_d = 10^{-2}$"),
-             size = 3, color = scales::hue_pal()(3)[2]) +
-    annotate("text", x = 7, y = 5, label = TeX("$k_d = 10^{1}$"),
-             size = 3, color = scales::hue_pal()(3)[3]) +
+    annotate("text", x = 6, y = 12, label = TeX("$k_d = 10^{-4}$"),
+             hjust = 0, size = 3, color = scales::hue_pal()(3)[1]) +
+    annotate("text", x = 6, y = 11, label = TeX("$k_d = 10^{-2}$"),
+             hjust = 0, size = 3, color = scales::hue_pal()(3)[2]) +
+    annotate("text", x = 6, y = 10, label = TeX("$k_d = 10^{1}$"),
+             hjust = 0, size = 3, color = scales::hue_pal()(3)[3]) +
     theme_minimal() +
     theme(legend.position = "none")
   
@@ -132,11 +132,11 @@ create_main_plot <- function(ts) {
 
 create_inset_plot <- function(ts) {
   # create inset plot using data from a specific chemostat and distance
-  ts_inset <- ts %>% filter(sim_number == 60, distance == 2)
+  ts_inset <- ts %>% filter(sim_number == 60, distance == 4)
   p_inset <- ggplot(ts_inset, aes(x = integer, y = frequency, color = factor(chemostat_id))) +
     scale_y_log10() +
     geom_density(aes(y = ..scaled..), adjust = 2, alpha = 1.0) +
-    scale_color_manual(values = c("#0000FF", "#5555FF", "#9999FF")) +
+    scale_color_manual(values = c("#0000FF", "#2222FF", "#4444FF", "#6666FF", "#9999FF")) +
     labs(
       x = "Integer",
       y = "Density",
@@ -155,8 +155,8 @@ create_inset_plot <- function(ts) {
 }
 
 combine_plots <- function(main_plot, inset_plot,
-                          xmin = 3.75, xmax = 8.25,
-                          ymin = 1.75, ymax = 4.25) {
+                          xmin = 0.75, xmax = 6.5,
+                          ymin = 1.25, ymax = 5.5) {
   inset_grob <- ggplotGrob(inset_plot)
   combined <- main_plot +
     annotation_custom(
@@ -194,6 +194,11 @@ p_inset <- create_inset_plot(ts_inset)
 
 # Combine plots into a final output plot
 combined_plot <- combine_plots(p_main, p_inset)
+
+# display the combined plot
+
+options(vsc.dev.args = list(width = 80, height = 70, res=300, units = "mm"))
+print(combined_plot)
 
 out_file <- file.path(FIGS_DIR, sprintf("%s.pdf", FIGS_FILE))
 ggsave(filename = out_file, plot = combined_plot, width = 80, height = 70, units = "mm", create.dir = TRUE)
