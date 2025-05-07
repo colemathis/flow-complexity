@@ -12,10 +12,10 @@ library(arrow)
 # PARAMETERS
 ############################
 
-TITLE        <- "Total mass."
-ID           <- "single-timeseries-mass"
-selected_sim <- 100
-USE_CACHE   <- FALSE
+TITLE        <- "Delta Assembly inflow/outflow."
+ID           <- "delta-assembly-inflow-outflow"
+selected_sim <- 33
+USE_CACHE   <- TRUE
 
 DATA_DIR  <- "data"
 CACHE_DIR <- paste0("cache/", ID)
@@ -24,6 +24,7 @@ FIGS_DIR  <- paste0("figs")
 
 TIMESERIES_ARROW <- file.path(DATA_DIR, "timeseries.arrow")
 PARAMS_CSV       <- file.path(DATA_DIR, "params.csv")
+ASSEMBLY_CSV <- "Assembly-10000.csv"
 
 ############################
 # FUNCTIONS
@@ -45,7 +46,14 @@ load_processed_data <- function(sim_id) {
     }
 }
 
-
+join_assembly_index <- function(ts,
+                                assembly_csv = ASSEMBLY_CSV,
+                                missing_value = 17) {
+    ai <- read.csv(assembly_csv)
+    ts %>%
+        left_join(ai, by = "integer") %>%
+        mutate(assemblyindex = ifelse(is.na(assemblyindex), missing_value, assemblyindex))
+}
 
 add_blind_data <- function(data, sim_id, grid_size) {
     blind <- expand.grid(
@@ -58,24 +66,58 @@ add_blind_data <- function(data, sim_id, grid_size) {
     bind_rows(data, blind)
 }
 
-aggregate_mass <- function(data) {
+# calculate_AI <- function(data) {
+#     data %>%
+#         group_by(sim_number, time, chemostat_id) %>%
+#         summarise(
+#             total_assembly = sum(exp(assemblyindex)*((frequency-1)/sum(frequency)), na.rm = TRUE),
+#             .groups = "drop")
+# }
+
+calculate_AI <- function(data) {
     data %>%
         group_by(sim_number, time, chemostat_id) %>%
-        summarise(frequency = sum(integer * frequency, na.rm = TRUE), .groups = "drop")
+        filter(!is.na(frequency), !is.na(assemblyindex)) %>%
+        mutate(
+            weight       = (frequency - 1) / sum(frequency),
+            contribution = exp(assemblyindex) * weight
+        ) %>%
+        summarise(
+            total_assembly = sum(contribution, na.rm = TRUE),
+            .groups = "drop"
+        )
 }
 
-plot_timeseries <- function(data, grid_size, sim_params, sim_id) {
-    ggplot(data, aes(x = time, y = frequency, color = factor(integer))) +
+plot_timeseries <- function(data,
+                      grid_size,
+                      sim_params,
+                      sim_id,
+                      id_ref1 = 25,
+                      id_ref2 = 1) {
+
+    # in data, calculate the difference between chemostat 25 and 1
+    diff_data <- data %>%
+        filter(chemostat_id %in% c(id_ref1, id_ref2)) %>%
+        group_by(sim_number, time) %>%
+        summarise(
+            diff_total = sum(total_assembly[chemostat_id == id_ref2], na.rm = TRUE) -
+                         sum(total_assembly[chemostat_id == id_ref1], na.rm = TRUE),
+            .groups = "drop"
+        )
+
+    # print in data total_assembly for chemostats 25 and 1 at t=25000
+    # print(data %>%
+    #     filter(time == 1e5, chemostat_id == 1) %>%
+    #     select(chemostat_id, total_assembly))
+    # print(data %>%
+    #     filter(time == 1e5, chemostat_id == 25) %>%
+    #     select(chemostat_id, total_assembly))
+    # print(diff_data %>%
+    #     filter(time == 1e5) %>%
+    #     select(diff_total))
+
+    ggplot(diff_data, aes(x = time, y = diff_total)) +
         geom_line(alpha = 0.7) +
-        facet_wrap(
-            ~ chemostat_id,
-            ncol    = grid_size,
-            nrow    = grid_size,
-            scales  = "fixed",
-            labeller = labeller(
-                chemostat_id = function(x) paste("chemostat #", x)
-            )
-        ) +
         scale_y_log10(labels = scales::label_scientific()) +
         theme_bw() +
         theme(
@@ -91,6 +133,12 @@ plot_timeseries <- function(data, grid_size, sim_params, sim_id) {
                 log10(sim_params$diffusion_rate)
             ))
         ) +
+        labs(
+            y = sprintf(
+                "Delta Assembly (chemostat %d − chemostat %d)",
+                id_ref2, id_ref1
+            )
+        ) +
         theme(plot.title = element_text(hjust = 0.5))
 }
 
@@ -105,10 +153,14 @@ sim_params  <- params %>% filter(sim_number == selected_sim)
 
 processed_data <- load_processed_data(selected_sim)
 processed_data <- processed_data %>% mutate(frequency = na_if(frequency, 0))
-processed_data <- aggregate_mass(processed_data)
+processed_data <- join_assembly_index(processed_data)
+processed_data <- calculate_AI(processed_data)
 processed_data <- add_blind_data(processed_data, selected_sim, grid_size)
 
 plot <- plot_timeseries(processed_data, grid_size, sim_params, selected_sim)
+
+options(vsc.dev.args = list(width = 8, height = 8, res=300, units = "in"))
+print(plot)
 
 out_file <- file.path(FIGS_DIR, sprintf("%s%d.pdf", FIGS_FILE, selected_sim))
 ggsave(out_file, plot = plot, width = 8, height = 8, create.dir = TRUE)

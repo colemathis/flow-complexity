@@ -14,7 +14,7 @@ library(arrow)
 
 TITLE        <- "Total mass."
 ID           <- "single-timeseries-mass"
-selected_sim <- 100
+selected_sim <- 33
 USE_CACHE   <- FALSE
 
 DATA_DIR  <- "data"
@@ -109,6 +109,9 @@ processed_data <- aggregate_mass(processed_data)
 processed_data <- add_blind_data(processed_data, selected_sim, grid_size)
 
 plot <- plot_timeseries(processed_data, grid_size, sim_params, selected_sim)
+
+options(vsc.dev.args = list(width = 8, height = 8, res=300, units = "in"))
+print(plot)
 
 out_file <- file.path(FIGS_DIR, sprintf("%s%d.pdf", FIGS_FILE, selected_sim))
 ggsave(out_file, plot = plot, width = 8, height = 8, create.dir = TRUE)

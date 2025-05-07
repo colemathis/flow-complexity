@@ -12,12 +12,12 @@ library(arrow)
 # PARAMETERS
 ############################
 
-TITLE        <- "Total mass."
-ID           <- "single-timeseries-mass"
+TITLE        <- "First ten populations."
+ID           <- "single-timeseries"
 selected_sim <- 100
-USE_CACHE   <- FALSE
+USE_CACHE    <- FALSE
 
-DATA_DIR  <- "data"
+DATA_DIR  <- "../23_distance-from-source-outflow-fixed/D_tmax=1e5/data"
 CACHE_DIR <- paste0("cache/", ID)
 FIGS_FILE <- paste0(ID, "_")
 FIGS_DIR  <- paste0("figs")
@@ -33,10 +33,10 @@ load_processed_data <- function(sim_id) {
     cache_path <- file.path(CACHE_DIR, sprintf("sim_%d.csv", sim_id))
 
     if (file.exists(cache_path) && USE_CACHE) {
-        read_csv(cache_path, show_col_types = TRUE)
+        read_csv(cache_path, show_col_types = FALSE)
     } else {
         data <- open_dataset(TIMESERIES_ARROW, format = "arrow") %>%
-            filter(sim_number == sim_id) %>%
+            filter(sim_number == sim_id, integer %in% 1:10) %>%
             collect()
 
         dir.create(dirname(cache_path), recursive = TRUE, showWarnings = FALSE)
@@ -44,8 +44,6 @@ load_processed_data <- function(sim_id) {
         data
     }
 }
-
-
 
 add_blind_data <- function(data, sim_id, grid_size) {
     blind <- expand.grid(
@@ -56,12 +54,6 @@ add_blind_data <- function(data, sim_id, grid_size) {
         frequency    = NA_real_
     )
     bind_rows(data, blind)
-}
-
-aggregate_mass <- function(data) {
-    data %>%
-        group_by(sim_number, time, chemostat_id) %>%
-        summarise(frequency = sum(integer * frequency, na.rm = TRUE), .groups = "drop")
 }
 
 plot_timeseries <- function(data, grid_size, sim_params, sim_id) {
@@ -105,10 +97,12 @@ sim_params  <- params %>% filter(sim_number == selected_sim)
 
 processed_data <- load_processed_data(selected_sim)
 processed_data <- processed_data %>% mutate(frequency = na_if(frequency, 0))
-processed_data <- aggregate_mass(processed_data)
 processed_data <- add_blind_data(processed_data, selected_sim, grid_size)
 
 plot <- plot_timeseries(processed_data, grid_size, sim_params, selected_sim)
+
+options(vsc.dev.args = list(width = 8, height = 8, res=300, units = "in"))
+print(plot)
 
 out_file <- file.path(FIGS_DIR, sprintf("%s%d.pdf", FIGS_FILE, selected_sim))
 ggsave(out_file, plot = plot, width = 8, height = 8, create.dir = TRUE)
