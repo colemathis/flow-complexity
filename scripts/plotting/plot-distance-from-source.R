@@ -8,6 +8,7 @@ library(tidyverse)   # includes dplyr, ggplot2, etc.
 library(latex2exp)
 library(grid)
 library(igraph)      # for graph‑based distance calculations
+library(arrow)      # for reading Arrow files
 
 ############################
 # PARAMETERS
@@ -194,6 +195,9 @@ p_inset <- create_inset_plot(ts_inset)
 
 # Combine plots into a final output plot
 combined_plot <- combine_plots(p_main, p_inset)
+
+options(vsc.dev.args = list(width = 80, height = 70, res=300, units = "mm"))
+print(combined_plot)
 
 out_file <- file.path(FIGS_DIR, sprintf("%s.pdf", FIGS_FILE))
 ggsave(filename = out_file, plot = combined_plot, width = 80, height = 70, units = "mm", create.dir = TRUE)
