@@ -1,17 +1,18 @@
-include("Pipeline.jl")
-include("Chemostats.jl")
-include("Ensemble.jl")
-include("EvolveStochastic.jl")
-include("EvolveTauleaping.jl")
-include("Analysis.jl")
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
 
-using CSV, DataFrames
+import DataFrames
+import Random
+import Graphs
+
+#==============================================================================#
+# DATA TYPES
+#==============================================================================#
 
 # Set the backward rate to a constant
 const backward_rate = 1.0
 
-#==============================================================================#
-# DATA TYPES
 #==============================================================================#
 
 mutable struct Simulation
@@ -40,24 +41,78 @@ end
 # FUNCTIONS
 #==============================================================================#
 
+function launch_simulation(sim; dry_run=false)
+
+    array_fn = "./data/params.csv"
+    
+    if typeof(sim) == String
+        sim = parse(Int, sim)
+    end
+    
+    println("Loading parameters for simulation $sim from file $array_fn")
+
+    df = DataFrames.DataFrame(CSV.File(array_fn))
+
+    params_dict_array = []
+    for row in eachrow(df)
+        d = Dict()
+        for (name, value) in pairs(row)
+            if (typeof(value) == CSV.String7) | (typeof(value) == CSV.String15)
+                value = convert(String, value)
+            end
+            merge!(d,Dict(name => value))
+        end
+        push!(params_dict_array,d)
+    end
+
+    params_dict = params_dict_array[sim]
+    println("Parameters loaded.\n")
+
+    for (k, v) in params_dict
+    	println("   $k = $v")
+    end
+    println("")
+    
+    simulation = FlowComplexity.Simulation(; user_params = params_dict)
+    RunSimulation(simulation, dry_run=dry_run)
+
+    return simulation
+    
+end
+
+#==============================================================================#
+
 function apply_params_default_values()
 
     default_values = Dict(
-        :mass               => 1000,
-        :graph_type         => "line",
+        # simulation parameters
+        :save_interval    	=> 1,
+        :method         	=> "tau-leaping",
+        :dt             	=> 1e-3,
+        :random_seed    	=> "random",
+    
+        # physical parameters
+        :total_time     	=> 100,
+        :initial_mass       => 0,
+    
+        # topological parameters
+        :graph_type         => "lattice-2way",
         :randomize_edges    => false,
-        :N_reactors         => 1,
-        :forward_rate       => 1e-3,
-        :outflow_rate       => 0.0,
-        :total_time         => 100,
-        :output_time        => 1.0,
+        :N_reactors     	=> 25,
+    
+        # reaction rates
+        :inflow_mols        => 0,
+        :forward_rate   	=> 1e-3,
+        :diffusion_rate   	=> 1e-3,
+        :outflow_rate       => 1e-3,
+
+        # hidden parameters - either unused or should not be customizable
+        # fix eventually
         :N_inflow           => 1,
         :sim_number         => 1,
-        :method             => "exact",
-        :method             => "tau-leaping",
-        :save_name          => get_relative_path(),
-        :random_seed        => 1,
+        :save_name          => get_relative_path()
     )
+    
     
     return default_values
 
@@ -86,6 +141,7 @@ function generate_ensemble_from_specs(params)
     chemostat_list = gen_chemostat_spec_list(params[:N_reactors],
                                              params[:forward_rate],
                                              backward_rate,
+                                             params[:diffusion_rate],
                                              params[:outflow_rate])
 
     # create an ensemble of chemostats with the list of specifications
@@ -93,7 +149,7 @@ function generate_ensemble_from_specs(params)
                              params[:graph_type],
                              params[:N_inflow],
                              params[:randomize_edges],
-                             params[:mass],
+                             params[:initial_mass],
                              chemostat_list=chemostat_list)
 
     return ensemble
@@ -104,12 +160,18 @@ end
 
 function RunSimulation(sim; dry_run=false)
 
+    if sim.params[:random_seed] != "random"
+        Random.seed!(sim.params[:random_seed])
+        println("Random seed set to custom value: ", sim.params[:random_seed])
+    else
+        random_seed = rand(UInt)  # generate a random seed
+        Random.seed!(random_seed)  # set the RNG to this new seed
+        println("Generated random seed: ", random_seed)
+    end
+
     sim_number = sim.params[:sim_number]
 
-    # sim_number_string = lpad(sim_number,6,"0")
-    # sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims", sim_number_string)
-    sim.params[:save_name] = projectdir("milestones", sim.params[:save_name], "data", "sims")
-    
+    sim.params[:save_name] = joinpath(dirname(Pkg.project().path), "milestones", sim.params[:save_name], "data", "sims")
     sim.output[:timestamps] = []
     sim.output[:populations] = []
 
@@ -145,24 +207,28 @@ end
 
 #==============================================================================#
 
-function sim_number_string(sim_number)
-
-    sim_number_string = lpad(sim_number, 6, "0")
-
-    return sim_number_string
-
-end
-
-#==============================================================================#
-
 function save_data(sim)
 
-    # sim_number = string(sim.params[:sim_number])
     sim_number = sim.params[:sim_number]
     sim_number_str = sim_number_string(sim_number)
-    # fn = joinpath(sim.params[:save_name], "simulation.jld2")
-    fn = joinpath(sim.params[:save_name], "$sim_number_str.jld2")
-    save(fn, Dict("sim" => sim))
+    sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
+    mkpath(sim_dir)
+    fn = joinpath(sim_dir, "timeseries.csv")
+    CSV.write(fn, sim.output[:timeseries])
+
+    io_nodes = DataFrames.DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
+    g = sim.ensemble.ensemble_graph
+    for e in Graphs.edges(g)
+        push!(io_nodes, (
+            sim_number = sim_number,
+            chemostat_in = Graphs.src(e),
+            chemostat_out = Graphs.dst(e)
+        ))
+    end
+    sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
+    mkpath(sim_dir)
+    fn = joinpath(sim_dir, "graph.csv")
+    CSV.write(fn, io_nodes)
 
     rel = relpath(fn, pwd())
     println("Data saved in $rel")
@@ -201,7 +267,7 @@ end
 
 function calculate_time_series(sim)
 
-    ts = DataFrame()
+    ts = DataFrames.DataFrame()
 
     sim_number = sim.params[:sim_number]
     nt = length(sim.output[:timestamps])
@@ -226,4 +292,8 @@ function calculate_time_series(sim)
     return ts
     
 end
+
+#==============================================================================#
+# END OF FILE
+#==============================================================================#
 

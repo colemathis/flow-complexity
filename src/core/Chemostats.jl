@@ -1,6 +1,7 @@
-using Distributions
-using Random
-using DrWatson
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
+
 
 #==============================================================================#
 # DATA TYPES
@@ -106,10 +107,13 @@ function calc_propensities(chemostat)
     sum_ones = calc_ones(chemostat)
     Cd = chemostat.reaction_rate_consts[2] * (n - sum_ones)
 
-    # Outflow - depends on n
-    Co = chemostat.reaction_rate_consts[3] * n
+    # Diffusion - depends on n
+    Cf = chemostat.reaction_rate_consts[3] * n
 
-    propensities = [Cp, Cd, Co]
+    # Outflow - depends on n
+    Co = chemostat.reaction_rate_consts[4] * n
+
+    propensities = [Cp, Cd, Cf, Co]
 
     return propensities
 
@@ -163,3 +167,6 @@ function keep_ones_fixed(ensemble)
 end
 
 #==============================================================================#
+# END OF FILE
+#==============================================================================#
+

@@ -1,5 +1,9 @@
-using StatsBase
-using Dates
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
+
+import Distributions
+import StatsBase
 
 #==============================================================================#
 # FUNCTION
@@ -19,10 +23,12 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
     total_constructive_rxn = 0
     total_destructive_rxn = 0
     total_diffusion_rxn = 0
+    total_outflow_rxn = 0
 
     skipped_constructive_rxn = 0
     skipped_destructive_rxn = 0
     skipped_diffusion_rxn = 0
+    skipped_outflow_rxn = 0
 
     if dry_run == true
         # record current time
@@ -44,8 +50,8 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
             A_b = this_chemostat_propensities[2]
 
             # Calculate the number of reactions in the time interval tau
-            n_f = rand(Poisson(A_f * dt))
-            n_b = rand(Poisson(A_b * dt))
+            n_f = rand(Distributions.Poisson(A_f * dt))
+            n_b = rand(Distributions.Poisson(A_b * dt))
 
             total_constructive_rxn += n_f
             total_destructive_rxn += n_b
@@ -58,7 +64,7 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
                             
         end
 
-        # # Apply diffusion
+        # Apply diffusion
         for id in Ensemble.reactor_ids            
 
             this_chemostat = Ensemble.reactors[id]
@@ -67,7 +73,7 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
             A_d = this_chemostat_propensities[3]
             
             # Calculate the number of reactions in the time interval tau
-            n_d = rand(Poisson(A_d * dt))
+            n_d = rand(Distributions.Poisson(A_d * dt))
 
             total_diffusion_rxn += n_d
 
@@ -76,7 +82,21 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
             
         end                
 
-        if sim.params[:mass] > 0
+        # Apply outflow
+        for id in Ensemble.outflow_ids
+            this_chemostat = Ensemble.reactors[id]
+            this_chemostat_propensities = all_propensities[id]
+            
+            A_o = this_chemostat_propensities[4]
+
+            n_o = rand(Distributions.Poisson(A_o * dt))
+
+            total_outflow_rxn += n_o
+            n_o_skipped = apply_tauleap_outflow_rxn(Ensemble, this_chemostat, tau, n_o)
+            skipped_outflow_rxn += n_o_skipped
+        end
+
+        if sim.params[:initial_mass] > 0
             keep_ones_fixed(Ensemble)
         end
 
@@ -92,7 +112,7 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
 
         if tau >= checkpoint
             save_checkpoint(sim, tau)
-            checkpoint += sim.params[:output_time]
+            checkpoint += sim.params[:save_interval]
         end
 
         tau += dt
@@ -124,6 +144,11 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
     if isnan(pc) pc = 0 end
     pc = round(pc, digits = 0)
     println("Performed $total_diffusion_rxn diffusion reactions, skipped $skipped_diffusion_rxn ($pc %)")
+
+    pc = 100 * skipped_outflow_rxn / total_outflow_rxn
+    if isnan(pc) pc = 0 end
+    pc = round(pc, digits = 0)
+    println("Performed $total_outflow_rxn outflow reactions, skipped $skipped_outflow_rxn ($pc %)")
 
     return
 
@@ -188,7 +213,7 @@ function apply_tauleap_destructive_rxn(this_chemostat, tau, n_b)
         a = popat!(this_chemostat.molecules, mol_idx)
         
         # split it
-        b = sample(1:(a-1)) # sample.(UnitRange.(1, (new_mols[(end-n_b):end] .-1)))
+        b = StatsBase.sample(1:(a-1)) # sample.(UnitRange.(1, (new_mols[(end-n_b):end] .-1)))
         c = a - b
 
         # add them back to the list
@@ -233,7 +258,7 @@ function apply_tauleap_diffusion_rxn(Ensemble, this_chemostat, tau, n_d)
         neighbor_weights = this_chemostat.neighbor_flows
     
         if neighbors != []
-            neighbor = sample(neighbors, Weights(neighbor_weights))
+            neighbor = StatsBase.sample(neighbors, StatsBase.Weights(neighbor_weights))
             insert_molecule_at_random(Ensemble.reactors[neighbor].molecules, a)
         end
 
@@ -243,3 +268,32 @@ function apply_tauleap_diffusion_rxn(Ensemble, this_chemostat, tau, n_d)
     
 end
 
+#==============================================================================#
+
+function apply_tauleap_outflow_rxn(Ensemble, this_chemostat, tau, n_o)
+
+    skipped = 0
+
+    n_molecules = length(this_chemostat.molecules) # number of molecules
+    nmax_reactions = n_molecules                   # maximum number of outflow reactions
+    if n_o <= nmax_reactions
+        # perform intended number of reactions
+        n_reactions = n_o
+    else
+        # perform reduced number of reactions and warn
+        n_reactions = nmax_reactions
+        skipped = n_o - n_reactions
+        # println("        warning: skipped $skipped out of $n_o outflow reactions at time $tau")
+    end
+
+    for i in 1:n_reactions
+        a = pick_molecule_at_random(this_chemostat.molecules)
+    end
+
+    return skipped
+    
+end
+
+#==============================================================================#
+# END OF FILE
+#==============================================================================#

@@ -1,6 +1,9 @@
-using Graphs
-using StatsBase
-using Random
+#==============================================================================#
+# IMPORTS
+#==============================================================================#
+
+import Graphs
+import StatsBase
 
 #==============================================================================#
 # DATA TYPES
@@ -10,8 +13,9 @@ mutable struct Ensemble
 
     reactor_ids     ::Array{Int64,1}
     reactors        ::Array{Chemostat,1}
-    ensemble_graph  ::DiGraph
+    ensemble_graph  ::Graphs.DiGraph
     inflow_ids      ::Array{Int64,1}
+    outflow_ids     ::Array{Int64,1}
 
 end
 
@@ -27,112 +31,78 @@ function Ensemble(N_reactors        ::Int64,
                   chemostat_list    = Vector{Dict{String,Any}}[]
                   )
 
-    # Erdos-Renyi (random) graph
     if graph_type == "ER"
 
-        # create ER graph with N_reactors vertices of degree 4 #p1: why four edges?
-        ensemble_graph = erdos_renyi(N_reactors, 4*N_reactors, is_directed =true)
-        # Get inflow ids and make sure its a connected component #p1: what
+        error("not implemented")
+
+        ensemble_graph = Graphs.erdos_renyi(N_reactors, 4*N_reactors, is_directed =true)
         inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
-        # Get chemostats specifications  #p1: what
-        chemostat_specs = sample(chemostat_list, N_reactors)
-        # Get chemostat vector from specifications  #p1: what
+        chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
-    # Barabasi-Albert (scale-free) graph
     elseif graph_type == "BA"
 
-        # create BA graph with N_reactors vertices of degree 4 #p1: why two edges?
-        ensemble_graph = barabasi_albert(N_reactors, 2, is_directed=true) # Check why is this 2?
-        # Get inflow ids  #p1: what
+        error("not implemented")
+
+        ensemble_graph = Graphs.barabasi_albert(N_reactors, 2, is_directed=true) # Check why is this 2?
         inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
-        # Get chemostats specifications  #p1: what
-        chemostat_specs = sample(chemostat_list, N_reactors)
-        # Get chemostat vector from specifications  #p1: what
+        chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
-    # regular graph (each node has the same degree)
     elseif graph_type == "regular"
 
-        # create regular graph with N_reactors vertices of degree 4
-        ensemble_graph = random_regular_digraph(N_reactors, 4)
-        # Get inflow ids #p1: what
+        error("not implemented")
+
+        ensemble_graph = Graphs.random_regular_digraph(N_reactors, 4)
         inflow_ids, ensemble_graph = find_inflow_nodes(ensemble_graph, N_sources)
-        # Get chemostats specifications  #p1: what
-        chemostat_specs = sample(chemostat_list, N_reactors)
-        # Get chemostat vector from specifications  #p1: what
+        chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
     
-    # lattice graph
     elseif graph_type == "lattice"
 
-        # check if N_reactors is a square
-        if (round(sqrt(N_reactors)))^2 != N_reactors
-            error("Lattice requested but N_reactors isn't square")
-        end 
+        error("not implemented")
 
-        # create lattice digraph
+        (round(sqrt(N_reactors)))^2 == N_reactors || error("lattice graph requires N_reactors to be a perfect square")
+
         ensemble_graph = lattice_digraph(N_reactors)
-        # Get inflow ids #p1: what
         inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
-        # Get chemostats specifications  #p1: what
-        chemostat_specs = sample(chemostat_list, N_reactors)
-        # Get chemostat vector from specifications  #p1: what
+        chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
-        # lattice graph
     elseif graph_type == "lattice-2way"
 
-        # check if N_reactors is a square
-        if (round(sqrt(N_reactors)))^2 != N_reactors
-            error("Lattice requested but N_reactors isn't square")
-        end 
-
-        # create lattice digraph
+        (round(sqrt(N_reactors)))^2 == N_reactors || error("lattice graph requires N_reactors to be a perfect square")
         ensemble_graph = lattice_digraph_bidirectionnal(N_reactors)
 
-        if randomize_edges == true
-            # Randomize the edges of the graph while preserving the degree distribution
-            ensemble_graph = randomize_directed_preserving_degree!(ensemble_graph, 10 * ne(ensemble_graph))
-        end
+        # optionally randomize edges while preserving degree distribution
+        randomize_edges && (ensemble_graph = randomize_graph!(ensemble_graph, 10 * Graphs.ne(ensemble_graph)))
 
-        # Get inflow ids #p1: what
         # inflow_ids, ensemble_graph  = find_inflow_nodes(ensemble_graph, N_sources)
         inflow_ids = [1]
-        # Get chemostats specifications  #p1: what
-        chemostat_specs = sample(chemostat_list, N_reactors)
-        # Get chemostat vector from specifications  #p1: what
+        outflow_ids = [N_reactors]
+        chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
-    # line (path) digraph
     elseif graph_type == "line"
 
-        # check if  #p1: what
-        if N_sources > 1
-            error("Line Graph specified but N_sources > 1")
-        end
+        error("not implemented")
+        
+        # enforce a single source for a line graph
+        N_sources == 1 || error("line graph requires exactly one source node")
 
-        # create a path graph with N_reactors vertices
-        ensemble_graph = path_digraph(N_reactors)
-        # Specify inflow  #p1: what
+        ensemble_graph = Graphs.path_digraph(N_reactors)
         inflow_ids = [1]
-        # Get the chemostats #p1: what
-        chemostat_specs = sample(chemostat_list, N_reactors)
-        # Get chemostat vector from specifications  #p1: what
+        chemostat_specs = StatsBase.sample(chemostat_list, N_reactors)
         chemostats = chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass)
 
     end
-
-    # if randomize_edges == true
-    #     # Randomize the edges of the graph while preserving the degree distribution
-    #     ensemble_graph = randomize_directed_preserving_degree!(ensemble_graph, 10 * ne(ensemble_graph))
-    # end
 
     # return the Ensemble
     return Ensemble(collect(1:N_reactors),
                     chemostats,
                     ensemble_graph,
                     inflow_ids,
+                    outflow_ids
                     )
 
 end
@@ -142,7 +112,7 @@ end
 function lattice_digraph(N)
 
     # construct a simple digraph with N vertices (and 0 edges)
-    L = SimpleDiGraph(N)
+    L = Graphs.SimpleDiGraph(N)
 
     # link the vertices together (add edges) to form the lattice
     n = sqrt(N)
@@ -154,9 +124,9 @@ function lattice_digraph(N)
             right_neighbor = current_node + 1
             down_neighbor = current_node + n 
             if i < n
-                add_edge!(L,(current_node, right_neighbor))
+                Graphs.add_edge!(L,(current_node, right_neighbor))
             end
-            add_edge!(L, (current_node, down_neighbor))
+            Graphs.add_edge!(L, (current_node, down_neighbor))
         end
     end
 
@@ -170,7 +140,7 @@ end
 function lattice_digraph_bidirectionnal(N)
 
     # construct a simple digraph with N vertices (and 0 edges)
-    L = SimpleDiGraph(N)
+    L = Graphs.SimpleDiGraph(N)
 
     # link the vertices together (add edges) to form the lattice
     n = sqrt(N)
@@ -182,11 +152,11 @@ function lattice_digraph_bidirectionnal(N)
             right_neighbor = current_node + 1
             down_neighbor = current_node + n 
             if i < n
-                add_edge!(L,(current_node, right_neighbor))
-                add_edge!(L,(right_neighbor, current_node))
+                Graphs.add_edge!(L,(current_node, right_neighbor))
+                Graphs.add_edge!(L,(right_neighbor, current_node))
             end
-            add_edge!(L, (current_node, down_neighbor))
-            add_edge!(L, (down_neighbor, current_node))
+            Graphs.add_edge!(L, (current_node, down_neighbor))
+            Graphs.add_edge!(L, (down_neighbor, current_node))
         end
     end
 
@@ -199,15 +169,17 @@ end
 
 function find_inflow_nodes(graph, n_sources)
 
+    error("uh-oh, find_inflow_nodes is not implemented yet")
+
     # Find the nodes that have no in-edges
-    total_edges = length(edges(graph))
+    total_edges = length(Graphs.edges(graph))
 
     # get the in-degree for each node
-    in_degrees = indegree(graph, vertices(graph))
+    in_degrees = Graphs.indegree(graph, Graphs.vertices(graph))
     # determine which node has no in-edge
     no_in_nodes = [i for i in 1:length(in_degrees) if in_degrees[i] == 0]
     # sort nodes by in-degree
-    sorted_nodes = sort!(collect(vertices(graph)), by = x->indegree(graph,x))
+    sorted_nodes = sort!(collect(Graphs.vertices(graph)), by = x->Graphs.indegree(graph,x))
     # determine how many nodes have no in-edge
     num_no_in = length(no_in_nodes)
 
@@ -222,34 +194,34 @@ function find_inflow_nodes(graph, n_sources)
         source_list = Int64[]
         # Remove the number of nodes you need 
         nodes_to_remove = sorted_nodes[1:n_sources]
-        rem_vertices!(graph, nodes_to_remove)
+        Graphs.rem_vertices!(graph, nodes_to_remove)
         # Get the remaining nodes 
-        other_nodes = collect(vertices(graph))
+        other_nodes = collect(Graphs.vertices(graph))
         # Make the remaining graph a completely connected graph
-        components = connected_components(graph)
+        components = Graphs.connected_components(graph)
         while length(components) > 1
-            add_edge!(graph, rand(components[1]), rand(components[2]))
-            components = connected_components(graph)
+            Graphs.add_edge!(graph, rand(components[1]), rand(components[2]))
+            components = Graphs.connected_components(graph)
         end
         # Now we're going to connect the source nodes to random other nodes
-        random_connections = sample(vertices(graph), n_sources)
+        random_connections = sample(Graphs.vertices(graph), n_sources)
         for i in 1:n_sources
-            add_vertex!(graph)
-            new_node = length(vertices(graph))
-            add_edge!(graph, new_node, random_connections[i])
+            Graphs.add_vertex!(graph)
+            new_node = length(Graphs.vertices(graph))
+            Graphs.add_edge!(graph, new_node, random_connections[i])
             push!(source_list, new_node)
         end
 
     end
 
     # Tidy up by making sure you've got the right number of edges
-    new_edge_count = length(edges(graph))
+    new_edge_count = length(Graphs.edges(graph))
     total_edges - new_edge_count
     while total_edges - new_edge_count > 0
-        source_node = sample(vertices(graph))
+        source_node = sample(Graphs.vertices(graph))
         destination_node = sample(other_nodes)
-        add_edge!(graph, source_node, destination_node)
-        new_edge_count = length(edges(graph))
+        Graphs.add_edge!(graph, source_node, destination_node)
+        new_edge_count = length(Graphs.edges(graph))
     end
 
     return source_list, graph
@@ -263,17 +235,17 @@ function chemostats_from_specs(ensemble_graph, chemostat_specs, inflow_ids, mass
     # Make the chemostats with the right neighbors 
 
     chemostat_list = Chemostat[]
-    reactors = collect(vertices(ensemble_graph))
+    reactors = collect(Graphs.vertices(ensemble_graph))
 
     for r in reactors
 
-        specs = sample(chemostat_specs)
+        specs = StatsBase.sample(chemostat_specs)
 
         reaction_rate_constants = specs["reaction_rate_constants"]
 
         # Return a list of outneighbors for node r
         # i.e., the nodes that vertices from r point to
-        these_neigbors = neighbors(ensemble_graph, r)
+        these_neigbors = Graphs.neighbors(ensemble_graph, r)
 
         if r in inflow_ids
 
@@ -304,11 +276,12 @@ end
 function gen_chemostat_spec_list(N_chemostats   ::Int64,
                                  forward_rate   ::Float64,
                                  backward_rate  ::Float64,
-                                 outflow        ::Float64
+                                 diffusion_rate ::Float64,
+                                 outflow_rate   ::Float64
                                  )
 
     # dictionary template for chemostat specs
-    single_dict = Dict("reaction_rate_constants" => [forward_rate, backward_rate, outflow])
+    single_dict = Dict("reaction_rate_constants" => [forward_rate, backward_rate, diffusion_rate, outflow_rate])
 
     # create the array of chemostat specs
     spec_list = [single_dict]
@@ -326,7 +299,9 @@ end
 
 #==============================================================================#
 
-function randomize_directed_preserving_degree!(g::SimpleDiGraph, nswap::Int)
+function randomize_graph!(g::Graphs.SimpleDiGraph, nswap::Int)
+    # randomize_directed_preserving_degree
+
     edges = collect(Graphs.edges(g))
     swaps = 0
     tries = 0
@@ -335,24 +310,35 @@ function randomize_directed_preserving_degree!(g::SimpleDiGraph, nswap::Int)
         tries += 1
 
         e1, e2 = rand(edges, 2)
-        u1, v1 = src(e1), dst(e1)
-        u2, v2 = src(e2), dst(e2)
+        u1, v1 = Graphs.src(e1), Graphs.dst(e1)
+        u2, v2 = Graphs.src(e2), Graphs.dst(e2)
 
         # Skip if any overlap between the four nodes
         if length(Set([u1, v1, u2, v2])) < 4
             continue
         end
 
-        # Proposed new edges: (u1→v2), (u2→v1)
-        if has_edge(g, u1, v2) || has_edge(g, u2, v1) || u1 == v2 || u2 == v1
+        # Check that mirrored edges exist
+        if !(Graphs.has_edge(g, v1, u1) && Graphs.has_edge(g, v2, u2))
+            error("Mirrored edges missing: cannot swap ($u1->$v1) and ($u2->$v2) without ($v1->$u1) and ($v2->$u2)")
+        end
+
+        # Proposed new edges: (u1→v2) and (u2→v1) and their mirrors (v2→u1) and (v1→u2)
+        if Graphs.has_edge(g, u1, v2) || Graphs.has_edge(g, u2, v1) || Graphs.has_edge(g, v2, u1) || Graphs.has_edge(g, v1, u2) ||
+           u1 == v2 || u2 == v1 || v2 == u1 || v1 == u2
             continue
         end
 
-        # Perform the swap
-        rem_edge!(g, u1, v1)
-        rem_edge!(g, u2, v2)
-        add_edge!(g, u1, v2)
-        add_edge!(g, u2, v1)
+        # Perform the swap for both edges and their mirrors
+        Graphs.rem_edge!(g, u1, v1)
+        Graphs.rem_edge!(g, v1, u1)
+        Graphs.rem_edge!(g, u2, v2)
+        Graphs.rem_edge!(g, v2, u2)
+
+        Graphs.add_edge!(g, u1, v2)
+        Graphs.add_edge!(g, v2, u1)
+        Graphs.add_edge!(g, u2, v1)
+        Graphs.add_edge!(g, v1, u2)
 
         # Update edge list and count
         edges = collect(Graphs.edges(g))
@@ -361,3 +347,7 @@ function randomize_directed_preserving_degree!(g::SimpleDiGraph, nswap::Int)
 
     return g
 end
+
+#==============================================================================#
+# END OF FILE
+#==============================================================================#
