@@ -29,6 +29,7 @@
 \usepackage{fancyvrb}         % better verbatim support
 \usepackage{etoolbox} % for patching
 \usepackage{pagecolor}
+\usepackage{pgffor} % for "for" loops
 
 \usepackage{showlabels}
 % ========== layout for the marginal notes ==========
@@ -88,6 +89,14 @@
 }
 
 \definecolor{lightred}{RGB}{255, 245, 245}
+
+\newcommand{\includeOrGrayBox}[1]{%
+  \IfFileExists{#1}{%
+    \includegraphics[width=0.09\textwidth]{#1}%
+  }{%
+    \textcolor{lightgray}{\rule{0.09\textwidth}{0.09\textwidth}}
+  }%
+}
 
 \title{\vspace{10em} \Huge Topology Project:\\ Research Notes\vspace{2em}}
 
@@ -885,7 +894,7 @@ One last detail: a while ago we were using an implicit inflow as well, keeping t
 
 \clearpage
 
-\subsubsection{MS23: distance from source (re-bis)}
+\subsection{MS23: distance from source (re-bis)}
 
 First result from our re-calculation: the distance from source figure (MS08). These new simulations were calculated using the tau-leaping method using $dt=10^{-3}$ (there was no skipped reaction whatsoever, even at very high diffusion). We initially integrated over $t_{max}=100$ but had to extend this to $t_{max}=10^5$ to make sure the low diffusion sims reached steady state. We again used a lattice topology (there is no randomization here) with $N=25$ reactors. The inflow was set to $I=10^3$ molecules/second, the forward rate to $k_f=10^{-3}$ and the diffusion rate sampled in $\log k_d \in [-6, 1]$. The outflow rate was set to be equal to the diffusion rate.
 
@@ -966,7 +975,7 @@ where we iterate on $N$ \textit{unique} objects in the system, with $a_i$ being 
 \vspace{0em}
 \begin{minipage}{0.5\linewidth}
 \centering
-{\Large Assembly$_\text{outflow}$ $-$ Assembly$_\text{inflow}$}\vspace{1em}\\
+{\Large Assembly$_\text{inflow}$ $-$ Assembly$_\text{outflow}$}\vspace{1em}\\
   \begin{overpic}[width=0.7\textwidth]{figures/results/MS23/delta-assembly-inflow-outflow_33}
   	\put(-0,95){\textbf{(B)}}
   \end{overpic}
@@ -1027,7 +1036,7 @@ Panel A on the figure below is very interesting: we’re "loading up" the system
 
 \begin{figure}[h!]
 \centering
-{\Large Time series for key simulations of the diffusion sweep}\vspace{3em}\\
+{\Large Time series for key simulations of the diffusion sweep}\vspace{1em}\\
   \begin{overpic}[width=0.24\textwidth]{figures/results/MS24/single-timeseries_1}
   	\put(-0,95){\textbf{(A)}}
   \end{overpic}
@@ -1056,6 +1065,122 @@ Panel A on the figure below is very interesting: we’re "loading up" the system
   \label{fig:MS24b}
 \end{figure}
 
+\begin{figure}[h!]
+\centering
+{\Large \# molecules, mass and frequency heatmap vs diffusion coefficient}\vspace{1em}\\
+  \begin{overpic}[width=0.54\textwidth]{figures/results/MS24/molecules-and-mass-vs-kd}
+  	\put(-10,55){\textbf{(A)}}
+  \end{overpic}\\
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS24/populations-heatmap-vs-kd}
+  	\put(-0,55){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/MS24/populations-heatmap-vs-kd-outflow-only}
+  	\put(-0,55){\textbf{(C)}}
+  \end{overpic}
+ \caption{Panel A shows total number of molecules as well as total mass for whole systems across $k_d$’s. Panels B \& C show integer distribution frequencies for either whole systems or outflow reactors. White line guides the eye (slope $\sim-1$).}
+  \label{fig:MS24c}
+\end{figure}
+
+\clearpage
+
+\subsection{MS25: sweep over inflow $\times$ diffusion: benchmark}
+
+We want to do a parameter sweep, this time over both inflow and diffusion, which is a re-calculation of MS15-18. However while re-calculating things since we fixed the bug with the outflow, we noticed that several simulations used previously hadn’t reached steady state. In our previous sweep over $k_d$, we integrated over $10^5$ iterations, which made the simulations having $k_d > 10^{-4}$ reach steady state. Therefore, our first step will be to do a quick sweep over a large range of parameter values to determine in what regimes are the simulations reaching steady state. We’ll try integrations over $10^3, 10^4$ and $10^5$ time steps.
+
+\begin{figure}[h!]
+  \centering
+  {\Large Zoom me (yes this is hacky): integration over $10^3$ time steps}\\
+  {\color{red}\Large \textit{low resolution shown, original figure too heavy}}\\
+%  {\color{red}\Large \textit{figure disabled because it was way too heavy}}\\
+%  \vspace{1em}
+%  \foreach \i in {1,...,100} {%
+%    \includeOrGrayBox{figures/results/MS25/prelim/1e3/single-timeseries_\i.pdf}%
+%    \pgfmathparse{mod(\i,10)==0}
+%    \ifnum\pgfmathresult=1 \par\noindent \fi
+%  }
+  \includegraphics[width=\textwidth]{figures/results/MS25/prelim/1e3-lowres.png}
+%  \textcolor{lightgray}{\rule{0.75\textwidth}{0.75\textwidth}}
+  \caption{All chemostats for simulations of the benchmark. Moving rightward increases the inflow, moving downwards increases diffusion.}
+  \label{fig:MS25a}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h!]
+  \centering
+  {\Large Integration over $10^4$ time steps}\\
+  {\color{red}\Large \textit{low resolution shown, original figure too heavy}}\\
+  \vspace{1em}
+%  \foreach \i in {1,...,100} {%
+%    \includeOrGrayBox{figures/results/MS25/prelim/1e4/single-timeseries_\i.pdf}%
+%    \pgfmathparse{mod(\i,10)==0}
+%    \ifnum\pgfmathresult=1 \par\noindent \fi
+%  }
+  \includegraphics[width=\textwidth]{figures/results/MS25/prelim/1e4-lowres.png}
+  \caption{Same as prevous figure. Longer integration time.}
+  \label{fig:MS25b}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h!]
+  \centering
+  {\Large Integration over $10^5$ time steps}\\
+  {\color{red}\Large \textit{low resolution shown, original figure too heavy}}\\
+  \vspace{1em}
+%  \foreach \i in {1,...,100} {%
+%    \includeOrGrayBox{figures/results/MS25/prelim/1e5/single-timeseries_\i.pdf}%
+%    \pgfmathparse{mod(\i,10)==0}
+%    \ifnum\pgfmathresult=1 \par\noindent \fi
+%  }
+  \includegraphics[width=\textwidth]{figures/results/MS25/prelim/1e5-lowres.png}
+  \caption{Same as two previous figures. Longer integration time.}
+  \label{fig:MS25c}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h!]
+  \centering
+  {\Large Integration times}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.32\textwidth]{figures/results/MS25/prelim/1e3/heatmap-calculation-times} 	
+    \put(-0,95){\textbf{(A)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.32\textwidth]{figures/results/MS25/prelim/1e4/heatmap-calculation-times}
+	  \put(-0,95){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}
+  	[width=0.32\textwidth]{figures/results/MS25/prelim/1e5/heatmap-calculation-times}
+    \put(-0,95){\textbf{(C)}}
+   \end{overpic}
+  \caption{Integration time for the simulations in this dataset. White cases indicate simulations still running after 24 hours.}
+  \label{fig:MS25d}
+\end{figure}
+
+\clearpage
+
+\subsection{MS26: sweep over $k_d$ with multiple inflows (2’s only)}
+
+We now want to re-plot the population means vs $k_d$ figure, this time showing only 2’s and for a few different values of the inflow. From what we saw in the previous subsection, interesting ranges lie around $\log I = 3...6$ and $\log k_d=-3...1$. We’ll integrate over $10^4$ iterations which is sufficient to reach steady state in this regime. All other parameters stay the same: outflow equal to diffusion, forward rate $10^{-3}$, lattice with $N=25$ and so on.
+
+\begin{figure}[h!]
+  \centering
+  {\Large Population mean \& sd across $k_d$, multiple inflows}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.49\textwidth]{figures/results/MS26/populations-mean-vs-kd-multiple-inflows} 	
+    \put(-0,85){\textbf{(A)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.49\textwidth]{figures/results/MS26/populations-sd-vs-kd-multiple-inflows}
+	  \put(-0,85){\textbf{(B)}}
+  \end{overpic}
+  \caption{Population mean calculated across all reactors for a given simulation, and its standard deviation.}
+  \label{fig:MS25d}
+\end{figure}
 
 \clearpage
 
