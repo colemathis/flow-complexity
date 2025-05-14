@@ -5,6 +5,7 @@
 import DataFrames
 import Random
 import Graphs
+import Dates
 
 #==============================================================================#
 # DATA TYPES
@@ -199,6 +200,7 @@ function RunSimulation(sim; dry_run=false)
     
     elapsed_time = round(elapsed_time, digits = 2)
     println("Sim Completed. Time taken: $elapsed_time seconds.")
+    sim.output[:total_time] = elapsed_time
 
     save_data(sim)
     println("")
@@ -230,6 +232,21 @@ function save_data(sim)
     fn = joinpath(sim_dir, "graph.csv")
     CSV.write(fn, io_nodes)
 
+    fn = joinpath(sim_dir, "meta.csv")
+    meta = DataFrames.DataFrame(
+        sim_number = sim.params[:sim_number],
+        total_time = sim.output[:total_time],
+        total_constructive_rxn = get(sim.output, :total_constructive_rxn, missing),
+        skipped_constructive_rxn = get(sim.output, :skipped_constructive_rxn, missing),
+        total_destructive_rxn = get(sim.output, :total_destructive_rxn, missing),
+        skipped_destructive_rxn = get(sim.output, :skipped_destructive_rxn, missing),
+        total_diffusion_rxn = get(sim.output, :total_diffusion_rxn, missing),
+        skipped_diffusion_rxn = get(sim.output, :skipped_diffusion_rxn, missing),
+        total_outflow_rxn = get(sim.output, :total_outflow_rxn, missing),
+        skipped_outflow_rxn = get(sim.output, :skipped_outflow_rxn, missing),
+    )
+    CSV.write(fn, meta)
+
     rel = relpath(fn, pwd())
     println("Data saved in $rel")
 
@@ -240,7 +257,7 @@ end
 function save_checkpoint(sim, tau::Float64)
     
     i = round(tau, digits=3)
-    println("   saving at t=$i")
+    println(Dates.now(), " --  saving at t=$i")
     # print(".")
     
     # record the current time
