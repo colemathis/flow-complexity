@@ -1,6 +1,6 @@
 nrepeat = 1
 
-inflow_rates = exp10.(LinRange(2,4,4))
+inflow_rates = exp10.(LinRange(3,4,4))
 diffusion_rates = exp10.(LinRange(-1,3,100))
 
 params_template = Dict(
