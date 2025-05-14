@@ -41,3 +41,5 @@ milestones/99_test/params.jl
 
 milestones/99_test
 cache
+
+*.gitignore/
