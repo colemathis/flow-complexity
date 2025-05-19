@@ -6,17 +6,20 @@ options(conflicts.policy = list(warn.conflicts = FALSE))
 
 library(tidyverse)   # includes dplyr, ggplot2, etc.
 library(latex2exp)
+library(patchwork)   # for combining ggplots
 
 ################################################################################
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "20-heatmap-skipped-outflow-rxn"
-USE_CACHE  				<<- TRUE
+ID         				<<- "24b-plot-pdf-inflow-outflow-exponent"
+USE_CACHE  				<<- FALSE
 PRINT_FIGS 				<<- TRUE
-SAVE_FIGS 			 	<<- FALSE
+SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D99_test/data"
+FITS_PATH               <<- file.path("cache/24-multipanel-pdf-inflow-outflow/24-multipanel-pdf-inflow-outflow_powerlaw_fits.csv")
+
+DATA_DIR      			<<- "../../datasets/D02_kd=1e-2_1e2_lattice/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
@@ -68,20 +71,10 @@ load_params <- function() {
 
 load_and_process_sim_data <- function() {
 
-	timeseries_files <- list.files(DATA_DIR, pattern = TIMESERIES_FILES, recursive = TRUE, full.names = TRUE)
-	meta_files       <- list.files(DATA_DIR, pattern = META_FILES, recursive = TRUE, full.names = TRUE)
+	ts <- read_csv(FITS_PATH, show_col_types = FALSE)
 
-	ts_all <- map_dfr(meta_files, function(file) {
-		if (file.info(file)$size == 0) return(NULL)
-		ts <- read_csv(file, show_col_types = FALSE, progress = FALSE)
-		# process_data(ts)
-	}, .progress = TRUE)
-
-	# Save the processed data to a cache file
-	dir.create(dirname(CACHE_PATH), recursive = TRUE, showWarnings = FALSE)
-	write_csv(ts_all, CACHE_PATH)
-
-	return(ts_all)
+	ts <- ts %>%
+		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number")
 
 }
 
@@ -122,74 +115,81 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
-	# Calculate the size of the square heatmap
-	n <- nrow(ts)
-	side <- ceiling(sqrt(n))
+	#--- Prepare data ---------------------------------------------------------#
+	ts <- ts %>%
+		mutate(neg_slope = -slope)
 
-	# Pad the data if necessary to make a perfect square
-	if (n < side^2) {
-		pad <- side^2 - n
-		ts <- bind_rows(ts, tibble(
-			x = rep(NA, pad),
-			y = rep(NA, pad),
-			total_time = rep(NA, pad),
-			sim_number = rep(NA, pad)
-		))
-	}
+	# Panel A: Absolute slope by chemostat
+	ts <- ts %>%
+		mutate(chemostat_label = factor(chemostat_id, levels = c(1, 25), labels = c("inflow", "outflow")))
 
-	# Assign x and y positions for square layout: left-to-right, then top-to-bottom,
-	# with (1,1) in the upper left corner (y decreases downward)
-	ts$x <- rep(1:side, times = side)[1:nrow(ts)]
-	ts$y <- rep(side:1, each = side)[1:nrow(ts)]
-
-	p <- ggplot(ts, aes(x = x, y = y, fill = 100*skipped_outflow_rxn/total_outflow_rxn)) +
-		geom_tile(color = "white", na.rm = TRUE) +
-		geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
-		scale_fill_viridis_c(
-			name = "% skipped",
-			option = "C",
-			na.value = "grey90",
-			guide = guide_colorbar(
-				barwidth = unit(3, "mm"),
-				barheight = unit(20, "mm"),
-				title.position = "top",
-				title.hjust = 0.5
-			)
-		) +
-		labs(
-			title = "Skipped Outflow Reactions",
-			caption = ID
-		) +
-		theme_minimal(base_size = 8) +
+	p_abs <- ggplot(ts, aes(x = diffusion_rate, y = neg_slope, colour = chemostat_label)) +
+		geom_point(alpha = 0.3, size = 1.3) +
+		geom_smooth(method = "loess", se = FALSE, span = 0.5) +
+		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
+		coord_cartesian(ylim = c(0, 8)) +
+		scale_colour_manual(values = c("inflow" = "darkgreen", "outflow" = "red"),
+											 labels = c("inflow" = "1: inflow", "outflow" = "25: outflow")) +
+		labs(x = TeX("$k_d$"),
+				 y = TeX("$k$"),
+				 colour = "Chemostats") +
+		theme_bw() +
 		theme(
-			panel.grid = element_blank(),
-			plot.title = element_text(size = 10),
-			plot.caption = element_text(size = 7, color = "grey50"),
-			legend.position = "right",
-			legend.title = element_text(size = 7),
-			legend.text = element_text(size = 6),
-			legend.key.height = unit(10, "mm"),
-			legend.key.width = unit(2, "mm"),
-			axis.text = element_blank(),
-			axis.ticks = element_blank(),
-			axis.title = element_blank()
-		) +
-		coord_fixed()
+			legend.position = c(0.02, 0.98),
+			legend.justification = c("left", "top"),
+			legend.background = element_rect(fill = alpha("white", 0.9), colour = "black"),
+			legend.title = element_text(face = "bold")
+		)
 
-	height <- 80
-	width  <- 80
+	# Panel B: Difference in absolute slope between chemostat 1 and 25
+	diff_ts <- ts %>%
+		filter(chemostat_id %in% c(1, 25)) %>%
+		select(sim_number, diffusion_rate, chemostat_id, neg_slope) %>%
+		pivot_wider(names_from = chemostat_id, values_from = neg_slope, names_prefix = "ch") %>%
+		mutate(delta_abs = ch1 - ch25)
+
+	p_diff <- ggplot(diff_ts, aes(x = diffusion_rate, y = delta_abs)) +
+		geom_hline(yintercept = 0, linetype = "dashed") +
+		geom_point(size = 1.3, alpha = 0.3, colour = "blue") +
+		geom_smooth(method = "loess", se = FALSE, span = 0.5, colour = "blue") +
+		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
+		coord_cartesian(ylim = c(0, 2.5)) +
+		labs(x = TeX("$k_d$"),
+				 y = TeX("$\\Delta k$")) +
+		annotate("text",
+						 x = min(diff_ts$diffusion_rate, na.rm = TRUE),
+						 y = max(diff_ts$delta_abs, na.rm = TRUE),
+						 label = TeX("$\\Delta k = k_{inflow} - k_{outflow}$"),
+						 hjust = 0, vjust = 1, size = 4) +
+		theme_bw()
+
+	#--- Combine panels -------------------------------------------------------#
+	p <- p_abs / p_diff + plot_layout(heights = c(2, 1))
+
+	#--- Output ---------------------------------------------------------------#
+	height <- 120   # mm
+	width  <- 120    # mm
 
 	if (PRINT_FIGS) {
-		options(vsc.dev.args = list(width = width, height = height, res = 300, units = "mm"))
+		options(vsc.dev.args = list(width = width,
+									height = height,
+									res = 300,
+									units = "mm"))
 		print(p)
 	}
 
 	if (SAVE_FIGS) {
 		out_file <- file.path(FIGS_DIR, FIGS_FILE)
-		ggsave(filename = out_file, plot = p, width = width, height = height, units = "mm", create.dir = TRUE)
+		ggsave(filename = out_file,
+				plot = p,
+				width = width,
+				height = height,
+				units = "mm",
+				create.dir = TRUE)
 	}
 
-}
+	invisible(p)
+	}
 
 ################################################################################
 # MAIN SCRIPT

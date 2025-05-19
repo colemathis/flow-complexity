@@ -14,9 +14,9 @@ library(latex2exp)
 ID         				<<- "16-heatmaps-calculation-times"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
-SAVE_FIGS 			 	<<- FALSE
+SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D99_test/data"
+DATA_DIR      			<<- "../../datasets/D02_kd=1e-2_1e2_lattice/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 

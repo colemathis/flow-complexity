@@ -11,12 +11,12 @@ library(latex2exp)
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "24-multipanel-pdf-inflow-outflow"
+ID         				<<- "22-plot-avg-integer"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
-SAVE_FIGS 			 	<<- FALSE
+SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D02_kd=1e-2_1e2_lattice/data"
+DATA_DIR      			<<- "../../datasets/D03_kd=1e-2_1e2_randomized/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
@@ -90,21 +90,17 @@ load_and_process_sim_data <- function() {
 process_data <- function(ts) {
 
 	MAX_TIME   <- params$total_time[1]
-	N_REACTORS <- params$N_reactors[1]
 
 	ts <- ts %>%
-		filter(time == MAX_TIME) %>%
-		filter(integer == 2)
+		filter(time == MAX_TIME)
 
 	ts <- ts %>%
-		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
-		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
+		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number")
 
 	ts %>%
-		group_by(diffusion_rate, inflow_mols, integer) %>%
+		group_by(diffusion_rate) %>%
 		summarize(
-			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
+			avg_integer = sum(integer*frequency, na.rm = TRUE) / sum(frequency, na.rm = TRUE),
 			.groups = "drop"
 		)
 
@@ -122,59 +118,26 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
-	# Calculate the size of the square heatmap
-	n <- nrow(ts)
-	side <- ceiling(sqrt(n))
-
-	# Pad the data if necessary to make a perfect square
-	if (n < side^2) {
-		pad <- side^2 - n
-		ts <- bind_rows(ts, tibble(
-			x = rep(NA, pad),
-			y = rep(NA, pad),
-			total_time = rep(NA, pad),
-			sim_number = rep(NA, pad)
-		))
-	}
-
-	# Assign x and y positions for square layout: left-to-right, then top-to-bottom,
-	# with (1,1) in the upper left corner (y decreases downward)
-	ts$x <- rep(1:side, times = side)[1:nrow(ts)]
-	ts$y <- rep(side:1, each = side)[1:nrow(ts)]
-
-	p <- ggplot(ts, aes(x = x, y = y, fill = total_time / 3600)) +
-		geom_tile(color = "white", na.rm = TRUE) +
-		geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
-		scale_fill_viridis_c(
-			name = "Time (hr)",
-			option = "C",
-			na.value = "grey90",
-			guide = guide_colorbar(
-				barwidth = unit(3, "mm"),
-				barheight = unit(20, "mm"),
-				title.position = "top",
-				title.hjust = 0.5
-			)
+	p <- ts %>%
+		ggplot(aes(x = diffusion_rate, y = avg_integer)) +
+		geom_point(alpha=0.3) +
+		geom_line() +
+		scale_x_log10(
+			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
+		) +
+		scale_y_log10(
+			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
 		) +
 		labs(
-			title = "Calculation times (hours)",
-			caption = ID
+			x = TeX("$k_d$"),
+			y = TeX("$\\langle integer \\rangle$"),
+			title = "Average Integer Value (Whole System)"
 		) +
-		theme_minimal(base_size = 8) +
+		theme_bw(base_size = 8) +
 		theme(
-			panel.grid = element_blank(),
-			plot.title = element_text(size = 10),
-			plot.caption = element_text(size = 7, color = "grey50"),
-			legend.position = "right",
-			legend.title = element_text(size = 7),
-			legend.text = element_text(size = 6),
-			legend.key.height = unit(10, "mm"),
-			legend.key.width = unit(2, "mm"),
-			axis.text = element_blank(),
-			axis.ticks = element_blank(),
-			axis.title = element_blank()
-		) +
-		coord_fixed()
+			panel.grid.minor = element_blank(),
+			panel.grid.major.x = element_blank()
+		)
 
 	height <- 80
 	width  <- 80

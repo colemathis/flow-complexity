@@ -11,12 +11,12 @@ library(latex2exp)
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "19-heatmap-skipped-diffusion-rxn"
+ID         				<<- "17-heatmap-skipped-constructive-rxn"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
-SAVE_FIGS 			 	<<- FALSE
+SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D99_test/data"
+DATA_DIR      			<<- "../../datasets/D02_kd=1e-2_1e2_lattice/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
@@ -142,7 +142,7 @@ plot_figure <- function(ts) {
 	ts$x <- rep(1:side, times = side)[1:nrow(ts)]
 	ts$y <- rep(side:1, each = side)[1:nrow(ts)]
 
-	p <- ggplot(ts, aes(x = x, y = y, fill = 100*skipped_diffusion_rxn/total_diffusion_rxn)) +
+	p <- ggplot(ts, aes(x = x, y = y, fill = 100*skipped_constructive_rxn/total_constructive_rxn)) +
 		geom_tile(color = "white", na.rm = TRUE) +
 		geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
 		scale_fill_viridis_c(
@@ -157,7 +157,7 @@ plot_figure <- function(ts) {
 			)
 		) +
 		labs(
-			title = "Skipped Diffusion Reactions",
+			title = "Skipped Constructive Reactions",
 			caption = ID
 		) +
 		theme_minimal(base_size = 8) +
