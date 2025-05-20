@@ -134,21 +134,29 @@ function evolve_distributed_tau_leaping(sim; dry_run=false)
     if isnan(pc) pc = 0 end
     pc = round(pc, digits = 0)
     println("Performed $total_constructive_rxn constructive reactions, skipped $skipped_constructive_rxn ($pc %)")
+    sim.output[:total_constructive_rxn] = total_constructive_rxn
+    sim.output[:skipped_constructive_rxn] = skipped_constructive_rxn
 
     pc = 100 * skipped_destructive_rxn / total_destructive_rxn
     if isnan(pc) pc = 0 end
     pc = round(pc, digits = 0)
     println("Performed $total_destructive_rxn destructive reactions, skipped $skipped_destructive_rxn ($pc %)")
+    sim.output[:total_destructive_rxn] = total_destructive_rxn
+    sim.output[:skipped_destructive_rxn] = skipped_destructive_rxn
 
     pc = 100 * skipped_diffusion_rxn / total_diffusion_rxn
     if isnan(pc) pc = 0 end
     pc = round(pc, digits = 0)
     println("Performed $total_diffusion_rxn diffusion reactions, skipped $skipped_diffusion_rxn ($pc %)")
+    sim.output[:total_diffusion_rxn] = total_diffusion_rxn
+    sim.output[:skipped_diffusion_rxn] = skipped_diffusion_rxn
 
     pc = 100 * skipped_outflow_rxn / total_outflow_rxn
     if isnan(pc) pc = 0 end
     pc = round(pc, digits = 0)
     println("Performed $total_outflow_rxn outflow reactions, skipped $skipped_outflow_rxn ($pc %)")
+    sim.output[:total_outflow_rxn] = total_outflow_rxn
+    sim.output[:skipped_outflow_rxn] = skipped_outflow_rxn
 
     return
 

@@ -22,8 +22,22 @@ docs/site/
 # committed for packages, but should be committed for applications that require a static
 # environment.
 Manifest.toml
-.DS_Store
+
+# VS Code settings
 .vscode/settings.json
+
+# useless macOS files
+.DS_Store
+._.DS_Store
+
+# R files
+.RData
+.Rhistory
+
+# Conda files
+.CondaPkg
+
+# Data and figures
 data/
 data.*/
 logs/
@@ -31,13 +45,11 @@ figs/
 figs.*/
 plots/
 plots.*/
-*~
-._.DS_Store
-.CondaPkg
-Manifest.toml
-milestones/99_test/params.jl
-.RData
-.Rhistory
-
-milestones/99_test
 cache
+cache.*/
+
+# other
+*~
+
+# specifically tagged files
+*.gitignore/
