@@ -30,6 +30,7 @@
 \usepackage{etoolbox} % for patching
 \usepackage{pagecolor}
 \usepackage{pgffor} % for "for" loops
+\usepackage{listings}
 
 \usepackage{showlabels}
 % ========== layout for the marginal notes ==========
@@ -97,6 +98,45 @@
     \textcolor{lightgray}{\rule{0.09\textwidth}{0.09\textwidth}}
   }%
 }
+
+\lstdefinelanguage{Julia}
+  {morekeywords={abstract,break,case,catch,const,continue,do,else,elseif,%
+      end,export,false,for,function,immutable,import,importall,if,in,%
+      macro,module,otherwise,quote,return,switch,true,try,type,typealias,%
+      using,while},%
+   sensitive=true,%
+   alsoother={\$},%
+   morecomment=[l]\#,%
+   morecomment=[n]{\#=}{=\#},%
+   morestring=[s]{"}{"},%
+   morestring=[m]{'}{'},%
+}[keywords,comments,strings]%
+
+\lstset{
+  language=Julia,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=5pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single
+}
+
+\lstdefinestyle{blackbox}{
+  backgroundcolor=\color{black},
+  basicstyle=\ttfamily\color{white},
+  keywordstyle=\color{cyan},
+  commentstyle=\color{gray},
+  stringstyle=\color{yellow},
+  frame=single,
+  rulecolor=\color{white},
+  breaklines=true,
+  showstringspaces=false
+}
+
+\lstset{style=blackbox}
 
 \title{\vspace{10em} \Huge Topology Project:\\ Research Notes\vspace{2em}}
 
@@ -1179,6 +1219,343 @@ We now want to re-plot the population means vs $k_d$ figure, this time showing o
 	  \put(-0,85){\textbf{(B)}}
   \end{overpic}
   \caption{Population mean calculated across all reactors for a given simulation, and its standard deviation.}
+  \label{fig:MS25d}
+\end{figure}
+
+\clearpage
+
+\section{Datasets}
+
+\subsection{Motivation}
+
+From now on, instead of creating a new "milestone" for every "experiment" we’re doing I’ll keep two separate (but hyperlinked) sections: \textit{datasets} and \textit{analysis}. The reason for this is that we’re often going back and using previous batches of simulations to create new figures, which makes it rather confusing. Things will be kept much more clean by creating a new dataset each time I calculate a new batch of sims, and a new analysis each time we want to plot more figures. Obviously I’ll clearly indicate for each analysis which datasets it sources the data from.
+
+\clearpage
+
+\subsection{D01: sweep over $k_d$ and $I$}
+\label{subsec:D01}
+
+In this dataset we do a sweep between $\log k_d = -1...3$ for 4 values of the inflow between $\log I = 3...4$.\\
+
+\begin{lstlisting}[caption={content of \texttt{params.jl}}]
+nrepeat = 1
+
+inflow_rates = exp10.(LinRange(3,4,4))
+diffusion_rates = exp10.(LinRange(-1,3,100))
+
+params_template = Dict(
+    # simulation parameters
+    :save_interval    	=> 1e2,
+    :method         	=> "tau-leaping",
+    :dt             	=> 1e-3,
+    :random_seed    	=> "random",
+
+    # physical parameters
+    :total_time     	=> 1e4,
+    :initial_mass       => 0,
+
+    # topological parameters
+    :graph_type         => "lattice-2way",
+    :randomize_edges    => false,
+    :N_reactors     	=> 25,
+
+    # reaction rates
+    :inflow_mols        => inflow_rates,
+    :forward_rate   	=> 1e-3,
+    :diffusion_rate   	=> diffusion_rates,
+    :outflow_rate       => "equal-to-diffusion-rate",
+)
+\end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+  {\Large Calculation times \& skipped reactions}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.49\textwidth]{figures/results/D01/16-heatmaps-calculation-times} 	
+    \put(-10,85){\textbf{(A)}}
+  \end{overpic}\\
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D01/17-heatmap-skipped-constructive-rxn}
+	  \put(-10,85){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D01/18-heatmap-skipped-destructive-rxn}
+	  \put(-10,85){\textbf{(C)}}
+  \end{overpic}\\
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D01/19-heatmap-skipped-diffusion-rxn}
+	  \put(-10,85){\textbf{(D)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D01/20-heatmap-skipped-outflow-rxn}
+	  \put(-10,85){\textbf{(E)}}
+  \end{overpic}
+  \caption{Diagnostic plots for D01.}
+  \label{fig:D01}
+\end{figure}
+
+\clearpage
+
+\subsection{D02: sweep over $\log k_d = -2...2$ with $\log I=4$}
+\label{subsec:D02}
+
+In this dataset we do a sweep between $\log k_d = -2...2$ with the inflow $\log I = 4$.\\
+
+\begin{lstlisting}[caption={content of \texttt{params.jl}}]
+nrepeat = 1
+
+params_template = Dict(
+    # simulation parameters
+    :save_interval    	=> 100,
+    :method         	=> "tau-leaping",
+    :dt             	=> 1e-3,
+    :random_seed    	=> "random",
+
+    # physical parameters
+    :total_time     	=> 1e4,
+    :initial_mass       => 0,
+
+    # topological parameters
+    :graph_type         => "lattice-2way",
+    :randomize_edges    => false,
+    :N_reactors     	=> 25,
+
+    # reaction rates
+    :inflow_mols        => 1e4,
+    :forward_rate   	=> 1e-3,
+    :diffusion_rate   	=> exp10.(LinRange(-2,2,100)),
+    :outflow_rate       => "equal-to-diffusion-rate",
+)
+\end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+  {\Large Calculation times \& skipped reactions}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.49\textwidth]{figures/results/D02/16-heatmaps-calculation-times} 	
+    \put(-10,85){\textbf{(A)}}
+  \end{overpic}\\
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D02/17-heatmap-skipped-constructive-rxn}
+	  \put(-10,85){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D02/18-heatmap-skipped-destructive-rxn}
+	  \put(-10,85){\textbf{(C)}}
+  \end{overpic}\\
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D02/19-heatmap-skipped-diffusion-rxn}
+	  \put(-10,85){\textbf{(D)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D02/20-heatmap-skipped-outflow-rxn}
+	  \put(-10,85){\textbf{(E)}}
+  \end{overpic}
+  \caption{Diagnostic plots for D02.}
+  \label{fig:D02}
+\end{figure}
+
+\clearpage
+
+\subsection{D03: idem, randomized topology}
+\label{subsec:D03}
+
+Same thing as D02, but with randomized edges.\\
+
+\begin{lstlisting}[caption={content of \texttt{params.jl}}]
+nrepeat = 1
+
+params_template = Dict(
+    # simulation parameters
+    :save_interval    	=> 100,
+    :method         	=> "tau-leaping",
+    :dt             	=> 1e-3,
+    :random_seed    	=> "random",
+
+    # physical parameters
+    :total_time     	=> 1e4,
+    :initial_mass       => 0,
+
+    # topological parameters
+    :graph_type         => "lattice-2way",
+    :randomize_edges    => true,
+    :N_reactors     	=> 25,
+
+    # reaction rates
+    :inflow_mols        => 1e4,
+    :forward_rate   	=> 1e-3,
+    :diffusion_rate   	=> exp10.(LinRange(-2,2,100)),
+    :outflow_rate       => "equal-to-diffusion-rate",
+)
+\end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+  {\Large Calculation times \& skipped reactions}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.49\textwidth]{figures/results/D03/16-heatmaps-calculation-times} 	
+    \put(-10,85){\textbf{(A)}}
+  \end{overpic}\\
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D03/17-heatmap-skipped-constructive-rxn}
+	  \put(-10,85){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D03/18-heatmap-skipped-destructive-rxn}
+	  \put(-10,85){\textbf{(C)}}
+  \end{overpic}\\
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D03/19-heatmap-skipped-diffusion-rxn}
+	  \put(-10,85){\textbf{(D)}}
+  \end{overpic}
+  \begin{overpic}
+    [width=0.45\textwidth]{figures/results/D03/20-heatmap-skipped-outflow-rxn}
+	  \put(-10,85){\textbf{(E)}}
+  \end{overpic}
+  \caption{Diagnostic plots for D03.}
+  \label{fig:D02}
+\end{figure}
+
+\clearpage
+
+\section{Analysis}
+
+\subsection{A01: plotting populations of 2’s for a sweep over $k_d$ and $I$ (D01)}
+
+This analysis is based on \hyperref[subsec:D01]{dataset D01}, which is a sweep over $k_d$ and $I$. We’re plotting the populations of 2’s only (averaged over whole systems) over a range of diffusion parameters, for a few different values of the inflow.\\
+
+\begin{figure}[h!]
+  \centering
+  {\Large Populations of 2’s across $k_d$, multiple inflows}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.89\textwidth]{figures/results/A01/15-plot-frequency-of-2s-vs-kd-multiple-inflows} 	
+    \put(-0,85){\textbf{(A)}}
+  \end{overpic}
+  \caption{Populations of 2’s over a range of diffusion coefficients, for a few values of the inflow.}
+  \label{fig:MS25d}
+\end{figure}
+
+\clearpage
+
+\subsection{A02: "wrap-up" figures for D02}
+\label{subsec:A02}
+
+We’re focusing on $\log k_d = -2...2$ with a fixed inflow $\log I = 4$ in \hyperref[subsec:D02]{dataset D02}. The goal will be to calculate two identical datasets, one with a lattice topology and the other with randomized edges. We are repeating the same figures we’ve plotted previously in MS15: time series for limit cases, power law fits over inflow/outflow PDFs, exponent of the fits as a function of $k_d$, average integer value and total mass.
+
+One big difference here is that I have re-written the entire code for fitting the PDFs (panel E below): I have used the first 1000 integers, binned over 20 bins logarithmically spaced. Panel F shows the exponents of these fits for the inflow/outflow and the delta between them. 
+
+\begin{figure}[hbt]
+  \centering
+\begin{minipage}{0.5\linewidth}
+\centering
+{\LARGE Time series for limit cases}\vspace{1em}\\
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A02/21-single-timeseries_1}
+    \put(80,110){\huge }
+    \put(-5,95){\textbf{(A)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A02/21-single-timeseries_33}
+    \put(-5,95){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A02/21-single-timeseries_66}
+    \put(-5,95){\textbf{(C)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A02/21-single-timeseries_100}
+    \put(-5,95){\textbf{(D)}}
+  \end{overpic}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}	
+\centering
+{\Large Power law fits over inflow/outflow}\vspace{1em}\\
+  \begin{overpic}[width=0.99\textwidth]{figures/results/A02/24-multipanel-pdf-inflow-outflow}
+  	\put(-0,95){\textbf{(E)}}
+  \end{overpic}
+\end{minipage}
+
+  \vskip1em
+  {\LARGE Exponents of power law fits + avg. integer + mass}\vspace{1em}\\
+  \begin{overpic}[width=0.32\textwidth]{figures/results/A02/24b-plot-pdf-inflow-outflow-exponent}
+  	\put(-5,85){\textbf{(F)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/A02/22-plot-avg-integer}
+  	\put(-5,85){\textbf{(G)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/A02/23-plot-total-mass}
+  	\put(-5,85){\textbf{(H)}}
+  \end{overpic}
+  \caption{Key outputs: limit cases, power law fits and exponents, average integer and total mass.}
+  \label{fig:wrap-up-15-18}
+\end{figure}
+
+\clearpage
+
+\subsection{A03: "wrap-up" figures for D03}
+\label{subsec:A03}
+
+Same thing as A02, but using a topology with randomized edges. Examining the time series for limit cases we can see that the reactors appear to be randomized (there’s no general trend in species populations moving rightward/downward, like in the figures that used the lattice topology). Besides that, there isn’t \textit{much} difference---more fluctuations in average integers and mass but that’s all in terms of \textit{qualitative} differences. 
+
+However, if we examine closely panel F, we can see that even though the general trend is similar to that of the corresponding figure in A02, \textit{the curve ends up at higher values of $k$ on the right part of the figure}. In other words, randomizing the topology leads to higher exponents at high diffusion (where the topology matters more since the system is completely occupied), which means that the PDFs have a steeper curve, i.e. complex molecules are less present.
+
+\begin{figure}[hbt]
+  \centering
+\begin{minipage}{0.5\linewidth}
+\centering
+{\LARGE Time series for limit cases}\vspace{1em}\\
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A03/21-single-timeseries_1}
+    \put(80,110){\huge }
+    \put(-5,95){\textbf{(A)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A03/21-single-timeseries_33}
+    \put(-5,95){\textbf{(B)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A03/21-single-timeseries_66}
+    \put(-5,95){\textbf{(C)}}
+  \end{overpic}
+  \begin{overpic}[width=0.49\textwidth]{figures/results/A03/21-single-timeseries_100}
+    \put(-5,95){\textbf{(D)}}
+  \end{overpic}
+\end{minipage}
+\begin{minipage}{0.49\linewidth}	
+\centering
+{\Large Power law fits over inflow/outflow}\vspace{1em}\\
+  \begin{overpic}[width=0.99\textwidth]{figures/results/A03/24-multipanel-pdf-inflow-outflow}
+  	\put(-0,95){\textbf{(E)}}
+  \end{overpic}
+\end{minipage}
+
+  \vskip1em
+  {\LARGE Exponents of power law fits + avg. integer + mass}\vspace{1em}\\
+  \begin{overpic}[width=0.32\textwidth]{figures/results/A03/24b-plot-pdf-inflow-outflow-exponent}
+  	\put(-5,85){\textbf{(F)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/A03/22-plot-avg-integer}
+  	\put(-5,85){\textbf{(G)}}
+  \end{overpic}
+  \begin{overpic}[width=0.32\textwidth]{figures/results/A03/23-plot-total-mass}
+  	\put(-5,85){\textbf{(H)}}
+  \end{overpic}
+  \caption{Key outputs: limit cases, power law fits and exponents, average integer and total mass.}
+  \label{fig:wrap-up-15-18}
+\end{figure}
+
+\clearpage
+
+\subsection{A04: punchline! Comparing lattice vs randomized PDF exponents.}
+
+In this analysis we’re simply combining the outflow curves of panels F for A02 and A03 on the same figure. I have cropped the x-axis a bit and discarded points for $x < 10^0$ as well as adjusted the fit. I have also identified the regimes we’re in (heterogeneous/well-mixed). This clearly shows that at high diffusion, where the topology matters more, randomizing the topology leads to \textit{decreased} populations of complex molecules.
+
+\begin{figure}[h!]
+  \centering
+  {\Large Comparing lattice \& randomized topologies}\\
+  \vspace{1em}
+  \begin{overpic}
+  	[width=0.59\textwidth]{figures/results/A04/24c-plot-pdf-outflow-exponent-lattice-vs-randomized} 	
+    \put(-0,85){\textbf{(A)}}
+  \end{overpic}
+  \caption{Exponents of the power law fits for outflow reactors: lattice vs randomized topologies.}
   \label{fig:MS25d}
 \end{figure}
 
