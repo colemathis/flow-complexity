@@ -88,31 +88,6 @@ load_and_process_sim_data <- function() {
 
 #==============================================================================#
 
-# process_data <- function(ts) {
-
-# 	MAX_TIME   <- params$total_time[1]
-# 	N_REACTORS <- params$N_reactors[1]
-
-# 	ts <- ts %>%
-# 		filter(time == MAX_TIME) %>%
-# 		filter(integer == 2)
-
-# 	ts <- ts %>%
-# 		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
-# 		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
-
-# 	ts %>%
-# 		group_by(diffusion_rate, inflow_mols, integer) %>%
-# 		summarize(
-# 			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-# 			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
-# 			.groups = "drop"
-# 		)
-
-# }
-
-#==============================================================================#
-
 load_cached_data <- function() {
 
 	read_csv(CACHE_PATH, show_col_types = FALSE)
@@ -136,10 +111,6 @@ plot_figure <- function(ts) {
 		interpolate = TRUE
 	)
 
-	# Panel A: Absolute slope by chemostat
-	# ts <- ts %>%
-	# 	mutate(chemostat_label = factor(chemostat_id, levels = c(1, 25), labels = c("inflow", "outflow")))
-
 	p_abs <- ggplot(ts, aes(x = diffusion_rate, y = neg_slope, colour = topology)) +
 		# Shade only up to diffusion_rate = 10 so that the plot is pure white beyond
 		annotation_custom(gradient, xmin = -Inf, xmax = 1, ymin = -Inf, ymax = Inf) +
@@ -147,12 +118,9 @@ plot_figure <- function(ts) {
 		geom_smooth(linewidth = 0.5, method = "loess", se = FALSE, span = 1.5) +
 		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
 		coord_cartesian(ylim = c(0, 8)) +
-		# scale_colour_manual(values = c("lattice" = "blue", "randomized" = "red"),
-		# 									 labels = c("lattice" = "Lattice", "randomized" = "Randomized")) +
 		labs(x = TeX("$k_d$"),
 				 y = TeX("$k$"),
 				 colour = "Topology") +
-		# make ylim = 1...7
 		coord_cartesian(ylim = c(0, 7)) +
 		theme_bw() +
 		theme(
@@ -167,31 +135,6 @@ plot_figure <- function(ts) {
 		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = 0.2, 
 				 label = "Well-mixed", hjust = 1, vjust = 0, size = 2.5)
 	
-
-	# Panel B: Difference in absolute slope between chemostat 1 and 25
-	# diff_ts <- ts %>%
-	# 	filter(chemostat_id %in% c(1, 25)) %>%
-	# 	select(sim_number, diffusion_rate, chemostat_id, neg_slope) %>%
-	# 	pivot_wider(names_from = chemostat_id, values_from = neg_slope, names_prefix = "ch") %>%
-	# 	mutate(delta_abs = ch1 - ch25)
-
-	# p_diff <- ggplot(diff_ts, aes(x = diffusion_rate, y = delta_abs)) +
-	# 	geom_hline(yintercept = 0, linetype = "dashed") +
-	# 	geom_point(size = 1.3, alpha = 0.3, colour = "blue") +
-	# 	geom_smooth(method = "loess", se = FALSE, span = 0.5, colour = "blue") +
-	# 	scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
-	# 	coord_cartesian(ylim = c(0, 2.5)) +
-	# 	labs(x = TeX("$k_d$"),
-	# 			 y = TeX("$\\Delta k$")) +
-	# 	annotate("text",
-	# 					 x = min(diff_ts$diffusion_rate, na.rm = TRUE),
-	# 					 y = max(diff_ts$delta_abs, na.rm = TRUE),
-	# 					 label = TeX("$\\Delta k = k_{inflow} - k_{outflow}$"),
-	# 					 hjust = 0, vjust = 1, size = 4) +
-	# 	theme_bw()
-
-	#--- Combine panels -------------------------------------------------------#
-	# p <- p_abs / p_diff + plot_layout(heights = c(2, 1))
 	p <- p_abs
 
 	#--- Output ---------------------------------------------------------------#

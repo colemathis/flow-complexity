@@ -80,31 +80,6 @@ load_and_process_sim_data <- function() {
 
 #==============================================================================#
 
-# process_data <- function(ts) {
-
-# 	MAX_TIME   <- params$total_time[1]
-# 	N_REACTORS <- params$N_reactors[1]
-
-# 	ts <- ts %>%
-# 		filter(time == MAX_TIME) %>%
-# 		filter(integer == 2)
-
-# 	ts <- ts %>%
-# 		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
-# 		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
-
-# 	ts %>%
-# 		group_by(diffusion_rate, inflow_mols, integer) %>%
-# 		summarize(
-# 			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-# 			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
-# 			.groups = "drop"
-# 		)
-
-# }
-
-#==============================================================================#
-
 load_cached_data <- function() {
 
 	read_csv(CACHE_PATH, show_col_types = FALSE)

@@ -126,8 +126,6 @@ process_data <- function(ts) {
 			.groups       = "drop"
 		)
 
-	
-
 }
 
 #==============================================================================#
@@ -139,7 +137,7 @@ load_cached_data <- function() {
 }
 
 #==============================================================================#
-# Compute power-law fits for each chemostat in each sim
+
 compute_power_law_fits <- function(ts) {
 
 	# Keep only finite, positive values that can be log‑transformed
@@ -165,6 +163,8 @@ compute_power_law_fits <- function(ts) {
 
 	return(fits)
 }
+
+#==============================================================================#
 
 plot_figure <- function(ts, fits) {
 
