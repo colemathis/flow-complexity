@@ -100,7 +100,7 @@ plot_figure <- function(ts) {
 
 	#--- Prepare data ---------------------------------------------------------#
 	ts <- ts %>%
-		mutate(neg_slope = -slope) %>%
+		mutate(pos_slope = slope) %>%
 		filter(chemostat_id == 25) %>%
 		filter(diffusion_rate > 1)
 
@@ -111,35 +111,46 @@ plot_figure <- function(ts) {
 		interpolate = TRUE
 	)
 
-	p_abs <- ggplot(ts, aes(x = diffusion_rate, y = neg_slope, colour = topology)) +
+	p_abs <- ggplot(ts, aes(x = diffusion_rate, y = pos_slope, colour = topology)) +
 		# Shade only up to diffusion_rate = 10 so that the plot is pure white beyond
 		annotation_custom(gradient, xmin = -Inf, xmax = 1, ymin = -Inf, ymax = Inf) +
-		geom_point(alpha = 0.3, size = 1.3) +
-		geom_smooth(linewidth = 0.5, method = "loess", se = FALSE, span = 1.5) +
+		geom_point(alpha = 0.3, size = 0.5) +
+		# geom_smooth(linewidth = 0.5, method = "loess", se = FALSE, span = 1.5) +
+		geom_line(stat = "smooth", method = "loess", se = FALSE, span = 1.5, linewidth = 1.00, alpha = 0.75) +
 		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
-		coord_cartesian(ylim = c(0, 8)) +
-		labs(x = TeX("$k_d$"),
-				 y = TeX("$k$"),
+		# coord_cartesian(ylim = c(0, 6)) +
+		labs(x = TeX("Diffusion coefficient $k_d$"),
+				 y = TeX("Powel-Law Exponent $- \\alpha$"),
 				 colour = "Topology") +
-		coord_cartesian(ylim = c(0, 7)) +
-		theme_bw() +
+		# coord_cartesian(ylim = c(0.5, 5)) +
+		coord_cartesian(ylim = c(-5, -1.0)) +
+		scale_color_manual(
+			values = c(
+			"lattice" = "darkblue",
+			"randomized" = "darkred"
+			),
+			name = "Topology"
+		) +
+		theme_minimal(base_size = 11) +
 		theme(
-			legend.position = c(0.02, 0.98),
-			legend.justification = c("left", "top"),
+			legend.position = c(0.02, 0.02),
+			legend.justification = c("left", "bottom"),
 			legend.background = element_rect(fill = alpha("white", 0.9), colour = "black"),
 			legend.title = element_text(face = "bold")
 		) +
 		theme(panel.grid = element_blank()) +
-		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = 0.2, 
-				 label = "Heterogeneous", hjust = 0, vjust = 0, size = 2.5) +
-		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = 0.2, 
-				 label = "Well-mixed", hjust = 1, vjust = 0, size = 2.5)
+		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = -1.2, 
+				 label = "Heterogeneous", hjust = 0, vjust = 0, size = 3.5) +
+		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -1.2, 
+				 label = "Well-mixed", hjust = 1, vjust = 0, size = 3.5)
 	
 	p <- p_abs
 
+	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
+
 	#--- Output ---------------------------------------------------------------#
 	height <- 60   # mm
-	width  <- 70    # mm
+	width  <- 80    # mm
 
 	if (PRINT_FIGS) {
 		options(vsc.dev.args = list(width = width,

@@ -11,19 +11,18 @@ library(latex2exp)
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "18-heatmap-skipped-destructive-rxn"
+ID         				<<- "33-population-heatmap"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D01_inflow=1e3_1e4_kd=1e-1_1e3/data"
+DATA_DIR      			<<- "../../datasets/D04_kd=1e-6_1e1/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
 PARAMS_FILE 			<<- "params.csv"
 TIMESERIES_FILES		<<- "timeseries.csv"
-META_FILES				<<- "meta.csv"
-CACHE_FILE       		<<- paste0(ID, ".csv")
+CACHE_FILE       		<<- paste0(ID)
 FIGS_FILE        		<<- paste0(ID, ".pdf")
 
 CACHE_PATH   			<<- file.path(CACHE_DIR, CACHE_FILE)
@@ -66,20 +65,20 @@ load_params <- function() {
 
 #==============================================================================#
 
-load_and_process_sim_data <- function() {
+load_and_process_time_series <- function() {
 
 	timeseries_files <- list.files(DATA_DIR, pattern = TIMESERIES_FILES, recursive = TRUE, full.names = TRUE)
-	meta_files       <- list.files(DATA_DIR, pattern = META_FILES, recursive = TRUE, full.names = TRUE)
 
-	ts_all <- map_dfr(meta_files, function(file) {
+	ts_all <- map_dfr(timeseries_files, function(file) {
 		if (file.info(file)$size == 0) return(NULL)
 		ts <- read_csv(file, show_col_types = FALSE, progress = FALSE)
-		# process_data(ts)
+		process_data(ts)
 	}, .progress = TRUE)
 
 	# Save the processed data to a cache file
 	dir.create(dirname(CACHE_PATH), recursive = TRUE, showWarnings = FALSE)
-	write_csv(ts_all, CACHE_PATH)
+	# write_csv(ts_all, CACHE_PATH)
+	write_rds(ts_all, CACHE_PATH)
 
 	return(ts_all)
 
@@ -87,34 +86,42 @@ load_and_process_sim_data <- function() {
 
 #==============================================================================#
 
-# process_data <- function(ts) {
+process_data <- function(ts) {
 
-# 	MAX_TIME   <- params$total_time[1]
-# 	N_REACTORS <- params$N_reactors[1]
+	MAX_TIME   <- params$total_time[1]
+	N_REACTORS <- params$N_reactors[1]
 
-# 	ts <- ts %>%
-# 		filter(time == MAX_TIME) %>%
-# 		filter(integer == 2)
+	ts <- ts %>%
+		filter(time == MAX_TIME, integer > 1)
 
-# 	ts <- ts %>%
-# 		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
-# 		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
+	ts <- ts %>%
+		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
+		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
 
-# 	ts %>%
-# 		group_by(diffusion_rate, inflow_mols, integer) %>%
-# 		summarize(
-# 			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-# 			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
-# 			.groups = "drop"
-# 		)
+	# Bin integer and aggregate frequency for heatmap
+	bin_edges <- unique(round(exp(seq(log(1), log(1e7), length.out = 51))))
+	ts <- ts %>%
+		mutate(integer_bin = cut(
+		integer,
+		breaks = bin_edges,
+		include.lowest = TRUE,
+		right = TRUE
+		)) %>%
+		group_by(diffusion_rate, integer_bin) %>%
+		summarise(frequency = sum(frequency), .groups = "drop")
 
-# }
+	# Complete the dataset: for non-existent frequencies assign 0
+	ts <- ts %>%
+		complete(diffusion_rate, integer_bin, fill = list(frequency = 0))
+
+}
 
 #==============================================================================#
 
 load_cached_data <- function() {
 
-	read_csv(CACHE_PATH, show_col_types = FALSE)
+	# read_csv(CACHE_PATH, show_col_types = FALSE)
+	read_rds(CACHE_PATH)
 
 }
 
@@ -122,66 +129,54 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
-	# Calculate the size of the square heatmap
-	n <- nrow(ts)
-	side <- ceiling(sqrt(n))
+  p <- ggplot(ts, aes(x = diffusion_rate, y = integer_bin, fill = frequency)) +
+    geom_tile() +
+    scale_x_log10(
+		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
+	) +
+    scale_fill_viridis_c(name = "Freq.", na.value = "grey") +
+    labs(
+      x = TeX("Diffusion coefficient $k_d$"),
+      y = "Integer",
+    ) +
+    scale_y_discrete(
+      breaks = levels(ts$integer_bin)[seq(1, length(levels(ts$integer_bin)), length.out = 8)],
+      labels = c(expression(10^0), expression(10^1), expression(10^2), expression(10^3), expression(10^4), expression(10^5), expression(10^6), expression(10^7))
+    ) +
+	coord_cartesian(xlim = c(1e-4, 1e1)) +
+    theme_minimal(base_size = 11) +
+    theme(
+      legend.position = c(0.95, 0.98),
+      legend.justification = c("right", "top"),
+      legend.background = element_rect(fill = alpha("white", 0.95), color = NA),
+      legend.key.size = unit(0.5, "lines"),
+      legend.text = element_text(size = 10),
+      legend.title = element_text(size = 11),
+	panel.grid = element_blank()
+    )
 
-	# Pad the data if necessary to make a perfect square
-	if (n < side^2) {
-		pad <- side^2 - n
-		ts <- bind_rows(ts, tibble(
-			x = rep(NA, pad),
-			y = rep(NA, pad),
-			total_time = rep(NA, pad),
-			sim_number = rep(NA, pad)
-		))
-	}
+#   if (OUTFLOW_ONLY) {
+#     p_main <- p_main +
+#       labs(title = paste(TITLE, "(outflow only)"))
+#   } else {
+#     p_main <- p_main +
+#       labs(title = paste(TITLE, "(whole system)"))
+#   }
 
-	# Assign x and y positions for square layout: left-to-right, then top-to-bottom,
-	# with (1,1) in the upper left corner (y decreases downward)
-	ts$x <- rep(1:side, times = side)[1:nrow(ts)]
-	ts$y <- rep(side:1, each = side)[1:nrow(ts)]
+  # add a white line with slope ~ -1
+#   p <- p +
+#     geom_segment(
+#       aes(x = 1e-6, xend = 1e1, y = levels(ts$integer_bin)[length(levels(ts$integer_bin))], yend = levels(ts$integer_bin)[1]),
+#       color = "white",
+#       inherit.aes = FALSE
+#   )
 
-	p <- ggplot(ts, aes(x = x, y = y, fill = 100*skipped_destructive_rxn/total_destructive_rxn)) +
-		geom_tile(color = "white", na.rm = TRUE) +
-		# geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
-		scale_fill_viridis_c(
-			name = "% skipped",
-			option = "C",
-			limits = c(0, 100),                       # force 0 → 1 range
-			na.value = "grey90",
-			guide = guide_colorbar(
-				barwidth = unit(3, "mm"),
-				barheight = unit(20, "mm"),
-				title.position = "top",
-				title.hjust = 0.5
-			)
-		) +
-		labs(
-			title = "Destructive",
-			# caption = ID
-		) +
-		theme_minimal(base_size = 8) +
-		theme(
-			panel.grid = element_blank(),
-			plot.title = element_text(size = 10, hjust = 0.5),
-			plot.caption = element_text(size = 7, color = "grey50"),
-			legend.position = "right",
-			legend.title = element_text(size = 7),
-			legend.text = element_text(size = 6),
-			legend.key.height = unit(10, "mm"),
-			legend.key.width = unit(2, "mm"),
-			axis.text = element_blank(),
-			axis.ticks = element_blank(),
-			axis.title = element_blank()
-		) +
-		coord_fixed()
 
-	height <- 80
-	width  <- 80
+	height	<- 50
+	width	<- 80
 
 	if (PRINT_FIGS) {
-		options(vsc.dev.args = list(width = width, height = height, res = 300, units = "mm"))
+		options(vsc.dev.args = list(width = width, height = height, res=300, units = "mm"))
 		print(p)
 	}
 
@@ -207,7 +202,7 @@ params <- load_params()
 if (file.exists(CACHE_PATH) && USE_CACHE) {
 	data   <- load_cached_data()
 } else {
-	data   <- load_and_process_sim_data()
+	data   <- load_and_process_time_series()
 }
 
 # Plot the figure

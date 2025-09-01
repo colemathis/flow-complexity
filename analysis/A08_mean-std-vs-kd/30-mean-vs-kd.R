@@ -5,24 +5,24 @@
 options(conflicts.policy = list(warn.conflicts = FALSE))
 
 library(tidyverse)   # includes dplyr, ggplot2, etc.
+library(viridis)
 library(latex2exp)
 
 ################################################################################
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "18-heatmap-skipped-destructive-rxn"
+ID         				<<- "30-mean-vs-kd"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
-SAVE_FIGS 			 	<<- TRUE
+SAVE_FIGS 			 	<<- FALSE
 
-DATA_DIR      			<<- "../../datasets/D01_inflow=1e3_1e4_kd=1e-1_1e3/data"
+DATA_DIR      			<<- "../../datasets/D04_kd=1e-6_1e1/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
 PARAMS_FILE 			<<- "params.csv"
 TIMESERIES_FILES		<<- "timeseries.csv"
-META_FILES				<<- "meta.csv"
 CACHE_FILE       		<<- paste0(ID, ".csv")
 FIGS_FILE        		<<- paste0(ID, ".pdf")
 
@@ -66,15 +66,14 @@ load_params <- function() {
 
 #==============================================================================#
 
-load_and_process_sim_data <- function() {
+load_and_process_time_series <- function() {
 
 	timeseries_files <- list.files(DATA_DIR, pattern = TIMESERIES_FILES, recursive = TRUE, full.names = TRUE)
-	meta_files       <- list.files(DATA_DIR, pattern = META_FILES, recursive = TRUE, full.names = TRUE)
 
-	ts_all <- map_dfr(meta_files, function(file) {
+	ts_all <- map_dfr(timeseries_files, function(file) {
 		if (file.info(file)$size == 0) return(NULL)
 		ts <- read_csv(file, show_col_types = FALSE, progress = FALSE)
-		# process_data(ts)
+		process_data(ts)
 	}, .progress = TRUE)
 
 	# Save the processed data to a cache file
@@ -87,28 +86,28 @@ load_and_process_sim_data <- function() {
 
 #==============================================================================#
 
-# process_data <- function(ts) {
+process_data <- function(ts) {
 
-# 	MAX_TIME   <- params$total_time[1]
-# 	N_REACTORS <- params$N_reactors[1]
+	MAX_TIME   <- params$total_time[1]
+	N_REACTORS <- params$N_reactors[1]
 
-# 	ts <- ts %>%
-# 		filter(time == MAX_TIME) %>%
-# 		filter(integer == 2)
+	ts <- ts %>%
+		filter(time == MAX_TIME) %>%
+		filter(integer <= 10)
 
-# 	ts <- ts %>%
-# 		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
-# 		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
+	ts <- ts %>%
+		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
+		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
 
-# 	ts %>%
-# 		group_by(diffusion_rate, inflow_mols, integer) %>%
-# 		summarize(
-# 			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-# 			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
-# 			.groups = "drop"
-# 		)
+	ts %>%
+		group_by(diffusion_rate, integer) %>%
+		summarize(
+			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
+			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
+			.groups = "drop"
+		)
 
-# }
+}
 
 #==============================================================================#
 
@@ -122,66 +121,67 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
-	# Calculate the size of the square heatmap
-	n <- nrow(ts)
-	side <- ceiling(sqrt(n))
+	ts <- ts %>%
+		filter(integer %in% c(1,2,3,5,10))
 
-	# Pad the data if necessary to make a perfect square
-	if (n < side^2) {
-		pad <- side^2 - n
-		ts <- bind_rows(ts, tibble(
-			x = rep(NA, pad),
-			y = rep(NA, pad),
-			total_time = rep(NA, pad),
-			sim_number = rep(NA, pad)
-		))
-	}
+	p <- ggplot(ts %>% filter(diffusion_rate > 1e-4),
+				aes(
+					x = diffusion_rate, 
+					y = mean_frequency, 
+					color = factor(integer)
+				))
 
-	# Assign x and y positions for square layout: left-to-right, then top-to-bottom,
-	# with (1,1) in the upper left corner (y decreases downward)
-	ts$x <- rep(1:side, times = side)[1:nrow(ts)]
-	ts$y <- rep(side:1, each = side)[1:nrow(ts)]
+	p <- p + geom_point(size = 0.5, alpha = 0.25)
+	p <- p + geom_line(stat="smooth", method = "loess", span = 0.35, se = FALSE, size = 1, alpha = 0.75)
 
-	p <- ggplot(ts, aes(x = x, y = y, fill = 100*skipped_destructive_rxn/total_destructive_rxn)) +
-		geom_tile(color = "white", na.rm = TRUE) +
-		# geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
-		scale_fill_viridis_c(
-			name = "% skipped",
-			option = "C",
-			limits = c(0, 100),                       # force 0 → 1 range
-			na.value = "grey90",
-			guide = guide_colorbar(
-				barwidth = unit(3, "mm"),
-				barheight = unit(20, "mm"),
-				title.position = "top",
-				title.hjust = 0.5
-			)
-		) +
-		labs(
-			title = "Destructive",
-			# caption = ID
-		) +
-		theme_minimal(base_size = 8) +
-		theme(
-			panel.grid = element_blank(),
-			plot.title = element_text(size = 10, hjust = 0.5),
-			plot.caption = element_text(size = 7, color = "grey50"),
-			legend.position = "right",
-			legend.title = element_text(size = 7),
-			legend.text = element_text(size = 6),
-			legend.key.height = unit(10, "mm"),
-			legend.key.width = unit(2, "mm"),
-			axis.text = element_blank(),
-			axis.ticks = element_blank(),
-			axis.title = element_blank()
-		) +
-		coord_fixed()
+	p <- p + coord_cartesian(xlim = c(1e-4, 1e1))
 
-	height <- 80
-	width  <- 80
+	p <- p + scale_x_log10(
+		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
+	)
+	# p <- p + scale_color_manual(values = c("darkblue", "blue", "yellow", "red"))
+
+	p <- p + scale_color_viridis_d(
+	option = "plasma",   # "magma" or "plasma" give a dark-to-bright progression
+	begin = 0.1,        # start slightly lighter than pure black
+	end = 0.7,          # stop before pure white
+	direction = -1,      # 1 = dark→light
+	name = "Integer"
+	)
+
+	p <- p + labs(
+		x = TeX("Diffusion coefficient $k_d$"),
+		y = "Average frequency",
+		color = TeX("Integer"),
+		# title = "Populations of 2’s, sweep over diffusion with multiple inflows",
+		# caption = ID
+	)
+
+	p <- p + theme_minimal(base_size = 11)
+
+	p <- p + theme(
+		legend.justification=c(0,1), 
+		legend.position=c(0.05,0.98),
+		legend.background = element_rect(fill = "grey95", color = NA), # Optional: Customize legend background
+		legend.key.size = unit(0.15, "cm"),    # Decrease key size
+		legend.text = element_text(size = 6), # Decrease text size
+		legend.title = element_text(size = 7), # Decrease title size
+	)
+
+	# show only one decimal in the legend labels
+	# p <- p + scale_color_discrete(labels = function(x) {
+	# 	x <- as.numeric(x)
+	# 	x <- round(x, 1)
+	# 	return(x)
+	# })
+
+	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
+
+	height	<- 60
+	width	<- 80
 
 	if (PRINT_FIGS) {
-		options(vsc.dev.args = list(width = width, height = height, res = 300, units = "mm"))
+		options(vsc.dev.args = list(width = width, height = height, res=300, units = "mm"))
 		print(p)
 	}
 
@@ -207,7 +207,7 @@ params <- load_params()
 if (file.exists(CACHE_PATH) && USE_CACHE) {
 	data   <- load_cached_data()
 } else {
-	data   <- load_and_process_sim_data()
+	data   <- load_and_process_time_series()
 }
 
 # Plot the figure

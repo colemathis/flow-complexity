@@ -11,12 +11,12 @@ library(latex2exp)
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "15-plot-frequency-of-2s-vs-kd-multiple-inflows"
+ID         				<<- "35-detection-threshold-int"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D01_inflow=1e3_1e4_kd=1e-1_1e3/data"
+DATA_DIR      			<<- "../../datasets/D04_kd=1e-6_1e1/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
@@ -88,24 +88,53 @@ load_and_process_time_series <- function() {
 process_data <- function(ts) {
 
 	MAX_TIME   <- params$total_time[1]
-	N_REACTORS <- params$N_reactors[1]
 
 	ts <- ts %>%
-		filter(time == MAX_TIME) %>%
-		filter(integer == 2)
+		filter(time == MAX_TIME)
 
 	ts <- ts %>%
 		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
 		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
 
-	ts %>%
-		group_by(diffusion_rate, inflow_mols, integer) %>%
-		summarize(
-			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
-			.groups = "drop"
-		)
+    # ts <- ts %>%
+    #     group_by(diffusion_rate) %>%
+    #     summarize(
+    #         total_molecules = sum(frequency),
+    #         total_mass = sum(integer * frequency),
+    #         .groups = "drop"
+    #     )
 
+}
+
+calculate_detection_threshold <- function(ts, threshold) {
+    # Compute total number of molecules in each chemostat
+    ts_totals <- ts %>%
+        group_by(diffusion_rate, chemostat_id) %>%
+        summarise(total_molecules = sum(frequency), .groups = "drop")
+
+    # Attach totals and compute concentration of each integer
+    ts_conc <- ts %>%
+        left_join(ts_totals,
+                  by = c("diffusion_rate", "chemostat_id")) %>%
+        mutate(concentration = frequency / total_molecules)
+
+    # For each chemostat, find the highest integer whose concentration
+    # exceeds the supplied threshold
+    detectable <- ts_conc %>%
+        filter(concentration > threshold) %>%
+        group_by(diffusion_rate, chemostat_id) %>%
+        summarise(highest_integer = max(integer), .groups = "drop")
+
+    # For each diffusion rate, choose the highest of those integers
+    detection_thresholds <- detectable %>%
+        group_by(diffusion_rate) %>%
+        summarise(max_detected_integer = max(highest_integer, na.rm = TRUE),
+                  .groups = "drop") %>%
+        mutate(max_detected_integer = ifelse(
+            is.infinite(max_detected_integer), NA_integer_, max_detected_integer))
+
+    # Return a dataframe with one row per diffusion_rate
+    detection_thresholds
 }
 
 #==============================================================================#
@@ -118,63 +147,36 @@ load_cached_data <- function() {
 
 #==============================================================================#
 
-plot_figure <- function(ts) {
+# plot_figure <- function(ts) {
+plot_figure <- function(detection_thresholds) {
 
-	p <- ggplot(ts,
-				aes(
-					x = diffusion_rate, 
-					y = mean_frequency, 
-					color = factor(log10(inflow_mols))
-				))
-
-	p <- p + geom_point(size = 0.5, alpha = 0.25)
-	# p <- p + geom_smooth(method = "loess", span = 0.5, se = FALSE, size = 0.5)
-	p <- p + geom_line(stat = "smooth", method = "loess", span = 0.5, se = FALSE, size = 0.75, alpha = 0.75)
-
-	p <- p + scale_x_log10(
-		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
-	)
-	# p <- p + scale_color_manual(values = c("darkblue", "blue", "yellow", "red"))
-
-	p <- p + labs(
-		x = TeX("Diffusion coefficient $k_d$"),
-		y = "Frequency of Dimers",
-		color = TeX("$\\log(I)$")
-		# title = "Populations of 2’s, sweep over diffusion with multiple inflows",
-		# caption = ID
-	)
-
-	p <- p + theme_minimal(base_size = 11) # Set base font size for the theme
-
-	p <- p + theme(
-		legend.justification=c(1,1), 
-		legend.position=c(0.95,0.95),
-		legend.background = element_rect(fill = "white", color = "black"), # Optional: Customize legend background
-		legend.key.size = unit(0.15, "cm"),    # Decrease key size
-		# legend.text = element_text(size = 6), # Decrease text size
-		# legend.title = element_text(size = 6), # Decrease title size
-		plot.title = element_text(size = 6),
-		plot.caption = element_text(size = 6, color = "grey50")
-	)
+  p <- ggplot(detection_thresholds,
+              aes(
+                  x = diffusion_rate, 
+                  y = max_detected_integer, 
+                  color = factor(log10(as.numeric(threshold)))
+              )) +
+    geom_point(size = 0.5, alpha = 0.25) +
+	geom_line(stat = "smooth", method = "loess", span = 0.25, se = FALSE, size = 1.00, alpha = 0.75) +
+    scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
+    scale_y_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
+	coord_cartesian(xlim = c(1e-4, 1e1)) +
+    labs(
+      x = TeX("Diffusion coefficient $k_d$"),
+      y = "Highest integer",
+      color = TeX("$log[X]$")
+    ) +
+	theme_minimal(base_size = 11) +
+  theme(
+    legend.justification=c(1,1), 
+    legend.position=c(0.95,0.95),
+    legend.background = element_rect(fill = "white", color = "black"), # Optional: Customize legend background
+    legend.key.size = unit(0.35, "cm"),    # Decrease key size
+    # legend.text = element_text(size = 8), # Decrease text size
+    # legend.title = element_text(size = 8) # Decrease title size
+  )
 
 	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
-
-	library(scales)
-
-	p <- p + scale_color_viridis_d(
-	option = "viridis",   # "magma" or "plasma" give a dark-to-bright progression
-	begin = 0.1,        # start slightly lighter than pure black
-	end = 0.7,          # stop before pure white
-	direction = 1,      # 1 = dark→light
-	labels = function(x) sprintf("%.1f", as.numeric(x))
-	)
-
-	# # show only one decimal in the legend labels
-	# p <- p + scale_color_discrete(labels = function(x) {
-	# 	x <- as.numeric(x)
-	# 	x <- round(x, 1)
-	# 	return(x)
-	# })
 
 	height	<- 60
 	width	<- 80
@@ -207,5 +209,18 @@ if (file.exists(CACHE_PATH) && USE_CACHE) {
 	data   <- load_and_process_time_series()
 }
 
+data <- data %>% filter(diffusion_rate > 1e-4)
+
+detection_thresholds <- list(
+    # `1e-7` = calculate_detection_threshold(ts, 1e-7),
+    # `1e-6` = calculate_detection_threshold(ts, 1e-6),
+    # `1e-5` = calculate_detection_threshold(ts, 1e-5),
+    `1e-4` = calculate_detection_threshold(data, 1e-4),
+    `1e-3` = calculate_detection_threshold(data, 1e-3),
+    `1e-2` = calculate_detection_threshold(data, 1e-2),
+    `1e-1` = calculate_detection_threshold(data, 1e-1)
+) %>% 
+  bind_rows(.id = "threshold")
+
 # Plot the figure
-p <- plot_figure(data)
+p <- plot_figure(detection_thresholds)
