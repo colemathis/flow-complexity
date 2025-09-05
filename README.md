@@ -58,7 +58,7 @@ Saving and File management is handled via DrWatson, make sure to run `@quickacti
 
 # test
 
-```
+```shell
 [1] alexandre@MacBook-Pro  3 - research/quasi-metabolism/quasi-metabolisms.jl/datasets/00_test   main ± 
 $ quasi launch 1
 Loading parameters for simulation 1 from file ./data/params.csv
