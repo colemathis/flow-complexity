@@ -6,27 +6,29 @@ options(conflicts.policy = list(warn.conflicts = FALSE))
 
 library(tidyverse)   # includes dplyr, ggplot2, etc.
 library(latex2exp)
+library(ggdark)
 
 ################################################################################
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "15-plot-frequency-of-2s-vs-kd-multiple-inflows"
+ID         				<<- "33b-population-heatmap"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
 
-DATA_DIR      			<<- "../../datasets/D01_inflow=1e3_1e4_kd=1e-1_1e3/data"
+DATA_DIR      			<<- "../../datasets/D04_kd=1e-6_1e1/data"
 CACHE_DIR     			<<- file.path("cache", ID)
 FIGS_DIR      			<<- "figs"
 
 PARAMS_FILE 			<<- "params.csv"
 TIMESERIES_FILES		<<- "timeseries.csv"
-CACHE_FILE       		<<- paste0(ID, ".csv")
+CACHE_FILE       		<<- paste0(ID)
 FIGS_FILE        		<<- paste0(ID, ".pdf")
 
 CACHE_PATH   			<<- file.path(CACHE_DIR, CACHE_FILE)
 PARAMS_PATH  			<<- file.path(DATA_DIR, PARAMS_FILE)
+ASSEMBLY_PATH           <<- "../../datasets/assembly-1e5.csv"
 
 ################################################################################
 # FUNCTIONS
@@ -77,7 +79,8 @@ load_and_process_time_series <- function() {
 
 	# Save the processed data to a cache file
 	dir.create(dirname(CACHE_PATH), recursive = TRUE, showWarnings = FALSE)
-	write_csv(ts_all, CACHE_PATH)
+	# write_csv(ts_all, CACHE_PATH)
+	write_rds(ts_all, CACHE_PATH)
 
 	return(ts_all)
 
@@ -91,28 +94,51 @@ process_data <- function(ts) {
 	N_REACTORS <- params$N_reactors[1]
 
 	ts <- ts %>%
-		filter(time == MAX_TIME) %>%
-		filter(integer == 2)
+		filter(time == MAX_TIME, integer > 1)
 
 	ts <- ts %>%
 		left_join(params %>% select(sim_number, diffusion_rate), by = "sim_number") %>%
 		left_join(params %>% select(sim_number, inflow_mols), by = "sim_number")
 
-	ts %>%
-		group_by(diffusion_rate, inflow_mols, integer) %>%
-		summarize(
-			mean_frequency = sum(frequency, na.rm = TRUE) / N_REACTORS,
-			sd_frequency = sqrt(sum((frequency - mean_frequency)^2) / (N_REACTORS - 1)),
-			.groups = "drop"
-		)
+    ai <- read.csv(ASSEMBLY_PATH)
+	missing_value <- max(ai$assemblyindex, na.rm = TRUE) + 1
+    ts <- ts %>%
+        left_join(ai, by = "integer") %>%
+        mutate(assemblyindex = ifelse(is.na(assemblyindex), missing_value, assemblyindex))
+
+	ts <- ts %>%
+		group_by(diffusion_rate, assemblyindex) %>%
+		summarise(frequency = sum(frequency), .groups = "drop")
+
+	# Bin integer and aggregate frequency for heatmap
+	# bin_edges <- unique(round(exp(seq(log(1), log(1e7), length.out = 51))))
+	# ts <- ts %>%
+	# 	mutate(integer_bin = cut(
+	# 	integer,
+	# 	breaks = bin_edges,
+	# 	include.lowest = TRUE,
+	# 	right = TRUE
+	# 	)) %>%
+	# 	group_by(diffusion_rate, integer_bin) %>%
+	# 	summarise(frequency = sum(frequency), .groups = "drop")
 
 }
+
+# join_assembly_index <- function(ts,
+#                                 assembly_csv = ASSEMBLY_PATH,
+#                                 missing_value = 17) {
+#     ai <- read.csv(assembly_csv)
+#     ts %>%
+#         left_join(ai, by = "integer") %>%
+#         mutate(assemblyindex = ifelse(is.na(assemblyindex), missing_value, assemblyindex))
+# }
 
 #==============================================================================#
 
 load_cached_data <- function() {
 
-	read_csv(CACHE_PATH, show_col_types = FALSE)
+	# read_csv(CACHE_PATH, show_col_types = FALSE)
+	read_rds(CACHE_PATH)
 
 }
 
@@ -120,63 +146,58 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
-	p <- ggplot(ts,
-				aes(
-					x = diffusion_rate, 
-					y = mean_frequency, 
-					color = factor(log10(inflow_mols))
-				))
+	# # Complete the dataset: for non-existent frequencies assign 0
+	ts <- ts %>%
+		complete(diffusion_rate, assemblyindex, fill = list(frequency = 0))
 
-	p <- p + geom_point(size = 0.5, alpha = 0.25)
-	# p <- p + geom_smooth(method = "loess", span = 0.5, se = FALSE, size = 0.5)
-	p <- p + geom_line(stat = "smooth", method = "loess", span = 0.5, se = FALSE, size = 0.75, alpha = 0.75)
+  p <- ggplot(ts, aes(x = diffusion_rate, y = assemblyindex, fill = frequency)) +
+    geom_tile() +
+    scale_x_log10(
+		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
+	) +
+    scale_fill_viridis_c(name = "Freq.", na.value = "grey") +
+    labs(
+      x = TeX("Diffusion coefficient $k_d$"),
+      y = "Assembly index",
+    ) +
+    # scale_y_discrete(
+    #   breaks = levels(ts$integer_bin)[seq(1, length(levels(ts$integer_bin)), length.out = 8)],
+    #   labels = c(expression(10^0), expression(10^1), expression(10^2), expression(10^3), expression(10^4), expression(10^5), expression(10^6), expression(10^7))
+    # ) +
+	coord_cartesian(xlim = c(1e-4, 1e1)) +
+    # theme_minimal(base_size = 11) +
+    dark_theme_minimal(base_size = 11) + # for BEACON
+	theme(plot.background = element_rect(colour = NA)) + # remove the white border
+    theme(
+      legend.position = c(0.95, 0.92),
+      legend.justification = c("right", "top"),
+    #   legend.background = element_rect(fill = alpha("white", 0.95), color = NA),
+      legend.background = element_rect(fill = alpha("black", 0.95), color = NA),
+      legend.key.size = unit(0.5, "lines"),
+      legend.text = element_text(size = 10),
+      legend.title = element_text(size = 11),
+	panel.grid = element_blank()
+    )
 
-	p <- p + scale_x_log10(
-		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
-	)
-	# p <- p + scale_color_manual(values = c("darkblue", "blue", "yellow", "red"))
+#   if (OUTFLOW_ONLY) {
+#     p_main <- p_main +
+#       labs(title = paste(TITLE, "(outflow only)"))
+#   } else {
+#     p_main <- p_main +
+#       labs(title = paste(TITLE, "(whole system)"))
+#   }
 
-	p <- p + labs(
-		x = TeX("Diffusion coefficient $k_d$"),
-		y = "Frequency of Dimers",
-		color = TeX("$\\log(I)$")
-		# title = "Populations of 2’s, sweep over diffusion with multiple inflows",
-		# caption = ID
-	)
+  # add a white line with slope ~ -1
+#   p <- p +
+#     geom_segment(
+#       aes(x = 1e-6, xend = 1e1, y = levels(ts$integer_bin)[length(levels(ts$integer_bin))], yend = levels(ts$integer_bin)[1]),
+#       color = "white",
+#       inherit.aes = FALSE
+#   )
 
-	p <- p + theme_minimal(base_size = 11) # Set base font size for the theme
 
-	p <- p + theme(
-		legend.justification=c(1,1), 
-		legend.position=c(0.95,0.95),
-		legend.background = element_rect(fill = "white", color = "black"), # Optional: Customize legend background
-		legend.key.size = unit(0.15, "cm"),    # Decrease key size
-		# legend.text = element_text(size = 6), # Decrease text size
-		# legend.title = element_text(size = 6), # Decrease title size
-		plot.title = element_text(size = 6),
-		plot.caption = element_text(size = 6, color = "grey50")
-	)
-
-	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
-
-	library(scales)
-
-	p <- p + scale_color_viridis_d(
-	option = "viridis",   # "magma" or "plasma" give a dark-to-bright progression
-	begin = 0.1,        # start slightly lighter than pure black
-	end = 0.7,          # stop before pure white
-	direction = 1,      # 1 = dark→light
-	labels = function(x) sprintf("%.1f", as.numeric(x))
-	)
-
-	# # show only one decimal in the legend labels
-	# p <- p + scale_color_discrete(labels = function(x) {
-	# 	x <- as.numeric(x)
-	# 	x <- round(x, 1)
-	# 	return(x)
-	# })
-
-	height	<- 60
+	# height	<- 50
+	height	<- 60 # for BEACON
 	width	<- 80
 
 	if (PRINT_FIGS) {
@@ -188,6 +209,8 @@ plot_figure <- function(ts) {
 		out_file <- file.path(FIGS_DIR, FIGS_FILE)
 		ggsave(filename = out_file, plot = p, width = width, height = height, units = "mm", create.dir = TRUE)
 	}
+
+	return(p)
 
 }
 
@@ -207,5 +230,8 @@ if (file.exists(CACHE_PATH) && USE_CACHE) {
 	data   <- load_and_process_time_series()
 }
 
+# data <- join_assembly_index(data)
+
 # Plot the figure
 p <- plot_figure(data)
+saveRDS(p, file = file.path(CACHE_DIR, paste0(ID, ".rds")))

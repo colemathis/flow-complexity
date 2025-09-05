@@ -144,10 +144,11 @@ plot_figure <- function(ts) {
 
 	p <- ggplot(ts, aes(x = x, y = y, fill = 100*skipped_constructive_rxn/total_constructive_rxn)) +
 		geom_tile(color = "white", na.rm = TRUE) +
-		geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
+		# geom_text(aes(label = sim_number), size = 2, na.rm = TRUE) +
 		scale_fill_viridis_c(
 			name = "% skipped",
 			option = "C",
+      		limits = c(0, 100),                       # force 0 → 1 range
 			na.value = "grey90",
 			guide = guide_colorbar(
 				barwidth = unit(3, "mm"),
@@ -157,13 +158,13 @@ plot_figure <- function(ts) {
 			)
 		) +
 		labs(
-			title = "Skipped Constructive Reactions",
-			caption = ID
+			title = "Constructive",
+			# caption = ID
 		) +
 		theme_minimal(base_size = 8) +
 		theme(
 			panel.grid = element_blank(),
-			plot.title = element_text(size = 10),
+			plot.title = element_text(size = 10, hjust = 0.5),
 			plot.caption = element_text(size = 7, color = "grey50"),
 			legend.position = "right",
 			legend.title = element_text(size = 7),
@@ -189,6 +190,8 @@ plot_figure <- function(ts) {
 		ggsave(filename = out_file, plot = p, width = width, height = height, units = "mm", create.dir = TRUE)
 	}
 
+	return(p)
+
 }
 
 ################################################################################
@@ -209,3 +212,4 @@ if (file.exists(CACHE_PATH) && USE_CACHE) {
 
 # Plot the figure
 p <- plot_figure(data)
+saveRDS(p, file = file.path(CACHE_DIR, paste0(ID, ".rds")))
