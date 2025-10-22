@@ -6,4 +6,5 @@ julia --project -e '
     projfile = Pkg.project().path
     projdir = dirname(projfile)
     include(joinpath(projdir, "src", "FlowComplexity.jl"))
+    FlowComplexity.parse_arguments()
 ' -- "$@"

@@ -9,6 +9,9 @@ import Distributions
 #==============================================================================#
 
 function create_slurm_file()
+    """
+    Create the run.slurm file containing the SLURM job script.
+    """
 
     if isfile("run.slurm")
         println("run.slurm already exists. Aborting to avoid overwrite.")

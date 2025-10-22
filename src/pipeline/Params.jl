@@ -3,7 +3,7 @@
 #==============================================================================#
 
 import CSV
-import Arrow
+# import Arrow
 import DataFrames
 import Pkg
 
@@ -12,12 +12,17 @@ import Pkg
 #==============================================================================#
 
 function create_params_jl_file()
+    """
+    Create the params.jl file containing the parameter template.
+    """
 
+    # Check if params.jl already exists
     if isfile("params.jl")
         println("params.jl already exists. Aborting to avoid overwrite.")
         exit(1)
     end
 
+    # write parameter template to file
     params_text = """
     nrepeat = 1
 
@@ -56,8 +61,12 @@ end
 #==============================================================================#
 
 function create_params_csv_file()
+    """
+    Create the params.csv file containing a list of simulations.
+    """
 
-    include(joinpath(pwd(), "params.jl")) # creates variables params_template, nrepeat
+    # path to params.jl will be in the current directory
+    include(joinpath(pwd(), "params.jl"))
 
     # Generate all combinations of parameters
     param_keys = collect(keys(params_template))
@@ -70,16 +79,19 @@ function create_params_csv_file()
         params_array = [deepcopy(d) for d in params_array for _ in 1:nrepeat]
     end
 
+    # Assign sim_number to each parameter set
     for i in eachindex(params_array)
         params_array[i][:sim_number] = i
     end
 
+    # Adjust parameters for specific conditions
     for i in eachindex(params_array)
         if params_array[i][:outflow_rate] == "equal-to-diffusion-rate"
             params_array[i][:outflow_rate] = params_array[i][:diffusion_rate]
         end
     end
 
+    # Write the parameters to a CSV file
     array_fn = "./data/params.csv"
     println("Writing parameters for simulation array in $array_fn")
     mkpath("data")

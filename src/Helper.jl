@@ -8,22 +8,13 @@
 #==============================================================================#
 
 function sim_number_string(sim_number)
+    """
+    Convert the simulation number to a string with leading zeros.
+    """
 
     sim_number_string = lpad(sim_number, 6, "0")
 
     return sim_number_string
-
-end
-
-#==============================================================================#
-
-function get_relative_path()
-
-    current_dir = pwd()
-    milestones_dir = joinpath(dirname(Pkg.project().path), "datasets")
-    relative_path = relpath(current_dir, milestones_dir)
-    
-    return relative_path
 
 end
 
