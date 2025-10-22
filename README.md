@@ -1,56 +1,134 @@
-# flow-complexity
+# FlowComplexity
 
-This repository contains source code, notebooks, and maybe scripts to analyze how spatial localization and heterogenaity influences the assembly of complex objects
+Investigates how the topology of networks of chemostats influence the complexity of the chemistry.
 
+## Content
 
-Simulations are based on the type `Chemostat` in the `Chemostat.jl` file. 
+- [Installation](#installation)
+- [Interactive usage](#interactive-usage)
+  - [Loading the module](#loading-the-module)
+  - [Running a basic simulation](#running-a-basic-simulation)
+- [Usage from the command line](#usage-from-the-command-line)
+  - [Creating parameter file](#creating-parameter-file)
+  - [Creating queue file](#creating-queue-file)
+  - [Running a simulation](#running-a-simulation)
 
-## Installation
+# Installation
 
-1. Use `juliaup status` to see which julia version is installed, then remove/rename as needed $HOME/.julia*
-1. Install julia using `juliaup add 1.10.2`
-1. From the repo folder, open julia using `julia --project=.`
-1. Install required packages with `using Pkg; Pkg.instantiate()` (this takes some time)
-1. Exit julia then open it again (without any argument)
-1. Install DrWatson using `Pkg.add(name="DrWatson", version="2.17.0")` then pin this version to the home environment using `Pkg.pin(name="DrWatson", version="2.17.0")`.
+1. Install Julia, preferably version `1.11.2` or similar.
 
-If stuck in dependency hell, update packages using `Pkg.update()` then commit the updated `Manifest.toml`
+2. Clone repo and install requirements.
 
-## Basic Usage
-
-### Minimal Working Example
-
-[to be completed]
-
-### Test timing
-
-Use `test_timing.jl`. This will write output to the file `timing_results.csv` located in the `data` directory (make sure the file exists).
-
-### Explore parameters
-
-The simulations will be save under `data/sims`.
-
-To put together the output data, use `get-parameter-sweep-stats.r` which reads everything under `data/sims` and writes to something like `2022_07_22_parameter_sweep_stats.csv`.
-
-[to be completed]
-
-## Advanced Usage
-
-...
-
-### Running with multiprocessing enabled
-
-For example, to run `explore-test.jl` from the `scripts` folder on 220 CPU,
-
-```
-julia -p 220 --project=.. explore-test.jl
+```shell
+git clone https://github.com/colemathis/flow-complexity
+cd flow-complexity
+julia --project=.
 ```
 
-# Analysis
+then, from the Julia prompt,
 
-[to be completed]
+```julia
+julia> using Pkg
+julia> Pkg.instantiate()
+```
 
-## Dr Watson
+3. Add folder `flow-complexity` to PATH
 
-Saving and File management is handled via DrWatson, make sure to run `@quickactivate` before running sims.
+e.g., by adding this line to `.bashrc` or `.zshrc`
 
+```shell
+export PATH="$PATH:[path to repo]/flow-complexity"
+```
+
+# Usage
+
+## Workflow and command line usage
+
+The code is designed to work both in command-line (shell) mode and in interactive mode (e.g., Jupyter Notebook).
+
+You can launch the code using the `flow` command line, followed by one of these commands:
+
+- `params` creates a parameter file named `params.jl` in the current directory
+- `queue` creates a csv file named `data/params.csv` containing the parameters for an ensemble of simulations to be executed
+- `slurm` creates a SLURM script file named `run.slurm` in the current directory
+- `launch <sim number>` launches simulation number `<sim_number>` from the queue file
+
+## Usage in interactive mode
+
+In interactive mode, load Julia using
+
+```bash
+cd flow-complexity
+julia --project=.
+```
+
+then load the `FlowComplexity` module with
+
+```julia
+julia> include("src/FlowComplexity.jl")
+```
+
+A `Simulation` object can be created using
+
+```julia
+s = FlowComplexity.Simulation();
+```
+
+Then it can be launched with either
+
+```julia
+julia> FlowComplexity.run_simulation(s);
+```
+
+or
+
+```julia
+julia> s.run()
+```
+
+A simulation from an array can be launched using
+
+```julia
+julia> s.from_sim_array(1);
+```
+
+Data is automatically saved in `./data/<sim_number>`. It can be accessed either from the object itself,
+
+```julia
+using Plots
+
+df = s.output[:timeseries]
+
+plt = plot()
+for i in 1:10
+    d = df[(df.chemostat_id .== 1) .& (df.integer .== i), :]
+    plot!(plt, d.time, d.frequency, label="int $i")
+end
+
+display(plt)
+```
+
+or from the files written to disk
+
+```julia
+using CSV, DataFrames, Plots
+
+df = CSV.read("./data/sims/000001/timeseries.csv", DataFrame)
+
+plt = plot()
+for i in 1:10
+    d = df[(df.chemostat_id .== 1) .& (df.integer .== i), :]
+    plot!(plt, d.time, d.frequency, label="int $i")
+end
+
+display(plt)
+```
+
+## Additional commands
+
+The `A` matrix can be saved/loaded using
+
+```julia
+julia> s.save_R_matrix("R-matrix.jld2")
+julia> s.load_R_matrix("R-matrix.jld2")
+```
