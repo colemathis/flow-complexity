@@ -20,7 +20,7 @@ end
 function get_relative_path()
 
     current_dir = pwd()
-    milestones_dir = joinpath(dirname(Pkg.project().path), "milestones")
+    milestones_dir = joinpath(dirname(Pkg.project().path), "datasets")
     relative_path = relpath(current_dir, milestones_dir)
     
     return relative_path

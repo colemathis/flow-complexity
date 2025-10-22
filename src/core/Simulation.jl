@@ -172,7 +172,7 @@ function RunSimulation(sim; dry_run=false)
 
     sim_number = sim.params[:sim_number]
 
-    sim.params[:save_name] = joinpath(dirname(Pkg.project().path), "milestones", sim.params[:save_name], "data", "sims")
+    sim.params[:save_name] = joinpath(dirname(Pkg.project().path), "datasets", sim.params[:save_name], "data", "sims")
     sim.output[:timestamps] = []
     sim.output[:populations] = []
 
