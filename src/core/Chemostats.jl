@@ -8,6 +8,9 @@
 #==============================================================================#
 
 mutable struct Chemostat
+    """
+    Data type representing a chemostat (reactor) in the ensemble.
+    """
 
     ID::Int64
     reaction_rate_consts::Vector{Float64}
@@ -27,7 +30,10 @@ function Chemostat(ID::Int64,
                    mass_fixed=false,
                    neighbors=Vector{Int64}[],
                    neighbor_flows=Vector{Float64}[]
-)
+                   )
+    """
+    Constructor for the Chemostat struct.
+    """
 
     # Calculate the total mass from the list of molecules
     if length(molecules) > 0
@@ -74,6 +80,9 @@ end;
 #==============================================================================#
 
 function calc_mass(chemostat)
+    """
+    Calculate the mass of the chemostat.
+    """
 
     molecules = chemostat.molecules
     mass = sum(molecules)
@@ -85,12 +94,13 @@ end
 #==============================================================================#
 
 function calc_ones(chemostat)
+    """
+    Calculate the number of molecules of length 1 in the chemostat.
+    """ 
 
-    # get the list of molecules of length 1
     molecules = chemostat.molecules
     all_ones = [m for m in molecules if m == 1]
 
-    # return the total number of molecules of length 1
     return sum(all_ones)
 
 end
@@ -98,6 +108,9 @@ end
 #==============================================================================#
 
 function calc_propensities(chemostat)
+    """
+    Calculate the propensities for the chemostat.
+    """
 
     # Constructive - depends on n*n-1 (pairwise reaction)
     n = length(chemostat.molecules)
@@ -122,6 +135,9 @@ end
 #==============================================================================#
 
 function pick_molecule_at_random(molecules)
+    """
+    Pick and remove a molecule at random from the list of molecules.
+    """
 
     n = length(molecules)
     random_index = rand(1:n)
@@ -134,6 +150,9 @@ end
 #==============================================================================#
 
 function insert_molecule_at_random(molecules, m)
+    """
+    Insert a molecule at a random position in the list of molecules.
+    """
 
     n = length(molecules)
     random_index = rand(1:n+1)
@@ -145,22 +164,35 @@ end
 #==============================================================================#
 
 function keep_ones_fixed(ensemble)
+    """
+    Ensure that chemostats with fixed mass maintain their number of ones.
+    """
+
+    # iterate over all chemostats
     for chemostat in ensemble.reactors
+
+        # Check if the chemostat has a fixed mass
         if chemostat.fixed_mass != 0
+
             # Update the mass of the chemostat
             chemostat.mass = calc_mass(chemostat)
+
             # Calculate the current number of ones
             current_ones = calc_ones(chemostat)
+
             # Determine the difference from the fixed mass
             delta_ones = chemostat.fixed_mass - current_ones
 
+            # Adjust the number of ones accordingly
             if delta_ones > 0
+
                 # Add the necessary number of ones
                 for i in 1:delta_ones
                     insert_molecule_at_random(chemostat.molecules, 1)
                 end
                 
                 # append!(chemostat.molecules, ones(Int, delta_ones))
+                
             end
         end
     end

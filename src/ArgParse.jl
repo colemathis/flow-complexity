@@ -48,16 +48,16 @@ function parse_arguments()
         "params"         => ()      -> create_params_jl_file(),
         "queue"          => ()      -> create_params_csv_file(),
         "slurm"          => ()      -> create_slurm_file(),
-        "dry"            => (a...)  -> length(a) == 1 ? launch_simulation(a[1], dry_run=true) : print_help(),
-        "launch"         => (a...)  -> length(a) == 1 ? launch_simulation(a[1]) : print_help(),
+        "dry"            => (a...)  -> length(a) == 1 ? launch_simulation_from_sim_array(a[1], dry_run=true) : print_help(),
+        "launch"         => (a...)  -> length(a) == 1 ? launch_simulation_from_sim_array(a[1]) : print_help(),
         "test-params"    => ()      -> begin
             create_params_jl_file()
             create_params_csv_file()
-            launch_simulation("1")
+            launch_simulation_from_sim_array("1")
         end,
         "test-queue"    => ()      -> begin
         create_params_csv_file()
-        launch_simulation("1")
+        launch_simulation_from_sim_array("1")
     end,
     )
 

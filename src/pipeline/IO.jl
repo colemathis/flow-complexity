@@ -34,35 +34,10 @@ end
 
 #==============================================================================#
 
-# function save_data(sim)
-#     """
-#     Save the simulation data to a file.
-#     """
-
-#     # convert sim number to string
-#     sim_number = sim.params[:sim_number]
-#     sim_number_str = sim_number_string(sim_number)
-
-#     # determine save path and create the directory if needed
-#     sim_dir = joinpath("./data/sims/", "$sim_number_str")
-#     mkpath(sim_dir)
-
-#     # determine the data to be saved
-#     data = sim.output
-
-#     # save the data
-#     fn = joinpath(sim_dir, "output.jld2")
-#     @save fn data
-#     println("Data saved in $sim_dir")
-
-# end
-
 function save_data(sim)
-
-    # sim_number = sim.params[:sim_number]
-    # sim_number_str = sim_number_string(sim_number)
-    # sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
-    # mkpath(sim_dir)
+    """
+    Save the simulation data to a file.
+    """
 
     # convert sim number to string
     sim_number = sim.params[:sim_number]
@@ -72,11 +47,37 @@ function save_data(sim)
     sim_dir = joinpath("./data/sims/", "$sim_number_str")
     mkpath(sim_dir)
 
-
+    # save timeseries data
     fn = joinpath(sim_dir, "timeseries.csv")
     CSV.write(fn, sim.output[:timeseries])
 
+    # save graph data
+    io_nodes = get_io_nodes(sim)
+    fn = joinpath(sim_dir, "graph.csv")
+    CSV.write(fn, io_nodes)
+
+    # save metadata
+    fn = joinpath(sim_dir, "meta.csv")
+    meta = get_metadata(sim)
+    CSV.write(fn, meta)
+
+    println("Data saved in $sim_dir")
+
+end
+
+#==============================================================================#
+
+function get_io_nodes(sim)
+    """
+    Get a DataFrame of the simulation graph.
+    """
+
+    sim_number = sim.params[:sim_number]
+
+    # create DataFrame of input/output nodes
     io_nodes = DataFrames.DataFrame(sim_number=Int[], chemostat_in=Int[], chemostat_out=Int[])
+
+    # extract edges from the ensemble graph
     g = sim.ensemble.ensemble_graph
     for e in Graphs.edges(g)
         push!(io_nodes, (
@@ -85,12 +86,18 @@ function save_data(sim)
             chemostat_out = Graphs.dst(e)
         ))
     end
-    # sim_dir = joinpath(sim.params[:save_name], "$sim_number_str")
-    # mkpath(sim_dir)
-    fn = joinpath(sim_dir, "graph.csv")
-    CSV.write(fn, io_nodes)
 
-    fn = joinpath(sim_dir, "meta.csv")
+    return io_nodes
+
+end
+
+#==============================================================================#
+
+function get_metadata(sim)
+    """
+    Get a DataFrame of the simulation metadata.
+    """
+
     meta = DataFrames.DataFrame(
         sim_number = sim.params[:sim_number],
         total_time = sim.output[:total_time],
@@ -103,10 +110,8 @@ function save_data(sim)
         total_outflow_rxn = get(sim.output, :total_outflow_rxn, missing),
         skipped_outflow_rxn = get(sim.output, :skipped_outflow_rxn, missing),
     )
-    CSV.write(fn, meta)
 
-    rel = relpath(fn, pwd())
-    println("Data saved in $rel")
+    return meta
 
 end
 

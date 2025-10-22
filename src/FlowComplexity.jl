@@ -9,7 +9,6 @@ include("ArgParse.jl")
 include("pipeline/Params.jl")
 include("Helper.jl")
 include("pipeline/IO.jl")
-include("pipeline/Analysis.jl")
 include("pipeline/SLURM.jl")
 
 # core imports
