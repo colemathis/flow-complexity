@@ -6,7 +6,7 @@ import DataFrames
 import Random
 import Graphs
 import Dates
-using SparseArrays
+import SparseArrays
 
 #==============================================================================#
 # DATA TYPES
@@ -145,7 +145,7 @@ function apply_params_default_values()
         :N_reactors     	=> 25,
     
         # reaction rates
-        :inflow_mols        => 0,
+        :inflow_mols        => 1e3,
         :forward_rate   	=> 1e-3,
         :diffusion_rate   	=> 1e-3,
         :outflow_rate       => 1e-3
