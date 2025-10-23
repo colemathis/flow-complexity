@@ -12,6 +12,7 @@ Investigates how the topology of networks of chemostats influence the complexity
   - [Creating parameter file](#creating-parameter-file)
   - [Creating queue file](#creating-queue-file)
   - [Running a simulation](#running-a-simulation)
+- [Running simulations using the SLURM scheduler](#running-simulations-using-the-slurm-scheduler)
 
 # Installation
 
