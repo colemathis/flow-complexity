@@ -132,3 +132,40 @@ The `A` matrix can be saved/loaded using
 julia> s.save_R_matrix("R-matrix.jld2")
 julia> s.load_R_matrix("R-matrix.jld2")
 ```
+
+# Running simulations using the SLURM scheduler
+
+To execute an ensemble of simulations simultaneously on the SLURM scheduler on ASU’s high performance computing cluster, the first step is to create a SLURM job file using
+
+```shell
+flow slurm
+```
+
+This creates a file named `run.slurm` in the current directory.
+
+You can edit the file to adjust the parameters. For example, if your `params.jl` defines an array of 100 simulations, the following line will let SLURM know to execute simulations 1 to 100:
+
+```shell
+#SBATCH --array=1-100                    # simulation indices
+```
+
+Other parameters that you can customize include wall time (the time interval after which SLURM will kill a simulation that has not completed) and memory (the amount of RAM memory allocated to each simulation):
+
+```shell
+#SBATCH --time=24:00:00                  # wall time (hh:mm:ss)
+#SBATCH --mem=4G                         # memory
+```
+
+You should not have to customize other parameters, or modify the rest of the script.
+
+After you have made sure the parameters in `slurm.run` are set correctly, you can send your job description to SLURM using
+
+```shell
+sbatch slurm.run
+```
+
+This will add your list of simulations to the queue. You can confirm the job has been added using the command `myjobs`.
+
+The priority with which they will be run depends on your "fairshare score" — the more you use the cluster, the longer it will take before your jobs are executed.
+
+Refer to the [page on Sol](https://github.com/mathis-group/wiki/wiki/HPC-Cluster) in the wiki for more information about the cluster.
