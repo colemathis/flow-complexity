@@ -182,7 +182,7 @@ function print_parameters(simulation)
     """
 
     for (k, v) in simulation.params
-        if !(v isa SparseMatrixCSC)
+        if !(v isa SparseArrays.SparseMatrixCSC)
             println("   $k = $v")
         else
             println("   $k = <sparse matrix>")
@@ -235,8 +235,8 @@ function maybe_restore_R(value)
             J = parse.(Int,     split(m.captures[2], r"\s*,\s*"))
             V = parse.(Float64, split(m.captures[3], r"\s*,\s*"))
             value = m.captures[4] === nothing ?
-                sparse(I, J, V) :
-                sparse(I, J, V, parse(Int, m.captures[4]), parse(Int, m.captures[5]))
+                SparseArrays.sparse(I, J, V) :
+                SparseArrays.sparse(I, J, V, parse(Int, m.captures[4]), parse(Int, m.captures[5]))
         end
     end
     return value
