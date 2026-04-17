@@ -15,7 +15,7 @@ library(cowplot)
 ID         				<<- "28-assembly-of-integers"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
-SAVE_FIGS 			 	<<- FALSE
+SAVE_FIGS 			 	<<- TRUE
 
 # SELECTED_SIMS 			<<- c(30, 58, 86)
 
@@ -178,7 +178,7 @@ plot_figure <- function(ts) {
 		) +
 		labs(
 			x = TeX("Integer $z$"),
-			y = TeX("Assembly Index $A_z$")
+			y = TeX("Assembly index $a_z$")
 		) +
 		theme_minimal(base_size = 11)
 
