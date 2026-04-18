@@ -154,7 +154,7 @@ p <- ggplot() +
   geom_hline(yintercept = 15, linetype = "dotted", colour = "grey40", linewidth = 0.5) +
   annotate(
     "text", x = 0.3, y = 17.5,
-    label = "A = 15",
+    label = "a = 15",
     size = 3, hjust = 0, colour = "grey40"
   ) +
   # 5. Mark GDB data range
@@ -181,18 +181,18 @@ p <- ggplot() +
     "text",
     x = annot_logN,
     y = brace_mid,
-    label = TeX(sprintf("$\\delta A \\approx %d$", annot_delta)),
+    label = TeX(sprintf("$\\delta a \\approx %d$", annot_delta)),
     size = 3, colour = "black", fontface = "bold"
   ) +
   # Equation labels along curves
   annotate(
     "text", x = eq_x, y = eq_k_int + eq_offset - 1,
-    label = TeX("$A_z \\approx \\sqrt{2}\\times \\log_2 (N)$"),
+    label = TeX("$a_z \\approx \\sqrt{2}\\times \\log_2 (N)$"),
     angle = angle_int + 1, size = 3, colour = col_int, vjust = 0
   ) +
   annotate(
     "text", x = eq_x + 1.5, y = eq_k_mol - eq_offset + 1.5*1.38,
-    label = TeX("$A_m \\approx 1.38 \\times \\log_{10} (N)$"),
+    label = TeX("$a_m \\approx 1.38 \\times \\log_{10} (N)$"),
     angle = angle_mol, size = 3, colour = col_mol, vjust = 1
   ) +
   # Scales — legend with equations
@@ -213,7 +213,7 @@ p <- ggplot() +
   coord_cartesian(ylim = c(0, NA)) +
   labs(
     x = TeX("Reachable chemical space $\\log_{10} (N)$"),
-    y = "Assembly index A"
+    y = TeX("Assembly index $a$")
   ) +
   theme_minimal(base_size = 11) +
   theme(
