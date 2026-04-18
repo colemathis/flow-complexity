@@ -203,7 +203,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 	) +
     labs(
       x = TeX("Distance from source $d$"),
-      y = "Mean Assembly Index",
+      y = "Mean assembly index",
       color = TeX("$\\log_{10}(k_d)$")
     ) +
 	coord_cartesian(ylim = c(1.5, 12.5)) +
