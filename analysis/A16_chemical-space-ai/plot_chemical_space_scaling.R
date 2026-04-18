@@ -28,7 +28,19 @@ K_MAX     <- 18   # extend predictions beyond GDB data (GDB goes to k=17)
 # LOAD DATA
 ################################################################################
 
-gdb <- read_csv("data/gdb_molecule_counts.csv", show_col_types = FALSE)
+# GDB-17 Table 5: molecule counts per heavy-atom count (Ruddigkeit et al. 2012)
+gdb <- tibble(
+  hac = 1:17,
+  n_molecules = c(3, 6, 14, 47, 219, 1091, 6029, 37435, 243233,
+                  1670163, 12219460, 72051665, 836687200, 2921398415,
+                  15084103347, 38033661355, 109481780580)
+)
+
+# Load computed assembly indices from GDB-17 sample
+ai_data <- read_csv("gdb/samples/assembly_vs_space.csv", show_col_types = FALSE)
+mean_ai <- ai_data %>%
+  group_by(n_atoms) %>%
+  summarise(mean_ai = mean(assembly_index), .groups = "drop")
 
 ################################################################################
 # COMPUTE CUMULATIVE COUNTS AND INTEGER SPACE
@@ -36,11 +48,13 @@ gdb <- read_csv("data/gdb_molecule_counts.csv", show_col_types = FALSE)
 
 df <- gdb %>%
   arrange(hac) %>%
+  mutate(n_mol_cumul = cumsum(n_molecules)) %>%
+  left_join(mean_ai, by = c("hac" = "n_atoms")) %>%
   mutate(
-    n_mol_cumul = cumsum(n_molecules),
-    k           = hac,               # AI ≈ heavy-atom count (conservative)
-    n_int       = 2^k                # integer-space upper bound
-  )
+    k     = mean_ai,                 # AI from computed GDB-17 assembly indices
+    n_int = 2^k                      # integer-space upper bound
+  ) %>%
+  filter(!is.na(k))                  # drop HAC buckets without AI data
 
 # Fit log-linear model to cumulative molecular counts: log10(N) = a + b*k
 fit <- lm(log10(n_mol_cumul) ~ k, data = df)
@@ -60,7 +74,7 @@ df_pred <- tibble(
 )
 
 # Define both curves over a shared log10(N) range for the flipped-axis plot
-logN_max <- max(df_pred$log10_n_mol)  # molecular curve extends further
+logN_max <- 12.5
 logN_seq <- seq(0, logN_max, length.out = 200)
 
 df_int_curve <- tibble(
@@ -191,8 +205,8 @@ p <- ggplot() +
     angle = angle_int + 1, size = 3, colour = col_int, vjust = 0
   ) +
   annotate(
-    "text", x = eq_x + 1.5, y = eq_k_mol - eq_offset + 1.5*1.38,
-    label = TeX("$a_m \\approx 1.38 \\times \\log_{10} (N)$"),
+    "text", x = eq_x + 1.5, y = eq_k_mol - eq_offset + 1.5 / alpha_log10,
+    label = TeX(sprintf("$a_m \\approx %.2f \\times \\log_{10} (N)$", 1 / alpha_log10)),
     angle = angle_mol, size = 3, colour = col_mol, vjust = 1
   ) +
   # Scales — legend with equations
