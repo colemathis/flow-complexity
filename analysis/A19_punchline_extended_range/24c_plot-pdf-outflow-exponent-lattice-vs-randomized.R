@@ -15,7 +15,7 @@ library(grid)        # for rasterGrob and gradient background
 
 ID         				<<- "24c-plot-pdf-outflow-exponent-lattice-vs-randomized"
 USE_CACHE  				<<- FALSE
-PRINT_FIGS 				<<- TRUE
+PRINT_FIGS 				<<- FALSE
 SAVE_FIGS 			 	<<- TRUE
 
 FITS_PATH_LATTICE       <<- file.path("../A02_wrap-up-figs-D02/cache/24-multipanel-pdf-inflow-outflow/24-multipanel-pdf-inflow-outflow_powerlaw_fits.csv")
@@ -102,7 +102,7 @@ plot_figure <- function(ts) {
 	ts <- ts %>%
 		mutate(pos_slope = slope) %>%
 		filter(chemostat_id == 25) %>%
-		filter(diffusion_rate > 1)
+		filter(diffusion_rate > -1)
 
 	# Create a left‑to‑right grey→white gradient for the plot background
 	gradient <- rasterGrob(
@@ -111,42 +111,72 @@ plot_figure <- function(ts) {
 		interpolate = TRUE
 	)
 
+	# Shared colour scale
+	colour_vals <- c("lattice" = "darkblue", "randomized" = "darkred")
+
+	#--- Main plot (points only, no spline) -----------------------------------#
 	p_abs <- ggplot(ts, aes(x = diffusion_rate, y = pos_slope, colour = topology)) +
 		# Shade only up to diffusion_rate = 10 so that the plot is pure white beyond
 		annotation_custom(gradient, xmin = -Inf, xmax = 1, ymin = -Inf, ymax = Inf) +
 		geom_point(alpha = 0.3, size = 0.5) +
-		# geom_smooth(linewidth = 0.5, method = "loess", se = FALSE, span = 1.5) +
-		geom_line(stat = "smooth", method = "loess", se = FALSE, span = 1.5, linewidth = 1.00, alpha = 0.75) +
 		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
-		# coord_cartesian(ylim = c(0, 6)) +
 		labs(x = TeX("Diffusion coefficient $k_d$"),
 				 y = TeX("Powel-Law Exponent $- \\alpha$"),
 				 colour = "Topology") +
-		# coord_cartesian(ylim = c(0.5, 5)) +
-		coord_cartesian(ylim = c(-5, -1.0)) +
-		scale_color_manual(
-			values = c(
-			"lattice" = "darkblue",
-			"randomized" = "darkred"
-			),
-			name = "Topology"
-		) +
+		coord_cartesian(ylim = c(-9, -1.0)) +
+		scale_color_manual(values = colour_vals, name = "Topology") +
 		theme_minimal(base_size = 11) +
-		theme(
-			legend.position = c(0.02, 0.02),
-			legend.justification = c("left", "bottom"),
-			legend.background = element_rect(fill = alpha("white", 0.9), colour = "black"),
-			legend.title = element_text(face = "bold")
-		) +
+		theme(legend.position = "none") +
 		theme(panel.grid = element_blank()) +
-		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = -1.2, 
-				 label = "Heterogeneous", hjust = 0, vjust = 0, size = 3.5) +
-		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -1.2, 
-				 label = "Well-mixed", hjust = 1, vjust = 0, size = 3.5)
-	
-	p <- p_abs
+		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = -8.8, 
+				 label = "Heterogeneous", hjust = 0, vjust = 1, size = 3.5) +
+		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -8.8, 
+				 label = "Well-mixed", hjust = 1, vjust = 1, size = 3.5)
 
-	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
+	p_abs <- p_abs + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
+
+	#--- Inset: zoomed spline over x=20..100, y=-5..-1 -----------------------#
+	p_inset <- ggplot(ts, aes(x = diffusion_rate, y = pos_slope, colour = topology)) +
+		geom_point(alpha = 0.2, size = 0.3) +
+		geom_line(data = ~ filter(.x, diffusion_rate >= 10 & diffusion_rate <= 100),
+				  stat = "smooth", method = "loess", se = FALSE, span = 1.250,
+				  linewidth = 1.00, alpha = 0.75) +
+		scale_x_log10() +
+		coord_cartesian(xlim = c(20, 100), ylim = c(-5, -1.75)) +
+		scale_color_manual(values = colour_vals) +
+		theme_minimal(base_size = 7) +
+		theme(
+			panel.grid   = element_blank(),
+			axis.title   = element_blank(),
+			panel.border = element_rect(color = "black", fill = NA, linewidth = 1.0),
+			plot.background = element_rect(fill = "white", colour = "black", linewidth = 1.0),
+			plot.margin  = margin(5, 5, 5, 5),
+			legend.position = "inside",
+			legend.position.inside = c(0.02, 0.02),
+			legend.justification = c("left", "bottom"),
+			legend.background = element_blank(),
+			legend.title = element_blank(),
+			legend.key.size = unit(3, "mm"),
+			legend.text = element_text(size = 9),
+			legend.margin = margin(0, 0, 0, 0)
+		)
+	p_inset_grob <- ggplotGrob(p_inset)
+
+	#--- Zoomed-region outline + connector lines + inset ----------------------#
+	# Zoom rect in data coords matching the inset range
+	# Inset grob placed at: x = log10(0.01)..log10(1.78), y = -8.5..-1.8
+	p <- p_abs +
+		annotate("rect", xmin = 20, xmax = 100, ymin = -6.75, ymax = -2,
+				 fill = NA, colour = "grey40", linetype = "dashed", linewidth = 0.3) +
+		# top-left corner of rect → top-left corner of inset
+		annotate("segment", x = 20, xend = 0.01, y = -2, yend = -1.8,
+				 colour = "grey40", linetype = "dashed", linewidth = 0.3) +
+		# bottom-left corner of rect → bottom-left corner of inset
+		annotate("segment", x = 20, xend = 1.5, y = -6.75, yend = -8.5,
+				 colour = "grey40", linetype = "dashed", linewidth = 0.3) +
+		annotation_custom(p_inset_grob,
+						  xmin = log10(0.01), xmax = log10(1.78),
+						  ymin = -8.5, ymax = -1.8)
 
 	#--- Output ---------------------------------------------------------------#
 	height <- 60   # mm
