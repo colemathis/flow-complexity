@@ -13,7 +13,7 @@ library(latex2exp)
 
 ID         				<<- "15-plot-frequency-of-2s-vs-kd-multiple-inflows"
 USE_CACHE  				<<- TRUE
-PRINT_FIGS 				<<- TRUE
+PRINT_FIGS 				<<- FALSE
 SAVE_FIGS 			 	<<- TRUE
 
 DATA_DIR      			<<- "../../datasets/D01_inflow=1e3_1e4_kd=1e-1_1e3/data"
