@@ -205,7 +205,7 @@ p <- ggplot() +
     angle = angle_int + 1, size = 3, colour = col_int, vjust = 0
   ) +
   annotate(
-    "text", x = eq_x + 1.5, y = eq_k_mol - eq_offset + 1.5 / alpha_log10,
+    "text", x = eq_x, y = eq_k_mol - eq_offset + 8.5 / alpha_log10,
     label = TeX(sprintf("$a_m \\approx %.2f \\times \\log_{10} (N)$", 1 / alpha_log10)),
     angle = angle_mol, size = 3, colour = col_mol, vjust = 1
   ) +
