@@ -129,7 +129,7 @@ plot_figure <- function(ts) {
 
 	p <- p + geom_point(size = 0.5, alpha = 0.25)
 	# p <- p + geom_smooth(method = "loess", span = 0.5, se = FALSE, size = 0.5)
-	p <- p + geom_line(stat = "smooth", method = "loess", span = 0.5, se = FALSE, size = 0.75, alpha = 0.75)
+	p <- p + geom_line(stat = "smooth", method = "loess", span = 0.25, se = FALSE, size = 0.75, alpha = 0.75)
 
 	p <- p + scale_x_log10(
 		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
@@ -148,7 +148,7 @@ plot_figure <- function(ts) {
 
 	p <- p + theme(
 		legend.justification=c(1,1), 
-		legend.position=c(0.95,0.95),
+		legend.position=c(0.15,0.95),
 		legend.background = element_rect(fill = "white", color = "black"), # Optional: Customize legend background
 		legend.key.size = unit(0.15, "cm"),    # Decrease key size
 		# legend.text = element_text(size = 6), # Decrease text size
