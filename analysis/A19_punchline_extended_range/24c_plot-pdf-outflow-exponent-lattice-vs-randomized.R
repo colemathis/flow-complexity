@@ -128,9 +128,9 @@ plot_figure <- function(ts) {
 		theme_minimal(base_size = 11) +
 		theme(legend.position = "none") +
 		theme(panel.grid = element_blank()) +
-		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = -8.8, 
+		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = -8.6, 
 				 label = "Heterogeneous", hjust = 0, vjust = 1, size = 3.5) +
-		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -8.8, 
+		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -8.6, 
 				 label = "Well-mixed", hjust = 1, vjust = 1, size = 3.5)
 
 	p_abs <- p_abs + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
@@ -138,11 +138,11 @@ plot_figure <- function(ts) {
 	#--- Inset: zoomed spline over x=20..100, y=-5..-1 -----------------------#
 	p_inset <- ggplot(ts, aes(x = diffusion_rate, y = pos_slope, colour = topology)) +
 		geom_point(alpha = 0.2, size = 0.3) +
-		geom_line(data = ~ filter(.x, diffusion_rate >= 10 & diffusion_rate <= 100),
-				  stat = "smooth", method = "loess", se = FALSE, span = 1.250,
+		geom_line(data = ~ filter(.x, diffusion_rate >= 1 & diffusion_rate <= 100),
+				  stat = "smooth", method = "loess", se = FALSE, span = 2.0,
 				  linewidth = 1.00, alpha = 0.75) +
 		scale_x_log10() +
-		coord_cartesian(xlim = c(20, 100), ylim = c(-5, -1.75)) +
+		coord_cartesian(xlim = c(10, 100), ylim = c(-5, -1.75)) +
 		scale_color_manual(values = colour_vals) +
 		theme_minimal(base_size = 7) +
 		theme(
@@ -157,7 +157,7 @@ plot_figure <- function(ts) {
 			legend.background = element_blank(),
 			legend.title = element_blank(),
 			legend.key.size = unit(3, "mm"),
-			legend.text = element_text(size = 9),
+			legend.text = element_text(size = 11),
 			legend.margin = margin(0, 0, 0, 0)
 		)
 	p_inset_grob <- ggplotGrob(p_inset)
@@ -166,17 +166,17 @@ plot_figure <- function(ts) {
 	# Zoom rect in data coords matching the inset range
 	# Inset grob placed at: x = log10(0.01)..log10(1.78), y = -8.5..-1.8
 	p <- p_abs +
-		annotate("rect", xmin = 20, xmax = 100, ymin = -6.75, ymax = -2,
+		annotate("rect", xmin = 10, xmax = 110, ymin = -5.25, ymax = -1.75,
 				 fill = NA, colour = "grey40", linetype = "dashed", linewidth = 0.3) +
-		# top-left corner of rect → top-left corner of inset
-		annotate("segment", x = 20, xend = 0.01, y = -2, yend = -1.8,
+		# top-left of rect -> top-right of inset
+		annotate("segment", x = 10, xend = 5.0, y = -1.75, yend = -2.0,
 				 colour = "grey40", linetype = "dashed", linewidth = 0.3) +
-		# bottom-left corner of rect → bottom-left corner of inset
-		annotate("segment", x = 20, xend = 1.5, y = -6.75, yend = -8.5,
+		# bottom-left of rect -> bottom-right of inset
+		annotate("segment", x = 10, xend = 5.0, y = -5.25, yend = -8.25,
 				 colour = "grey40", linetype = "dashed", linewidth = 0.3) +
 		annotation_custom(p_inset_grob,
-						  xmin = log10(0.01), xmax = log10(1.78),
-						  ymin = -8.5, ymax = -1.8)
+						  xmin = log10(0.01), xmax = log10(5.0),
+						  ymin = -8.25, ymax = -2.0)
 
 	#--- Output ---------------------------------------------------------------#
 	height <- 60   # mm
