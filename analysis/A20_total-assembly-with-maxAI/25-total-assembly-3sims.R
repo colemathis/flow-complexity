@@ -198,7 +198,7 @@ plot_figure <- function(ts) {
 		) +
 		scale_x_continuous(
 			breaks = seq(0, 1e5, by = 2e4),
-			labels = rep("", 6)
+			labels = c("0", "", "", "", "", TeX("$10^5$"))
 		) +
 		coord_cartesian(ylim = c(0, 25)) +
 		theme_bw(base_size = 8) +
