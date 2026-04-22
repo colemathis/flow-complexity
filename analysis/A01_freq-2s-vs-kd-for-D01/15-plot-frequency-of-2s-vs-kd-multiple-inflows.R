@@ -13,7 +13,7 @@ library(latex2exp)
 
 ID         				<<- "15-plot-frequency-of-2s-vs-kd-multiple-inflows"
 USE_CACHE  				<<- TRUE
-PRINT_FIGS 				<<- FALSE
+PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
 
 DATA_DIR      			<<- "../../datasets/D01_inflow=1e3_1e4_kd=1e-1_1e3/data"
@@ -129,7 +129,7 @@ plot_figure <- function(ts) {
 
 	p <- p + geom_point(size = 0.5, alpha = 0.25)
 	# p <- p + geom_smooth(method = "loess", span = 0.5, se = FALSE, size = 0.5)
-	p <- p + geom_line(stat = "smooth", method = "loess", span = 0.5, se = FALSE, size = 0.75, alpha = 0.75)
+	p <- p + geom_line(stat = "smooth", method = "loess", span = 0.25, se = FALSE, size = 0.75, alpha = 0.75)
 
 	p <- p + scale_x_log10(
 		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
