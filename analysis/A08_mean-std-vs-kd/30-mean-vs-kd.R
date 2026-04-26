@@ -151,7 +151,7 @@ plot_figure <- function(ts) {
 
 	p <- p + labs(
 		x = TeX("Diffusion coefficient $k_d$"),
-		y = "Average frequency",
+		y = TeX("       Across-reactor\naverage copy number $\\bar{n_i}$"),
 		color = TeX("Integer"),
 		# title = "Populations of 2’s, sweep over diffusion with multiple inflows",
 		# caption = ID
@@ -160,12 +160,14 @@ plot_figure <- function(ts) {
 	p <- p + theme_minimal(base_size = 11)
 
 	p <- p + theme(
-		legend.justification=c(0,1), 
+		legend.justification=c(0,1),
 		legend.position=c(0.05,0.98),
-		legend.background = element_rect(fill = "grey95", color = NA), # Optional: Customize legend background
-		legend.key.size = unit(0.15, "cm"),    # Decrease key size
-		legend.text = element_text(size = 6), # Decrease text size
-		legend.title = element_text(size = 7), # Decrease title size
+		legend.background = element_rect(fill = "grey95", color = NA),
+		legend.key.size = unit(0.15, "cm"),
+		legend.text = element_text(size = 6),
+		legend.title = element_text(size = 7),
+		axis.title.y = element_text(hjust = 0.5),
+		plot.margin = margin(5, 5, 5, 15)
 	)
 
 	# show only one decimal in the legend labels

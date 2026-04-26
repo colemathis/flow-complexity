@@ -201,7 +201,7 @@ p <- ggplot() +
   # Equation labels along curves
   annotate(
     "text", x = eq_x, y = eq_k_int + eq_offset - 1,
-    label = TeX("$a_z \\approx \\sqrt{2}\\times \\log_2 (N)$"),
+    label = TeX("$a_i \\approx \\sqrt{2}\\times \\log_2 (N)$"),
     angle = angle_int + 1, size = 3, colour = col_int, vjust = 0
   ) +
   annotate(

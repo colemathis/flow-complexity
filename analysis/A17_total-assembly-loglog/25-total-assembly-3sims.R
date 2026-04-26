@@ -144,13 +144,26 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
+	# log1p10_trans <- scales::trans_new(
+	# 	name      = "log1p10",
+	# 	transform = function(x) log10(1 + x),
+	# 	inverse   = function(x) 10^x - 1
+	# )
+
+	# prepend t=0, total_assembly=0 for each sim
+	ts <- bind_rows(
+		ts %>% distinct(diffusion_rate) %>% mutate(time = 0, total_assembly = 10^(-1)),
+		ts
+	) %>% arrange(diffusion_rate, time)
+
 	p <- ts %>%
 		ggplot(aes(x = time, y = total_assembly, color = factor(diffusion_rate))) +
 		geom_point(size = 0.5, alpha = 0.25) +
-		geom_line(stat = "smooth", method = "loess", span = 0.30, se = FALSE, size = 0.75, alpha = 0.75) +
+		geom_line(stat = "smooth", method = "loess", span = 0.05, se = FALSE, size = 0.6, alpha = 0.75) +
 		scale_y_log10(
-			breaks = c(1, 5),
-			labels = c(TeX("$10^0$"), TeX("$0.5 \\times 10^1$"))
+			# trans   = log1p10_trans,
+			# breaks = c(1, 2),
+			# labels = c(TeX("$10^0$"), TeX("$0.2 \\times 10^1$"))
 		) +
 		# scale_color_discrete(
 		scale_color_viridis_d(
@@ -169,7 +182,7 @@ plot_figure <- function(ts) {
 			breaks = seq(0, 1e5, by = 2e4),
 			labels = function(x) ifelse(x %in% c(0, 1e5), c("0", TeX("$10^5$")), "")
 		) +
-		coord_cartesian(ylim = c(1, 10^(4/3))) +
+		coord_cartesian(ylim = c(9e-1, 2)) +
 		theme_minimal(base_size = 11) +
 		theme(
 			panel.grid.minor = element_blank(),

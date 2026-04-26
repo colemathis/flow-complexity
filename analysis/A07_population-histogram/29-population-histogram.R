@@ -179,8 +179,8 @@ plot_figure <- function(ts) {
 		# 	position = "identity", alpha = 0.5, width = 0.8
 		# ) +
 		labs(
-			x = TeX("Integer $z$"),
-			y = "Density",
+			x = TeX("Integer $i$ (binned)"),
+			y = TeX("Count per \\log $i$"),
 			# title = "Histogram of Frequency vs Integer and Assembly Index",
 			# fill = "Type",
 			# caption = ID

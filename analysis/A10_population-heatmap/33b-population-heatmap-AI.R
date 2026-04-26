@@ -148,26 +148,27 @@ plot_figure <- function(ts) {
 
 	# # Complete the dataset: for non-existent frequencies assign 0
 	ts <- ts %>%
-		complete(diffusion_rate, assemblyindex, fill = list(frequency = 0))
+		complete(diffusion_rate, assemblyindex, fill = list(frequency = 0)) %>%
+		mutate(frequency = na_if(frequency, 0))
 
   p <- ggplot(ts, aes(x = diffusion_rate, y = assemblyindex, fill = frequency)) +
     geom_tile() +
     scale_x_log10(
 		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
 	) +
-    scale_fill_viridis_c(name = "Freq.", na.value = "grey") +
+    scale_fill_viridis_c(name = "Freq.", na.value = "grey35") +
     labs(
       x = TeX("Diffusion coefficient $k_d$"),
-      y = "Assembly index",
+      y = TeX("Assembly index $a$"),
     ) +
     # scale_y_discrete(
     #   breaks = levels(ts$integer_bin)[seq(1, length(levels(ts$integer_bin)), length.out = 8)],
     #   labels = c(expression(10^0), expression(10^1), expression(10^2), expression(10^3), expression(10^4), expression(10^5), expression(10^6), expression(10^7))
     # ) +
-	coord_cartesian(xlim = c(1e-4, 1e1)) +
+	coord_cartesian(xlim = c(1e-4, 7e0)) +
     # theme_minimal(base_size = 11) +
     dark_theme_minimal(base_size = 11) + # for BEACON
-	theme(plot.background = element_rect(colour = NA)) + # remove the white border
+	#theme(plot.background = element_rect(colour = NA)) + # remove the white border
     theme(
       legend.position = c(0.95, 0.92),
       legend.justification = c("right", "top"),

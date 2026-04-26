@@ -120,18 +120,31 @@ plot_figure <- function(ts) {
 		annotation_custom(gradient, xmin = -Inf, xmax = 1, ymin = -Inf, ymax = Inf) +
 		geom_point(alpha = 0.3, size = 0.5) +
 		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
+		scale_y_continuous(labels = function(x) abs(x)) +
 		labs(x = TeX("Diffusion coefficient $k_d$"),
-				 y = TeX("Powel-Law Exponent $- \\alpha$"),
+				 y = TeX("Power-Law Exponent $\\alpha$"),
 				 colour = "Topology") +
-		coord_cartesian(ylim = c(-9, -1.0)) +
+		coord_cartesian(ylim = c(-9, -0.5)) +
 		scale_color_manual(values = colour_vals, name = "Topology") +
 		theme_minimal(base_size = 11) +
 		theme(legend.position = "none") +
 		theme(panel.grid = element_blank()) +
-		annotate("text", x = min(ts$diffusion_rate, na.rm = TRUE), y = -8.6, 
-				 label = "Heterogeneous", hjust = 0, vjust = 1, size = 3.5) +
-		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -8.6, 
-				 label = "Well-mixed", hjust = 1, vjust = 1, size = 3.5)
+		# annotate("label", x = min(ts$diffusion_rate, na.rm = TRUE), y = -8.5,
+		# 		 label = "Heterogeneous", hjust = 0.1, vjust = 1, size = 2.75) +
+		# annotate("label", x = max(ts$diffusion_rate, na.rm = TRUE), y = -8.5,
+		# 		 label = "Well-mixed", hjust = 0.85, vjust = 1, size = 2.75) +
+		# annotate("text", x = 33, y = -0.00,
+		# 		 label = "Higher\nComplexity",
+		# 		 hjust = 0.5, vjust = 0.9, size = 3.0) +
+		# annotate("text", x = 33, y = -6.15,
+		# 		 label = "Lower\nComplexity",
+		# 		 hjust = 0.5, vjust = 1, size = 3.0)
+		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -0.4,
+				 label = "Higher Complexity",
+				 hjust = 0.90, vjust = 0.9, size = 3.0) +
+		annotate("text", x = max(ts$diffusion_rate, na.rm = TRUE), y = -8.7,
+				 label = "Lower Complexity",
+				 hjust = 0.90, vjust = 1, size = 3.0)
 
 	p_abs <- p_abs + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
 
@@ -142,6 +155,7 @@ plot_figure <- function(ts) {
 				  stat = "smooth", method = "loess", se = FALSE, span = 2.0,
 				  linewidth = 1.00, alpha = 0.75) +
 		scale_x_log10() +
+		scale_y_continuous(labels = function(x) abs(x)) +
 		coord_cartesian(xlim = c(10, 100), ylim = c(-5, -1.75)) +
 		scale_color_manual(values = colour_vals) +
 		theme_minimal(base_size = 7) +
@@ -169,14 +183,14 @@ plot_figure <- function(ts) {
 		annotate("rect", xmin = 10, xmax = 110, ymin = -5.25, ymax = -1.75,
 				 fill = NA, colour = "grey40", linetype = "dashed", linewidth = 0.3) +
 		# top-left of rect -> top-right of inset
-		annotate("segment", x = 10, xend = 5.0, y = -1.75, yend = -2.0,
+		annotate("segment", x = 10, xend = 5.0, y = -1.75, yend = -2.25,
 				 colour = "grey40", linetype = "dashed", linewidth = 0.3) +
 		# bottom-left of rect -> bottom-right of inset
-		annotate("segment", x = 10, xend = 5.0, y = -5.25, yend = -8.25,
+		annotate("segment", x = 10, xend = 5.0, y = -5.25, yend = -8.00,
 				 colour = "grey40", linetype = "dashed", linewidth = 0.3) +
 		annotation_custom(p_inset_grob,
 						  xmin = log10(0.01), xmax = log10(5.0),
-						  ymin = -8.25, ymax = -2.0)
+						  ymin = -8.00, ymax = -2.25)
 
 	#--- Output ---------------------------------------------------------------#
 	height <- 60   # mm

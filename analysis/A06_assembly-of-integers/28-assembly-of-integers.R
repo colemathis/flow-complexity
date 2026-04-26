@@ -163,22 +163,22 @@ plot_figure <- function(ts) {
 		annotate(
 			"text",
 			x = 2e2, y = 13,
-			label = TeX("$\\sqrt{2}\\log_2(z)$"),
+			label = TeX("$\\sqrt{2}\\log_2(i)$"),
 			angle = 38, parse = FALSE, size = 3
 		) +
 		# Add annotation for log(i)
 		annotate(
 			"text",
 			x = 5e2, y = 7.4,
-			label = TeX("$\\log_2(z)$"),
+			label = TeX("$\\log_2(i)$"),
 			angle = 23, parse = FALSE, size = 3
 		) +
 		scale_x_log10(
 			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
 		) +
 		labs(
-			x = TeX("Integer $z$"),
-			y = TeX("Assembly index $a_z$")
+			x = TeX("Integer $i$"),
+			y = TeX("Assembly index $a_i$")
 		) +
 		theme_minimal(base_size = 11)
 

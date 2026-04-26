@@ -129,15 +129,17 @@ load_cached_data <- function() {
 
 plot_figure <- function(ts) {
 
+  ts <- ts %>% mutate(frequency = na_if(frequency, 0))
+
   p <- ggplot(ts, aes(x = diffusion_rate, y = integer_bin, fill = frequency)) +
     geom_tile() +
     scale_x_log10(
 		labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
 	) +
-    scale_fill_viridis_c(name = "Freq.", na.value = "grey") +
+    scale_fill_viridis_c(name = TeX("Copy number $n$   "), na.value = "grey35") +
     labs(
       x = TeX("Diffusion coefficient $k_d$"),
-      y = "Integer",
+      y = TeX("Integer $z$"),
     ) +
     scale_y_discrete(
       breaks = levels(ts$integer_bin)[seq(1, length(levels(ts$integer_bin)), length.out = 8)],

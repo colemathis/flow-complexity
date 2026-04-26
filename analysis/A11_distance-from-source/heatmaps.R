@@ -89,11 +89,17 @@ plot_figure <- function(ts) {
 			)
 		))
 
+	highlight_blue <- ts %>% filter(sim_number %in% c(30, 58), chemostat_id %in% c(5, 21))
+	highlight_red  <- ts %>% filter(sim_number %in% c(30, 58), chemostat_id %in% c(9, 13, 17))
+
 	p <- ggplot(ts, aes(x = col_x, y = row_y, fill = mean_ai)) +
 		geom_tile(color = "white", linewidth = 0.5) +
+		geom_tile(data = highlight_blue, fill = NA, color = "blue", linewidth = 1.2, width = 0.90, height = 0.90) +
+		geom_tile(data = highlight_red,  fill = NA, color = "red",  linewidth = 1.2) +
+		geom_text(aes(label = chemostat_id), color = "white", size = 4) +
 		facet_wrap(~ kd_label, nrow = 1, labeller = label_parsed) +
-		scale_y_reverse(breaks = 1:5) +
-		scale_x_continuous(breaks = 1:5) +
+		scale_y_reverse(expand = c(0, 0)) +
+		scale_x_continuous(expand = c(0, 0)) +
 		scale_fill_viridis_c(
 			option = "turbo",
 			name = "Mean AI"
@@ -102,11 +108,13 @@ plot_figure <- function(ts) {
 		labs(x = NULL, y = NULL) +
 		theme_minimal(base_size = 14) +
 		theme(
-			panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+			panel.border = element_blank(),
 			legend.position = "left",
 			legend.title = element_text(size = 12),
 			legend.text = element_text(size = 11),
-			strip.text = element_text(size = 13)
+			strip.text = element_text(size = 13),
+			axis.text = element_blank(),
+			axis.ticks = element_blank()
 		)
 
 	height <- 60

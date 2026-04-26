@@ -204,7 +204,7 @@ plot_figure <- function(ts, fits) {
 			size = 3,
 			parse = TRUE
 		) +
-		labs(x = "Integers (binned)", y = "Frequency", color = NULL) +
+		labs(x = TeX("Integer $z$ (binned)"), y = TeX("Count per $\\log z$"), color = NULL) +
 		scale_x_log10(
 			breaks = 10^(0:ceiling(log10(MAX_INTEGER))),
 			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))

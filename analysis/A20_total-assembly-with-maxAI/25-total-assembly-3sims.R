@@ -14,7 +14,7 @@ library(cowplot)
 
 ID         				<<- "25-total-assembly-3sims"
 USE_CACHE  				<<- TRUE
-PRINT_FIGS 				<<- FALSE
+PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
 
 SELECTED_SIMS 			<<- c(30, 58, 86)
@@ -146,12 +146,24 @@ load_cached_data <- function() {
 plot_figure <- function(ts) {
 
 	# Main plot: total assembly
-	main_plot <- ts %>%
+	ts_main <- ts # %>% mutate(total_assembly = ifelse(time == 0, 10^1, total_assembly))
+
+	log1p10_trans <- scales::trans_new(
+		name      = "log1p10",
+		transform = function(x) log10(1 + x),
+		inverse   = function(x) 10^x - 1
+	)
+
+	main_plot <- ts_main %>%
 		ggplot(aes(x = time, y = total_assembly, color = factor(diffusion_rate))) +
 		geom_point(size = 0.5, alpha = 0.25) +
-		geom_line(stat = "smooth", method = "loess", span = 0.30, se = FALSE, size = 0.75, alpha = 0.75) +
-		scale_y_log10(
-			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
+		geom_line(stat = "smooth", method = "loess", span = 0.10, se = FALSE, size = 0.6, alpha = 0.75) +
+		# scale_y_log10(
+		#	labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
+		scale_y_continuous(
+			trans   = log1p10_trans,
+			breaks  = 10^(0:6),
+			labels  = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%f}$", x)))
 		) +
 		scale_color_viridis_d(
 			option = "turbo",
@@ -173,19 +185,21 @@ plot_figure <- function(ts) {
 		theme_minimal(base_size = 11) +
 		theme(
 			panel.grid.minor = element_blank(),
-      		legend.background = element_rect(fill = "grey95", color = NA),	
+      		legend.background = element_rect(fill = "white", color = "black", linewidth = 0.3),
 			legend.title = element_text(size = 6),
 			legend.text = element_text(size = 6),
 			legend.direction = "horizontal"
 		) +
-        theme(legend.position = c(0.02, 0.98), legend.justification = c(0, 1))
+        theme(legend.position = c(0.03, 0.98), legend.justification = c(0, 1))
 	main_plot <- main_plot + guides(color = guide_legend(keyheight = unit(0.5, "lines"), keywidth = unit(1, "lines"), default.unit = "lines"))
 	main_plot <- main_plot + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
 
 	# Inset plot: max assembly index over time
 	inset_plot <- ts %>%
 		ggplot(aes(x = time, y = max_assemblyindex, color = factor(diffusion_rate))) +
-		geom_line(size = 0.5, alpha = 0.75) +
+		geom_point(size = 0.25, alpha = 0.25) +
+		geom_line(stat = "smooth", method = "loess", span = 0.05, se = FALSE, size = 0.3, alpha = 0.75) +
+		#stat_summary_bin(fun = median, geom = "line", bins = 100, linewidth = 0.5, alpha = 0.75) +
 		scale_color_viridis_d(
 			option = "turbo",
 			begin = 0.6,
@@ -193,7 +207,8 @@ plot_figure <- function(ts) {
 			direction = -1
 		) +
 		labs(
-			x = TeX("$t$"),
+			# x = TeX("$t$"),
+			x = "",
 			y = TeX("Highest AI")
 		) +
 		scale_x_continuous(
@@ -212,7 +227,7 @@ plot_figure <- function(ts) {
 
 	p <- ggdraw() +
 		draw_plot(main_plot) +
-		draw_plot(inset_plot, x = 0.32, y = 0.22, width = 0.60, height = 0.45)
+		draw_plot(inset_plot, x = 0.35, y = 0.20, width = 0.60, height = 0.48)
 
 	height <- 60
 	width  <- 80
@@ -250,3 +265,49 @@ if (file.exists(CACHE_PATH) && USE_CACHE) {
 # Plot the figure
 p <- plot_figure(data)
 saveRDS(p, file = file.path(paste0(ID, ".rds")))
+
+# ################################################################################
+# # TEMPORARY: compare three smoothing methods
+# ################################################################################
+
+# make_panel <- function(ts, smooth_layer, title) {
+# 	ts %>%
+# 		ggplot(aes(x = time, y = total_assembly, color = factor(diffusion_rate))) +
+# 		geom_point(size = 0.5, alpha = 0.25) +
+# 		smooth_layer +
+# 		scale_y_log10(
+# 			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
+# 		) +
+# 		scale_color_viridis_d(option = "turbo", begin = 0.6, end = 1.0, direction = -1,
+# 			name = TeX("$\\log(k_d)$"),
+# 			labels = function(x) sprintf("%.0f", log10(as.numeric(x)))) +
+# 		labs(x = TeX("Time $t$"), y = TeX("Assembly $A$"), title = title) +
+# 		scale_x_continuous(
+# 			breaks = seq(0, 1e5, by = 2e4),
+# 			labels = function(x) ifelse(x %in% c(0, 1e5), c("0", TeX("$10^5$")), "")
+# 		) +
+# 		coord_cartesian(ylim = c(1e2, 1e6)) +
+# 		theme_minimal(base_size = 9) +
+# 		theme(
+# 			panel.grid.minor  = element_blank(),
+# 			panel.border      = element_rect(color = "black", fill = NA, linewidth = 0.5),
+# 			legend.position   = "none",
+# 			plot.title        = element_text(size = 8, hjust = 0.5)
+# 		)
+# }
+
+# p1 <- make_panel(data,
+# 	geom_line(stat = "smooth", method = "loess", span = 0.10, se = FALSE, linewidth = 0.75, alpha = 0.75),
+# 	"LOESS")
+
+# p2 <- make_panel(data,
+# 	geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), se = FALSE, linewidth = 0.75, alpha = 0.75),
+# 	"GAM (cubic spline)")
+
+# p3 <- make_panel(data,
+# 	stat_summary_bin(fun = median, geom = "line", bins = 40, linewidth = 0.75, alpha = 0.75),
+# 	"Running median (40 bins)")
+
+# p_compare <- plot_grid(p1, p2, p3, nrow = 1)
+# options(vsc.dev.args = list(width = 240, height = 70, res = 300, units = "mm"))
+# print(p_compare)

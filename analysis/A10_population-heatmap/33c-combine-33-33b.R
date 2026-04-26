@@ -102,7 +102,7 @@ plot_figure <- function(ts) {
 
 	p <- ggdraw() +
 		draw_plot(main_plot) +
-		draw_plot(inset_plot, x = 0.36, y = 0.47, width = 0.60, height = 0.50)
+		draw_plot(inset_plot, x = 0.43, y = 0.47, width = 0.52, height = 0.50)
 		# theme(plot.background = element_rect(fill = "transparent", color = NA))
 
 	height <- 60

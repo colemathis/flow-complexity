@@ -184,13 +184,13 @@ library(scico)
 cols <- scico(3, palette = "navia", end = 0.5)
 
 p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_rate)))) +
-	geom_point(alpha = 0.40) +
+	geom_point(alpha = 0.60) +
 	geom_line(data = ts %>% filter(sim_number == 30),
-						stat = "smooth", method = "loess", span = 1.0, se = FALSE, size = 0.75, alpha = 0.75) +
+						stat = "smooth", method = "loess", span = 0.3, se = FALSE, size = 3.75, alpha = 0.10) +
 	geom_line(data = ts %>% filter(sim_number == 58),
-						stat = "smooth", method = "loess", span = 0.75, se = FALSE, size = 0.75, alpha = 0.75) +
+						stat = "smooth", method = "loess", span = 0.3, se = FALSE, size = 3.75, alpha = 0.10) +
 	geom_line(data = ts %>% filter(sim_number == 86),
-						stat = "smooth", method = "loess", span = 4.20, se = FALSE, size = 0.75, alpha = 0.75) +
+						stat = "smooth", method = "loess", span = 4.20, se = FALSE, size = 3.75, alpha = 0.10) +
 	# scale_color_scico_d(palette = "oleron") +
 	# scale_colour_manual(values = cols) +
 	scale_color_viridis_d(
@@ -202,35 +202,43 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		# labels = function(x) sprintf("%.0f", log10(as.numeric(x)))
 	) +
     labs(
-      x = TeX("Distance from source $d$"),
+      x = TeX("Minimum distance from source $d$"),
       y = "Mean assembly index",
       color = TeX("$\\log_{10}(k_d)$")
     ) +
-	coord_cartesian(ylim = c(1.5, 12.5)) +
-    annotate("rect", xmin = 3.5, xmax = 4.5, ymin = 6.25, ymax = 8.75,
-             color = "darkgreen", fill = NA,
+	coord_cartesian(ylim = c(1.5, 13.5)) +
+    annotate("rect", xmin = 3.75, xmax = 4.25, ymin = 6.25, ymax = 7.37,
+             color = "blue", fill = NA,
+			 size = 0.37, linetype = "32") +
+    annotate("rect", xmin = 3.75, xmax = 4.25, ymin = 7.62, ymax = 8.75,
+             color = "red", fill = NA,
 			 size = 0.37, linetype = "32") +
     theme_minimal(base_size = 11)
 	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
 	p <- p + theme(
-		legend.position = c(0.02, 0.90),
+		legend.position = c(0.02, 0.92),
 		legend.justification = "left",
 		legend.background = element_rect(fill = "grey95", color = NA),
-		legend.text = element_text(size = 8),
-		legend.title = element_text(size = 8),
-		legend.direction = "horizontal"
+		legend.text = element_text(size = 7),
+		legend.title = element_text(size = 7),
+		legend.direction = "horizontal",
+		legend.margin = margin(t = 2, r = 4, b = 2, l = 4, unit = "pt"),
+		legend.spacing.y = unit(1, "pt")
 	)
-	p <- p + guides(color = guide_legend(keyheight = unit(0.5, "lines"), keywidth = unit(0.45, "lines"), default.unit = "lines"))
+	p <- p + guides(color = guide_legend(keyheight = unit(0.4, "lines"), keywidth = unit(0.45, "lines"), default.unit = "lines"))
 
 	p <- p +
 			theme(legend.background = element_rect(fill = "white", color = "black", linewidth = 0.25))
 
-	# Build zoom inset: zooms into the green-rectangle region, placed at data coords (0.5–3.25, 2.75–7.25)
-	zoom_inset <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_rate)))) +
+	y_split <- 7.5
+
+	# Lower zoom inset (blue border): zooms into the lower half of the zoom region
+	zoom_lower <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_rate)))) +
 		geom_point(alpha = 0.40, size = 1.6) +
 		ggrepel::geom_text_repel(
-			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.65, mean_ai <= 8.25) %>%
-			                filter(!(chemostat_id %in% c(13, 17) & sim_number == 30)),
+			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.25, mean_ai < y_split) %>%
+			                filter(!(chemostat_id %in% c(13, 17) & sim_number == 30)) %>%
+			                filter(chemostat_id != 9),
 			aes(label = chemostat_id),
 			size          = 1.8,
 			alpha         = 1,
@@ -244,11 +252,84 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 			seed          = 42
 		) +
 		ggrepel::geom_text_repel(
-			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.65, mean_ai <= 8.25,
+			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.25, mean_ai < y_split,
 			                              chemostat_id %in% c(13, 17), sim_number == 30) %>% arrange(mean_ai),
 			aes(label = chemostat_id),
 			nudge_x       = c(0.4, -0.4),
 			nudge_y       = c(0.1, 0.),
+			size          = 1.8,
+			alpha         = 1,
+			show.legend   = FALSE,
+			segment.color = "black",
+			segment.size  = 0.25,
+			min.segment.length = 0,
+			box.padding   = 0.0,
+			point.padding = 0.2,
+			max.overlaps  = Inf,
+			seed          = 42
+		) +
+		ggrepel::geom_text_repel(
+			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.25, mean_ai < 7.0,
+			                              chemostat_id == 9),
+			aes(label = chemostat_id),
+			nudge_x       = -0.2,
+			nudge_y       = -0.15,
+			size          = 1.8,
+			alpha         = 1,
+			show.legend   = FALSE,
+			segment.color = "black",
+			segment.size  = 0.25,
+			min.segment.length = 0,
+			box.padding   = 0.0,
+			point.padding = 0.2,
+			max.overlaps  = Inf,
+			seed          = 42
+		) +
+		# geom_line(data = ts %>% filter(sim_number == 30),
+		# 		  stat = "smooth", method = "loess", span = 1.0, se = FALSE, size = 1.5, alpha = 0.15) +
+		# geom_line(data = ts %>% filter(sim_number == 58),
+		# 		  stat = "smooth", method = "loess", span = 0.75, se = FALSE, size = 1.5, alpha = 0.15) +
+		# geom_line(data = ts %>% filter(sim_number == 86),
+		# 		  stat = "smooth", method = "loess", span = 4.20, se = FALSE, size = 1.5, alpha = 0.15) +
+		scale_color_viridis_d(option = "turbo", begin = 0.6, end = 1.0, direction = -1) +
+		coord_cartesian(xlim = c(3.5, 4.5), ylim = c(6.25, y_split)) +
+		theme_minimal(base_size = 7) +
+		theme(
+			legend.position   = "none",
+			axis.title        = element_blank(),
+			axis.text         = element_blank(),
+			axis.ticks        = element_blank(),
+			panel.grid        = element_blank(),
+			panel.border      = element_rect(color = "blue", fill = NA, size = 1.25),
+			panel.background  = element_rect(fill = "white", color = NA),
+			plot.background   = element_rect(fill = "white", color = NA),
+			plot.margin       = margin(0, 0, 0, 0)
+		)
+
+	# Upper zoom inset (red border): zooms into the upper half of the zoom region
+	zoom_upper <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_rate)))) +
+		geom_point(alpha = 0.40, size = 1.6) +
+		ggrepel::geom_text_repel(
+			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= y_split, mean_ai <= 8.75) %>%
+			                filter(chemostat_id != 9),
+			aes(label = chemostat_id),
+			size          = 1.8,
+			alpha         = 1,
+			show.legend   = FALSE,
+			segment.color = "black",
+			segment.size  = 0.25,
+			min.segment.length = 0,
+			box.padding   = 0.4,
+			point.padding = 0.2,
+			max.overlaps  = Inf,
+			seed          = 42
+		) +
+		ggrepel::geom_text_repel(
+			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= y_split, mean_ai <= 8.75,
+			                              chemostat_id == 9),
+			aes(label = chemostat_id),
+			nudge_x       = 0.2,
+			nudge_y       = -0.0,
 			size          = 1.8,
 			alpha         = 1,
 			show.legend   = FALSE,
@@ -267,7 +348,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		geom_line(data = ts %>% filter(sim_number == 86),
 				  stat = "smooth", method = "loess", span = 4.20, se = FALSE, size = 1.5, alpha = 0.15) +
 		scale_color_viridis_d(option = "turbo", begin = 0.6, end = 1.0, direction = -1) +
-		coord_cartesian(xlim = c(3.5, 4.5), ylim = c(6.65, 8.25)) +
+		coord_cartesian(xlim = c(3.5, 4.5), ylim = c(y_split, 8.75)) +
 		theme_minimal(base_size = 7) +
 		theme(
 			legend.position   = "none",
@@ -275,22 +356,27 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 			axis.text         = element_blank(),
 			axis.ticks        = element_blank(),
 			panel.grid        = element_blank(),
-			panel.border      = element_rect(color = "darkgreen", fill = NA, size = 1.25), #, linetype = "32"),
+			panel.border      = element_rect(color = "red", fill = NA, size = 1.25),
 			panel.background  = element_rect(fill = "white", color = NA),
 			plot.background   = element_rect(fill = "white", color = NA),
 			plot.margin       = margin(0, 0, 0, 0)
 		)
 
-	p <- p + annotation_custom(
-		ggplotGrob(zoom_inset),
-		xmin = 1.0, xmax = 3.25, ymin = 1.25, ymax = 7.25
-	) +
-	# top-left of inset → top-left of zoom rectangle
-	annotate("segment", x = 1.1, xend = 3.5, y = 7.25, yend = 8.75,
-	         color = "darkgreen", linewidth = 0.35, alpha = 0.25) +
-	# bottom-right of inset → bottom-right of zoom rectangle
-	annotate("segment", x = 3.25, xend = 4.5, y = 1.35, yend = 6.25,
-	         color = "darkgreen", linewidth = 0.35, alpha = 0.25)
+	p <- p +
+		# Lower inset (blue) placed on the left
+		annotation_custom(ggplotGrob(zoom_lower), xmin = 2.0, xmax = 3.7, ymin = 2.5, ymax = 6.0) +
+		# Upper inset (red) placed on the right
+		annotation_custom(ggplotGrob(zoom_upper), xmin = 4.1, xmax = 5.8, ymin = 2.5, ymax = 6.0) #+
+		# # Connectors: lower inset (blue) → blue rectangle
+		# annotate("segment", x = 2.0, xend = 3.5, y = 7.0, yend = y_split,
+		#          color = "blue", linewidth = 0.35, alpha = 0.4) +
+		# annotate("segment", x = 2.0, xend = 3.5, y = 1.1, yend = 6.25,
+		#          color = "blue", linewidth = 0.35, alpha = 0.4) +
+		# # Connectors: upper inset (red) → red rectangle
+		# annotate("segment", x = 3.8, xend = 4.5, y = 7.0, yend = 8.75,
+		#          color = "red", linewidth = 0.35, alpha = 0.4) +
+		# annotate("segment", x = 3.8, xend = 4.5, y = 1.1, yend = y_split,
+		#          color = "red", linewidth = 0.35, alpha = 0.4)
 
 	# Add dist.pdf as an inset in the top-right corner
 	dist_file <- file.path("dist.pdf")
