@@ -203,7 +203,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 	) +
     labs(
       x = TeX("Minimum distance from source $d$"),
-      y = "Mean assembly index",
+      y = TeX("            Per-reactor\naverage assembly index $a$"),
       color = TeX("$\\log_{10}(k_d)$")
     ) +
 	coord_cartesian(ylim = c(1.5, 13.5)) +
@@ -223,7 +223,8 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		legend.title = element_text(size = 7),
 		legend.direction = "horizontal",
 		legend.margin = margin(t = 2, r = 4, b = 2, l = 4, unit = "pt"),
-		legend.spacing.y = unit(1, "pt")
+		legend.spacing.y = unit(1, "pt"),
+		plot.margin = margin(5, 5, 5, 15)
 	)
 	p <- p + guides(color = guide_legend(keyheight = unit(0.4, "lines"), keywidth = unit(0.45, "lines"), default.unit = "lines"))
 
@@ -239,7 +240,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.25, mean_ai < y_split) %>%
 			                filter(!(chemostat_id %in% c(13, 17) & sim_number == 30)) %>%
 			                filter(chemostat_id != 9),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			size          = 1.8,
 			alpha         = 1,
 			show.legend   = FALSE,
@@ -254,7 +255,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		ggrepel::geom_text_repel(
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.25, mean_ai < y_split,
 			                              chemostat_id %in% c(13, 17), sim_number == 30) %>% arrange(mean_ai),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			nudge_x       = c(0.4, -0.4),
 			nudge_y       = c(0.1, 0.),
 			size          = 1.8,
@@ -271,7 +272,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		ggrepel::geom_text_repel(
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.25, mean_ai < 7.0,
 			                              chemostat_id == 9),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			nudge_x       = -0.2,
 			nudge_y       = -0.15,
 			size          = 1.8,
@@ -312,7 +313,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		ggrepel::geom_text_repel(
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= y_split, mean_ai <= 8.75) %>%
 			                filter(chemostat_id != 9),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			size          = 1.8,
 			alpha         = 1,
 			show.legend   = FALSE,
@@ -327,7 +328,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		ggrepel::geom_text_repel(
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= y_split, mean_ai <= 8.75,
 			                              chemostat_id == 9),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			nudge_x       = 0.2,
 			nudge_y       = -0.0,
 			size          = 1.8,

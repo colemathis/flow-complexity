@@ -96,13 +96,13 @@ plot_figure <- function(ts) {
 		geom_tile(color = "white", linewidth = 0.5) +
 		geom_tile(data = highlight_blue, fill = NA, color = "blue", linewidth = 1.2, width = 0.90, height = 0.90) +
 		geom_tile(data = highlight_red,  fill = NA, color = "red",  linewidth = 1.2) +
-		geom_text(aes(label = chemostat_id), color = "white", size = 4) +
+		geom_text(aes(label = LETTERS[chemostat_id]), color = "white", size = 4) +
 		facet_wrap(~ kd_label, nrow = 1, labeller = label_parsed) +
 		scale_y_reverse(expand = c(0, 0)) +
 		scale_x_continuous(expand = c(0, 0)) +
 		scale_fill_viridis_c(
 			option = "turbo",
-			name = "Mean AI"
+			name = TeX("Avg. $a$")
 		) +
 		coord_fixed() +
 		labs(x = NULL, y = NULL) +

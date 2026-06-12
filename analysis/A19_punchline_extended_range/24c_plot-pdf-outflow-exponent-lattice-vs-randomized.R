@@ -15,7 +15,7 @@ library(grid)        # for rasterGrob and gradient background
 
 ID         				<<- "24c-plot-pdf-outflow-exponent-lattice-vs-randomized"
 USE_CACHE  				<<- FALSE
-PRINT_FIGS 				<<- FALSE
+PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
 
 FITS_PATH_LATTICE       <<- file.path("../A02_wrap-up-figs-D02/cache/24-multipanel-pdf-inflow-outflow/24-multipanel-pdf-inflow-outflow_powerlaw_fits.csv")
@@ -122,7 +122,7 @@ plot_figure <- function(ts) {
 		scale_x_log10(labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))) +
 		scale_y_continuous(labels = function(x) abs(x)) +
 		labs(x = TeX("Diffusion coefficient $k_d$"),
-				 y = TeX("Power-Law Exponent $\\alpha$"),
+				 y = TeX("Power-law exponent $\\alpha$"),
 				 colour = "Topology") +
 		coord_cartesian(ylim = c(-9, -0.5)) +
 		scale_color_manual(values = colour_vals, name = "Topology") +

@@ -222,7 +222,7 @@ plot_figure <- function(ts) {
 
 	# Shared axis labels
 	x_label <- ggdraw() + draw_label(TeX("Diffusion coefficient $k_d$"), size = 11)
-	y_label <- ggdraw() + draw_label(TeX("Integer $z$"), size = 11, angle = 90)
+	y_label <- ggdraw() + draw_label(TeX("Integer $i$"), size = 11, angle = 90)
 
 	p_with_xlab <- plot_grid(p_grid, x_label, ncol = 1, rel_heights = c(1, 0.09))
 	p <- plot_grid(y_label, p_with_xlab, nrow = 1, rel_widths = c(0.03, 1))

@@ -105,7 +105,10 @@ plot_figure <- function(ts) {
 				# panel.grid.major.x = element_blank()
 			)
 		inset_plot <- inset_plot +
-			theme(axis.title = element_text(size = 9))
+			theme(
+				axis.title = element_text(size = 9),
+				axis.title.y.right = element_text(angle = 0, vjust = 0.5, margin = margin(l = 0))
+			)
 			# labs(x = TeX("$k_d$"), y = "SD")
 		inset_plot <- inset_plot +
 			scale_x_log10(breaks = c(1e-3, 1e-1, 1e1), labels = c(TeX("$10^{-3}$"), "", TeX("$10^{1}$")))
@@ -118,7 +121,7 @@ plot_figure <- function(ts) {
 
 	p <- ggdraw() +
 		draw_plot(main_plot) +
-		draw_plot(inset_plot, x = 0.38, y = 0.48, width = 0.37, height = 0.50)
+		draw_plot(inset_plot, x = 0.37, y = 0.48, width = 0.37, height = 0.50)
 		# theme(plot.background = element_rect(fill = "transparent", color = NA))
 
 	height <- 60

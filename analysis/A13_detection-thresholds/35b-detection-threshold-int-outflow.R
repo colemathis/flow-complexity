@@ -166,7 +166,7 @@ plot_figure <- function(detection_thresholds) {
     coord_cartesian(ylim = c(1e0, 5e5)) +
     labs(
       x = TeX("Diffusion coefficient $k_d$"),
-      y = "Highest integer",
+      y = TeX("Highest integer $i$"),
       color = TeX("$log[X]$")
     ) +
 	theme_minimal(base_size = 11) +

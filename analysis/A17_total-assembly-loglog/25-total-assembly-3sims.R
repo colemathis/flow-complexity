@@ -175,8 +175,8 @@ plot_figure <- function(ts) {
 			labels = function(x) sprintf("%.0f", log10(as.numeric(x)))
 		) +
 		labs(
-			x = TeX("$t$"),
-			y = TeX("$A$")
+			x = TeX("Time $t$"),
+			y = TeX("Assembly $A$")
 		) +
 		scale_x_continuous(
 			breaks = seq(0, 1e5, by = 2e4),

@@ -138,7 +138,8 @@ plot_figure <- function(ts) {
 
 	p <- p + labs(
 		x = TeX("Diffusion coefficient $k_d$"),
-		y = TeX("Avg. copy num. of dimers $\\bar{n_2}$"),
+		#y = TeX("Avg. copy num. of dimers $\\bar{n_2}$"),
+		y = TeX("             Across-reactor\navg. copy number of dimers $\\bar{n_2}$"),
 		color = TeX("$\\log(I)$")
 		# title = "Populations of 2’s, sweep over diffusion with multiple inflows",
 		# caption = ID
@@ -155,8 +156,8 @@ plot_figure <- function(ts) {
 		# legend.title = element_text(size = 6), # Decrease title size
 		plot.title = element_text(size = 6),
 		plot.caption = element_text(size = 6, color = "grey50"),
-		# plot.margin = margin(5, 5, 5, 15),
-		axis.title = element_text(size = 10)
+		plot.margin = margin(5, 5, 5, 15),
+		axis.title.y = element_text(size = 9)
 	)
 
 	p <- p + theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))

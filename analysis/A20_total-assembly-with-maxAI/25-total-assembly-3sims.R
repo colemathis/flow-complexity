@@ -209,7 +209,7 @@ plot_figure <- function(ts) {
 		labs(
 			# x = TeX("$t$"),
 			x = "",
-			y = TeX("Highest AI")
+			y = TeX("$\\max(a)$")
 		) +
 		scale_x_continuous(
 			breaks = seq(0, 1e5, by = 2e4),

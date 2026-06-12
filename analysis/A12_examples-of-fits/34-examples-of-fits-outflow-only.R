@@ -11,7 +11,7 @@ library(latex2exp)
 # PARAMETERS
 ################################################################################
 
-ID         				<<- "34-examples-of-fits"
+ID         				<<- "34-examples-of-fits-outflow-only"
 USE_CACHE  				<<- TRUE
 PRINT_FIGS 				<<- TRUE
 SAVE_FIGS 			 	<<- TRUE
@@ -168,18 +168,24 @@ compute_power_law_fits <- function(ts) {
 
 plot_figure <- function(ts, fits) {
 
-	SELECTED_SIMS <- c(1, 80)
+	SELECTED_SIMS <- c(1, 75)
 
 	ts <- ts %>% filter(sim_number %in% SELECTED_SIMS)
 	fits <- fits %>% filter(sim_number %in% SELECTED_SIMS)
+
+	ts$diffusion_rate[ts$sim_number == 75] <- 10
+	params$diffusion_rate[params$sim_number == 75] <- 10
+
+	ts <- ts %>% filter(chemostat_id == 25, freq_per_unit > 0)
+	fits <- fits %>% filter(chemostat_id == 25)
 
 	N_SIM <- nrow(params)
 	side <- ceiling(sqrt(N_SIM))
 
 	p <- ggplot(ts, aes(x = bin_upper, y = freq_per_unit, color = factor(chemostat_id))) +
-		geom_point(alpha = 0.3, size = 1) +
+		geom_point(alpha = 1.0, size = 1) +
 		scale_color_manual(
-			values = c("1" = "darkorange", "25" = "magenta"),
+			values = c("1" = "darkorange", "25" = "black"),
 			breaks = c("1", "25"),
 			labels = c("1" = "Inflow", "25" = "Outflow")
 		) +
@@ -210,11 +216,12 @@ plot_figure <- function(ts, fits) {
 			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
 		) +
 		scale_y_log10(
+			limits = c(1e-2, 1e2),
 			labels = scales::trans_format("log10", function(x) TeX(sprintf("$10^{%d}$", x)))
 		) +
 		theme_minimal(base_size = 11) +
 		theme(
-			legend.position = c(0.02, 0.54),
+			legend.position = "none",
 			legend.justification = c("left", "bottom"),
 			legend.key.size = unit(0.5, "lines"),
 			legend.text = element_text(size = 9),
@@ -224,12 +231,14 @@ plot_figure <- function(ts, fits) {
 			strip.text.y = element_blank()  # Hide facet labels on the side
 		)
 
+	
+
 	# Hide legend for all but the first panel (top panel)
 	# This requires patchwork or cowplot for true per-panel legends, but as a workaround:
 	# Only show legend if sim_number is the first in SELECTED_SIMS
-	if (!is.null(SELECTED_SIMS) && length(SELECTED_SIMS) > 1) {
-		p <- p + guides(color = guide_legend(override.aes = list(alpha = 1)))
-	}
+	# if (!is.null(SELECTED_SIMS) && length(SELECTED_SIMS) > 1) {
+	# 	p <- p + guides(color = guide_legend(override.aes = list(alpha = 1)))
+	# }
 
 	# ---------------------------------------------------------------------------
 	# Add power‑law fit lines (dashed) for each chemostat in each panel
@@ -251,10 +260,12 @@ plot_figure <- function(ts, fits) {
 				data = fits %>% filter(!is.na(slope), !is.na(intercept)),
 				aes(intercept = intercept,
 					slope     = slope,
-					color     = factor(chemostat_id)),
-				size     = 1.00,
-				alpha    = 0.75,
+					),
+				color     = "red",
+				size     = 0.50,
+				alpha    = 1.00,
 				inherit.aes = FALSE
+				# linetype = "dashed"
 				# show.legend = FALSE
 			)
 
@@ -267,7 +278,7 @@ plot_figure <- function(ts, fits) {
 				# label = sprintf("f(x) == %.2f * x^{-%.2f}", 10^intercept, abs(slope))
 				label = paste0(TeX(sprintf("$\\alpha = %.2f$", abs(slope))))
 			),
-			color = "magenta",
+			color = "red",
 			inherit.aes = FALSE,
 			hjust = 1.2, vjust = 4.0,
 			size = 3,

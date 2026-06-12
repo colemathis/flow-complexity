@@ -122,7 +122,7 @@ plot_figure <- function(ts) {
 				panel.background = element_rect(fill = "grey95", color = NA)
 			)
 		inset_plot <- inset_plot +
-			labs(x = TeX("$k_d$"), y = "AI")
+			labs(x = TeX("$k_d$"), y = TeX("$a$"))
 		
 		# Ensure all geom_line layers in inset_plot use a thin line
 		inset_plot$layers <- lapply(inset_plot$layers, function(layer) {

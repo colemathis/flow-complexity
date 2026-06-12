@@ -231,7 +231,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		ggrepel::geom_text_repel(
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.65, mean_ai <= 8.25) %>%
 			                filter(!(chemostat_id %in% c(13, 17) & sim_number == 30)),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			size          = 1.8,
 			alpha         = 1,
 			show.legend   = FALSE,
@@ -246,7 +246,7 @@ p <- ggplot(ts, aes(x = distance, y = mean_ai, color = factor(log10(diffusion_ra
 		ggrepel::geom_text_repel(
 			data          = ts %>% filter(distance >= 3.5, distance <= 4.5, mean_ai >= 6.65, mean_ai <= 8.25,
 			                              chemostat_id %in% c(13, 17), sim_number == 30) %>% arrange(mean_ai),
-			aes(label = chemostat_id),
+			aes(label = LETTERS[chemostat_id]),
 			nudge_x       = c(0.4, -0.4),
 			nudge_y       = c(0.1, 0.),
 			size          = 1.8,

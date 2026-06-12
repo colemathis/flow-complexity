@@ -139,7 +139,7 @@ plot_figure <- function(ts) {
     scale_fill_viridis_c(name = TeX("Copy number $n$   "), na.value = "grey35") +
     labs(
       x = TeX("Diffusion coefficient $k_d$"),
-      y = TeX("Integer $z$"),
+      y = TeX("Integer $i$"),
     ) +
     scale_y_discrete(
       breaks = levels(ts$integer_bin)[seq(1, length(levels(ts$integer_bin)), length.out = 8)],

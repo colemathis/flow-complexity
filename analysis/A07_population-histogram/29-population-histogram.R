@@ -180,7 +180,7 @@ plot_figure <- function(ts) {
 		# ) +
 		labs(
 			x = TeX("Integer $i$ (binned)"),
-			y = TeX("Count per \\log $i$"),
+			y = TeX("Count per $\\log (i)$"),
 			# title = "Histogram of Frequency vs Integer and Assembly Index",
 			# fill = "Type",
 			# caption = ID
