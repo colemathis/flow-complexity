@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "FlowComplexity"
+abstract: >-
+  Investigates how the topology of networks of chemostats influences the
+  complexity of the chemistry within them.
+authors:
+  - family-names: "Champagne-Ruel"
+    given-names: "Alexandre"
+    orcid: "https://orcid.org/0000-0002-2699-2699"
+  - family-names: "Kempes"
+    given-names: "Christopher P"
+    orcid: "https://orcid.org/0000-0002-1622-9761"
+  - family-names: "Mathis"
+    given-names: "Cole"
+    orcid: "https://orcid.org/0000-0001-8424-9169"
+repository-code: "https://github.com/colemathis/flow-complexity"
+url: "https://github.com/colemathis/flow-complexity"
+license: GPL-2.0
+version: "1.0.0"
+date-released: "2026-09-03"
+keywords:
+  - assembly theory
+  - origin of life
+  - chemostat networks
+  - autocatalysis
+  - complex systems
+  - Julia
